@@ -4,9 +4,10 @@
           <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">XXX</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">社保局</span></div>
           <div class="number"><span>电话号码:</span><span style="margin-left:20px">12345678977</span></div>
       </div>
-      <div class="newMessage oneRowHide">
-          新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...
-      </div>
+    <div class="newMessage oneRowHide"> 
+        <a class="a_link" href="#/inform">新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...</a>
+    </div>
+
       <div class="meetingStatus">
             <div class="list">
               <div class="status">
@@ -154,6 +155,10 @@
         background-position: 25px;
         text-indent: 70px;
         background-color: #f3f3f3;
+        .a_link{
+            display: grid;
+            text-align: center;
+        }
     }
     .meetingStatus {
         background-color: #f1f1f1;
