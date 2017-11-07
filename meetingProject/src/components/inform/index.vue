@@ -71,7 +71,7 @@
         .nameDepart {
             margin-bottom: 20px;
         }
-    }
+    }   
     .content{
         .router_link{
             .list{

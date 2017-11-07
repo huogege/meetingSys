@@ -9,23 +9,26 @@
     </div>
 
       <div class="meetingStatus">
-            <div class="list">
-              <div class="status">
-                  <span class="word">会议进行中</span>
-                  <span class="time">已进行:33min</span>
-              </div>        
-              <div class="content">
-                  <div class="left">
-                       <h1 class="title oneRowHide">关于十九大会议精神的贯彻讨论关于十九大会议精神的贯彻讨论</h1>
-                       <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
-                       <p class="location "><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
-                  </div>
-                  <div class="right">
-                      <span class="icon"></span>
-                      <span class="word">扫码签到</span>
-                  </div>
-              </div>
-            </div>
+            <router-link :to="{ path: 'meetingDetail', query: { name: '通知内容1'}}" class="router_link">
+                <div class="list">
+                    <div class="status">
+                        <span class="word">会议进行中</span>
+                        <span class="time">已进行:33min</span>
+                    </div>        
+                    <div class="content">
+                        <div class="left">
+                            <h1 class="title oneRowHide">关于十九大会议精神的贯彻讨论关于十九大会议精神的贯彻讨论</h1>
+                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
+                            <p class="location "><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
+                        </div>
+                        <div class="right">
+                            <span class="icon"></span>
+                            <span class="word">扫码签到</span>
+                        </div>
+                    </div>
+                </div>
+            </router-link>
+            
 
             <div class="list">
                 <div class="status">
