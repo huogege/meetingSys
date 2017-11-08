@@ -19,7 +19,7 @@
                         <div class="left">
                             <h1 class="title oneRowHide">关于十九大会议精神的贯彻讨论关于十九大会议精神的贯彻讨论</h1>
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
-                            <p class="location "><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
+                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
                         </div>
                         <div class="right">
                             <span class="icon"></span>
@@ -39,7 +39,7 @@
                     <div class="left">
                         <h1 class="title oneRowHide">关于十九大会议精神的贯彻讨论关于十九大会议精神的贯彻讨论</h1>
                         <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
-                        <p class="location "><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
+                        <p class="location "><span class="icon_2">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
                     </div>
                     <div class="right">
                         <span class="icon"></span>
@@ -63,9 +63,9 @@
                     </div>        
                     <div class="content">
                         <div class="left" style="padding-right:50px;;">
-                            <p class="from"><span class="icon_2">&#8195;</span><span>发起单位</span>区常委会</p>
+                            <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>区常委会</p>
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
-                            <p class="location over_text_2"><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
+                            <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
                         </div>
                     </div>
                 </div>    
@@ -79,9 +79,9 @@
                     </div>        
                     <div class="content">
                         <div class="left" style="padding-right:50px;;">
-                            <p class="from"><span class="icon_2">&#8195;</span><span>发起单位</span>区常委会</p>
+                            <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>区常委会</p>
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
-                            <p class="location over_text_2"><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
+                            <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
                         </div>
                     </div>
                 </div>    
