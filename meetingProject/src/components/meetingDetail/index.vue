@@ -3,16 +3,25 @@
         <div class="blackBar"></div>
        <div class="meetingStatus">
             <div class="list">
-                <div class="status">
+                <div class="status" v-if="meeting.status ==1">
+                    <span class="word">编辑中</span>
+                </div>
+                   <div class="status" v-if="meeting.status ==2">
+                    <span class="word">未开始(发布中)</span>
+                </div>  
+                <div class="status" v-if="meeting.status ==3">
                     <span class="word">会议进行中</span>
-                    <span class="time">已进行:33min</span>
-                </div>        
+                    <span class="time">已进行:{{formatMsgTime(meeting.stime,meeting.etime)}}</span>
+                </div>     
+                <div class="status" v-if="meeting.status ==4">
+                    <span class="word">已结束</span>
+                </div>       
                 <div class="content">
                     <div class="left">
-                        <h1 class="title oneRowHide">关于十九大会议精神的贯彻讨论关于十九大会议精神的贯彻讨论</h1>
-                        <p class="from"><span class="icon_4">&#8195;</span><span>发起单位:</span><span>区常委局</span></p>
-                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>2017-10-18  9:30江津区大同路11号区常委会办公室</p>
-                        <p class="location "><span class="icon_3">&#8195;</span><span>会议地点</span>江津区大同路11号区常委会办公室江津区大同路11号区常委会办公室</p>
+                        <h1 class="title oneRowHide">{{meeting.title}}</h1>
+                        <p class="from"><span class="icon_4">&#8195;</span><span>发起单位:</span><span>{{meeting.unit}}</span></p>
+                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{format(meeting.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                        <p class="location "><span class="icon_3">&#8195;</span><span>会议地点:</span>{{meeting.addr}}</p>
                         <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长:</span>30min</p>
                     </div>
                     <div class="right">
@@ -47,7 +56,7 @@
                 <span class="icon_9">&#8195;</span>
                 <span class="word">会议纪要</span>
             </p>
-            <p class="word">监督学习认为人要把的 AI 来人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗。机器会从中学习到分辨猫狗的细节，从毛发到眼睛到耳朵，然后举一反三得去判断一张它从没见过的照片是猫猫还是狗狗。
+            <p class="content">监督学习认为人要把的 AI 来人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗。机器会从中学习到分辨猫狗的细节，从毛发到眼睛到耳朵，然后举一反三得去判断一张它从没见过的照片是猫猫还是狗狗。
 而无监督学习认为机器要去自己摸索，自己发现规律。</p>
         </div>
         <div class="menuWrapper">
@@ -79,22 +88,41 @@
   </div>
 </template>
 <script>
-   
+    import fn from "../../common/js/index.js";
+    var mid = fn.QueryString('mid');
+    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingInfo'
     export default{
         components:{
          
         },
         data:function(){
             return{
-                   
+                 meeting:{
+                     type:Object
+                 }
               
             }
         },
         methods:{
-          
+            format:fn.format,
+            formatMsgTime:fn.formatMsgTime,
+            request:function(params){
+                 var _this = this;
+                _this.$http.get(url, {
+                    params: params
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                 _this.meeting = response.data.data.meeting;
+                                 //debugger
+                            }
+                        }
+                    })
+            },
         }, 
         created:function(){
-           
+          this.request({phone:2,mid:mid})
         },
 
     }
@@ -252,7 +280,7 @@
                 margin-right: 20px;
             }
         }
-        .word{
+        .content{
             font-size: 28px;
             color: #575757;
             line-height: 40px;

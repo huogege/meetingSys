@@ -13,7 +13,7 @@
 </template>
 <style lang="less" rel="stylesheet/less" scoped>
   .informDetail{
-    padding-left: 40px;
+    padding-left: .4rem;
     border-top: 1px solid #666;
     .message{
       height:160px;
