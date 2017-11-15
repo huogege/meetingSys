@@ -54,6 +54,24 @@ var unitFun = {
             timeSpanStr = Math.round(milliseconds / (1000 * 60 * 60 * 24)) + '天';
           }
           return timeSpanStr;
-        }
+        },
+
+    	//汉字转Unicode
+    zhToUnicode : function (zh) {
+      return escape(zh).toLocaleLowerCase().replace(/%u/gi,'\\u');
+    },
+
+    //Unicode转汉字
+    unicodeToZh : function (unicode) {
+        return unescape(unicode.replace(/\\u/gi,'%u'));
+    },
+    //截取后缀名
+    cutPostfix:function(str){
+      var str = str;
+      var index1=str.lastIndexOf(".");
+      var index2=str.length;
+      var suffix=str.substring(index1+1,index2);//后缀名
+      return suffix
+    }
 }
 export default  unitFun;

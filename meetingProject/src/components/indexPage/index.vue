@@ -1,15 +1,15 @@
 <template>
   <div class="index">
-      <div class="message" v-if="data1 && data1['meetingUser']!= null">
-          <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{data1['meetingUser'].name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{data1['meetingUser'].dept}}</span></div>
-          <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{data1['meetingUser'].phone}}</span></div>
+      <div class="message">
+          <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
+          <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
       </div>
     <div class="newMessage oneRowHide"> 
         <a class="a_link" href="#/inform">新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...</a>
     </div>
 
-      <div class="meetingStatus" v-if="data1&&data1.list.length>0">
-            <router-link v-for="item in data1.list" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+      <div class="meetingStatus">
+            <router-link v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
                 <div class="list">
                     <div class="status">
                         <span class="word">会议进行中</span>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </router-link>
-            <router-link v-for="item in data1.soonlist" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+            <router-link  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
                 <div class="list">
                     <div class="status">
                         <span class="word" style="background-color:#f1a54d">会议即将进行</span>
@@ -54,14 +54,14 @@
             <div class="menu">
                 <div class="submenu" v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
             </div>
-            <div class="menu_content" v-if="data2&&data2.length>0">
+            <div class="menu_content">
                  <myScroll class="wrapper"
-                    :data="data2"
+                    :data="changeList"
                     :pullup="pullup"
                     @scrollToEnd="request2(URLS,{phone:2,num:num,page:page})"
                    >
                     <ul class="wrapper-content">
-                        <div class="list" v-for="item in data2">
+                        <div class="list" v-for="item in changeList">
                             <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
                                 <div class="status2">
                                     <h1 class="title oneRowHide">{{item.title}}</h1>
@@ -133,10 +133,12 @@
                ],
                currentItem:0,
                pullup:true,
-               listenScroll:true,   
-               data1:[],  
-               nowTime:'',     
-               data2:[],
+               listenScroll:true,  
+               meetingUser:'' ,
+               inList:[],
+               soonList:[], 
+               changeList:[],
+               nowTime:'',    
                page:1,
                num:5
 
@@ -150,17 +152,17 @@
                 if(index != this.currentItem){
                     this.currentItem = index;
                     if(index == 0){
-                         this.data2 = [];
+                         this.changeList = [];
                          this.page = 1;
                          this.URLS = this.URL2;
                          this.request2(this.URLS,{phone:2,num:this.num,page:1});
                     }else if(index == 1){
-                          this.data2 = [];
+                          this.changeList = [];
                         this.page = 1;
                          this.URLS = this.URL3;
                          this.request2(this.URLS,{phone:2,num:this.num,page:1});
                     }else if(index ==2){
-                          this.data2 = [];
+                          this.changeList = [];
                          this.page = 1;
                          this.URLS = this.URL4;
                          this.request2(this.URLS,{phone:2,num:this.num,page:1});
@@ -178,7 +180,9 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                 _this.data1 = response.data.data;
+                                 _this.meetingUser = response.data.data.meetingUser;
+                                 _this.inList =  response.data.data.list;
+                                  _this.soonList =  response.data.data.soonlist;
                                  _this.nowTime =  response.data.data.params.nowtime;
                                 
                             }
@@ -196,9 +200,9 @@
                                 var pageAll = Math.ceil(response.data.data.list.total/_this.num);
                                 if(response.data.data.list.total>0 && params.page <= pageAll){
                                      var thisData = response.data.data.list.list;
-                                    _this.data2 = thisData.concat(_this.data2);
+                                    _this.changeList = thisData.concat(_this.changeList);
                                     _this.page++;
-                                    console.log(_this.data2)
+                                    console.log(_this.changeList)
                         
                                 }else if(params.page > pageAll){
                                     return false
@@ -209,12 +213,9 @@
             },
            
         }, 
-        created:function(){
-            this.$nextTick(() => {
-                  this.request1(this.URL1,{phone:2,num:1000});
-                this.request2(this.URLS,{phone:2,num:this.num,page:1});
-            })
-          
+        mounted:function(){
+            this.request1(this.URL1,{phone:2,num:1000});
+            this.request2(this.URLS,{phone:2,num:this.num,page:1});  
         },
 
     }

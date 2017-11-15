@@ -1,7 +1,7 @@
 <template>
   <div class="meetingDetail">
         <div class="blackBar"></div>
-       <div class="meetingStatus">
+       <div class="meetingStatus" v-if="meeting!=null">
             <div class="list">
                 <div class="status" v-if="meeting.status ==1">
                     <span class="word">编辑中</span>
@@ -22,7 +22,7 @@
                         <p class="from"><span class="icon_4">&#8195;</span><span>发起单位:</span><span>{{meeting.unit}}</span></p>
                         <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{format(meeting.stime,'yyyy-MM-dd  hh:mm')}}</p>
                         <p class="location "><span class="icon_3">&#8195;</span><span>会议地点:</span>{{meeting.addr}}</p>
-                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长:</span>30min</p>
+                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长:</span>{{meeting.estime}}</p>
                     </div>
                     <div class="right">
                         <span class="icon"></span>
@@ -35,20 +35,12 @@
             <p class="title">
                 <span class="icon_8">&#8195;</span>
                 <span class="word">参与人员</span>
-                <span class="total">共33人</span>
+                <span class="total" v-if="meeting&&meeting.userlist&&meeting.userlist.length>=0">共{{meeting.userlist.length}}人</span>
             </p>
             <div class="content">
-                <p class="list">
-                    <span class="cell">社保局-张德兰</span>
-                    <span class="cell">社保局-张德兰</span>
-                    <span class="cell">社保局-张德兰</span>
-                </p>
-               
-                <p class="list">
-                    <span class="cell">社保局-张德兰</span>
-                    <span class="cell">社保局-张德兰</span>
-                    <span class="cell">社保局-张德兰</span>
-                </p>
+                <div class="list">
+                    <span v-for="item in meeting.userlist" class="cell">{{item.dept}}-{{item.name}}</span>
+                </div>
             </div>
         </div>
         <div class="meetingContent">
@@ -60,13 +52,13 @@
 而无监督学习认为机器要去自己摸索，自己发现规律。</p>
         </div>
         <div class="menuWrapper">
-             <router-link :to="{ path: 'meetingStatistics', query: { name: '统计页面'}}" class="router_link">
+             <router-link :to="{ path: 'material', query: { mid: mid}}" class="router_link">
                 <div class="submenu">
                     <span class="icon icon11">&#8195;</span>
                     <span class="word">资料</span>
                 </div>
               </router-link>
-             <router-link :to="{ path: 'meetingStatistics', query: { name: '统计页面'}}" class="router_link">
+             <router-link :to="{ path: 'note', query: { title:title,mid: mid,time:time}}" class="router_link">
                 <div class="submenu">
                     <span class="icon icon12">&#8195;</span>
                     <span class="word">笔记</span>
@@ -99,7 +91,10 @@
             return{
                  meeting:{
                      type:Object
-                 }
+                 },
+                 mid:'',
+                 title:'',
+                 time:''
               
             }
         },
@@ -115,14 +110,19 @@
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
                                  _this.meeting = response.data.data.meeting;
-                                 //debugger
+                                 _this.title = response.data.data.meeting.title;
+                                  _this.time = fn.format(response.data.data.meeting.stime,'yyyy-MM-dd  hh:mm');
+                                 
+                          
                             }
                         }
                     })
             },
         }, 
-        created:function(){
-          this.request({phone:2,mid:mid})
+        mounted:function(){
+            this.mid = mid;
+
+            this.request({phone:2,mid:mid})
         },
 
     }
@@ -135,34 +135,34 @@
     position: absolute;
     width: 100%;
     .blackBar{
-        height: 30px;
+        height: .3rem;
         background-color: #f1f1f1;
     }
     .meetingStatus {
         background-color: #f1f1f1;
-        padding-bottom: 30px;
+        padding-bottom: .3rem;
     }
     .list{
             background-color: #fff;
-            margin-bottom: 30px;
+            margin-bottom: .3rem;
             .status {
-                height: 50px;
+                height: .5rem;
                 .word {
                     float: left;
                     display: inline-block;
-                    padding: 10px 40px 10px 20px;
-                    border-radius: 0 20px 20px 0;
+                    padding: .1rem .4rem .1rem .2rem;
+                    border-radius: 0 .2rem .2rem 0;
                     color: #fff;
                     background-color: #57cb4e;
-                    font-size: 26px;
+                    font-size: .26rem;
                 }
                 .time {
-                    line-height: 50px;
-                    font-size: 26px;
+                    line-height: .5rem;
+                    font-size: .26rem;
                     color: #666;
                     float: right;
                     vertical-align: middle;
-                    margin-right: 20px;
+                    margin-right: .2rem;
                 }
             }
              &:last-child{
@@ -175,35 +175,38 @@
             .left {
                     flex: 3;
                     width: 75%;
-                    padding: 35px 0 35px 35px;
+                    padding: .35rem 0 .35rem .35rem;
                 .title{
-                    font-size: 34px;
-                    width: 530px;
+                    font-size: .34rem;
+                    width: 5.3rem;
                     font-weight: 500;
-                    margin-bottom: 40px;
+                    margin-bottom: .4rem;
                 }
                 .icon_2 {
                     background-image: url("./icon_2.png");
                     background-repeat: no-repeat;
                     background-position: center;
-                    margin-right: 20px;
+                    margin-right: .2rem;
+                     background-size:.23rem .28rem;
                 }
                 .icon_3 {
                     background-image: url("./icon_3.png");
                     background-repeat: no-repeat;
                     background-position: center;
-                    margin-right: 20px;
+                    margin-right: .2rem;
+                      background-size:.24rem .24rem;
                 }
                 .icon_4 {
                     background-image: url("./icon_4.png");
                     background-repeat: no-repeat;
                     background-position: center;
-                    margin-right: 20px;
+                    margin-right: .2rem;
+                    background-size:.24rem .24rem;
                 }
                 p{
-                    font-size: 24px;
-                    margin-bottom: 20px;
-                    line-height: 35px;
+                    font-size: .24rem;
+                    margin-bottom: .2rem;
+                    line-height: .35rem;
                     &:last-child{
                         margin-bottom: 0;
                     }
@@ -214,52 +217,58 @@
                 width: 25%;
                 display: flex;
                 flex-direction: column;
-                padding-top: 20px;
+                padding-top: .2rem;
                 text-align: center;
                 .icon {
                     display: inline-block;
-                    width: 100px;
-                    height: 100px;
+                    width: 1rem;
+                    height: 1rem;
                     background-image: url("./icon_1.png");
                     background-repeat: no-repeat;
                     background-position: center;
                     margin: 0 auto;
+                    background-size:.85rem .72rem;
                 }
                 .word {
-                    font-size: 24px;
-                    margin-top: 20px;
+                    font-size: .24rem;
+                    margin-top: .2rem;
                     color: #178aff;
                 }
             }
         }
     }
     .joinPerson{
-        padding-bottom: 30px;
-        margin-bottom: 30px;
+        padding-bottom: .3rem;
+        margin-bottom: .3rem;
         background-color: #fff;
         .title{
-            font-size: 30px;
-            padding: 35px;
+            font-size: .3rem;
+            padding: .35rem;
             .icon_8{
                 background-image: url("./icon_8.png");
                 background-repeat: no-repeat;
                 background-position: center;
-                margin-right: 20px;
+                background-size: .25rem .28rem;
+                margin-right: .2rem;
             }
             .total{
-                font-size: 24px;
+                font-size: .24rem;
                 color: #575757;
                 margin-left: 50%;
             }
         }
         .content{
             .list{
-                font-size: 28px;
+                font-size: .28rem;
                 color: #575757;
                 text-align: center;
+                overflow: hidden;
             }
             .cell{
-                margin-right: 20px;
+                display: inline-block;
+                width: 33.3%;
+                float: left;
+                margin-bottom: .2rem;
                 &:last-child{
                     margin: 0;
                 }
@@ -267,25 +276,26 @@
         }
     }
     .meetingContent{
-        padding-bottom: 30px;
-        margin-bottom: 30px;
+        padding-bottom: .3rem;
+        margin-bottom: .3rem;
         background-color: #fff;
         .title{
-            font-size: 30px;
-            padding: 35px;
+            font-size: .3rem;
+            padding: .35rem;
             .icon_9{
                 background-image: url("./icon_9.png");
                 background-repeat: no-repeat;
                 background-position: center;
-                margin-right: 20px;
+                background-size: .26rem .27rem;
+                margin-right: .2rem;
             }
         }
         .content{
-            font-size: 28px;
+            font-size: .28rem;
             color: #575757;
-            line-height: 40px;
+            line-height: .4rem;
             text-align: justify;
-            padding: 0 35px 35px 35px;
+            padding: 0 .35rem .35rem .35rem;
         }
     }
     .menuWrapper{
@@ -300,12 +310,12 @@
                 display: flex;
                 flex-direction: row;
                 flex: 1;
-                height: 88px;
+                height: .88rem;
                 background-color: #fff;
                 .word{
                     color: #575757;
-                    font-size: 28px;
-                    line-height: 88px;
+                    font-size: .28rem;
+                    line-height: .88rem;
                 }
                 .icon{
                     display: inline-block;
@@ -314,15 +324,19 @@
                 }
                 .icon11{
                     background-image: url("./icon_11.png");
+                    background-size: .33rem .32rem;
                 }
                 .icon12{
                     background-image: url("./icon_12.png");
+                    background-size: .31rem .31rem;
                 }
                 .icon13{
                     background-image: url("./icon_13.png");
+                    background-size: .3rem .29rem;
                 }
                 .icon14{
                     background-image: url("./icon_14.png");
+                    background-size: .3rem .26rem;
                 }
             }
         }

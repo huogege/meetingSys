@@ -7,6 +7,8 @@ import meetingDetail from '@/components/meetingDetail/index'
 import meetingStatistics from '@/components/meetingStatistics/index'
 import select1 from '@/components/select1/index'
 import select2 from '@/components/select2/index'
+import material from '@/components/material/index'
+import note from '@/components/note/index'
 
 
 Vue.use(Router)
@@ -14,7 +16,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/index',
+      path: '/',
       name: '首页',
       component: indexPage
     },
@@ -47,6 +49,16 @@ export default new Router({
       path: '/select2',
       name: '投票',
       component: select2
+    },
+    {
+      path: '/material',
+      name: '资料',
+      component: material
+    },
+    {
+      path: '/note',
+      name: '会议笔记',
+      component: note
     },
   ]
 })
