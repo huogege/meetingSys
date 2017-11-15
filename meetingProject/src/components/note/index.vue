@@ -39,10 +39,15 @@
                 this.text = '';
             }
         },
-        mounted:function(){
-          this.title = title;
-          this.time = time;
+        created:function(){
+          this.$nextTick(function(){
+                this.title = title;
+                this.time = time;
+            })
         },
+        mounted:function(){
+            
+        }
 
     }
 </script>

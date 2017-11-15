@@ -1,21 +1,9 @@
 <template>
   <div class="meetingDetail">
         <div class="blackBar"></div>
-       <div class="meetingStatus" v-if="meeting!=null">
+       <div class="meetingStatus">
             <div class="list">
-                <div class="status" v-if="meeting.status ==1">
-                    <span class="word">编辑中</span>
-                </div>
-                   <div class="status" v-if="meeting.status ==2">
-                    <span class="word">未开始(发布中)</span>
-                </div>  
-                <div class="status" v-if="meeting.status ==3">
-                    <span class="word">会议进行中</span>
-                    <span class="time">已进行:{{formatMsgTime(meeting.stime,meeting.etime)}}</span>
-                </div>     
-                <div class="status" v-if="meeting.status ==4">
-                    <span class="word">已结束</span>
-                </div>       
+                 
                 <div class="content">
                     <div class="left">
                         <h1 class="title oneRowHide">{{meeting.title}}</h1>
@@ -35,11 +23,11 @@
             <p class="title">
                 <span class="icon_8">&#8195;</span>
                 <span class="word">参与人员</span>
-                <span class="total" v-if="meeting&&meeting.userlist&&meeting.userlist.length>=0">共{{meeting.userlist.length}}人</span>
+                <span class="total">共{{userList.length}}人</span>
             </p>
             <div class="content">
                 <div class="list">
-                    <span v-for="item in meeting.userlist" class="cell">{{item.dept}}-{{item.name}}</span>
+                    <span v-for="item in userList" class="cell">{{item.dept}}-{{item.name}}</span>
                 </div>
             </div>
         </div>
@@ -92,6 +80,7 @@
                  meeting:{
                      type:Object
                  },
+                 userList:[],
                  mid:'',
                  title:'',
                  time:''
@@ -110,8 +99,9 @@
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
                                  _this.meeting = response.data.data.meeting;
+                                 _this.userList = response.data.data.meeting.userlist;
                                  _this.title = response.data.data.meeting.title;
-                                  _this.time = fn.format(response.data.data.meeting.stime,'yyyy-MM-dd  hh:mm');
+                                _this.time = fn.format(response.data.data.meeting.stime,'yyyy-MM-dd  hh:mm');
                                  
                           
                             }
@@ -119,10 +109,16 @@
                     })
             },
         }, 
+        created:function(){
+            var _this = this;
+            setInterval(function(){
+                  _this.mid = mid;
+                _this.request({phone:2,mid:mid})
+            },3000)
+          
+        },
         mounted:function(){
-            this.mid = mid;
-
-            this.request({phone:2,mid:mid})
+           
         },
 
     }
@@ -134,6 +130,8 @@
     height: 100%;
     position: absolute;
     width: 100%;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     .blackBar{
         height: .3rem;
         background-color: #f1f1f1;
