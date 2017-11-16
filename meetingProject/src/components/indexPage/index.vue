@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+      
       <div class="top" ref="top">
              <div class="message" ref="message">
           <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
@@ -63,12 +64,9 @@
                    >
                     <ul class="wrapper-content"  >
                         <div class="list" v-for="item in changeList">
-                            <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                                <div class="status2">
-                                    <h1 class="title oneRowHide">{{item.title}}</h1>
-                                    <div class="joinStatus" v-show="item.cj_status == 1">
-                                        <span class="findOthers">找人开会</span>
-                                        <span class="refuse">不参与</span>
+                                <div class="joinStatus" v-show="item.cj_status == 1">
+                                        <span class="findOthers" @click.stop.self="findOthers()">找人开会</span>
+                                        <span class="refuse" @click.stop.self="refuse()">不参与</span>
                                     </div>
                                     <div class="joinStatus" v-show="item.cj_status == 2">
                                         <span class="findOthers">已确认参会</span>
@@ -80,7 +78,13 @@
                                         <span class="findOthers">已找人开会</span>
                                         <span class="refuse">不参与</span>
                                     </div>
-                                </div>        
+
+                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
+                                <div class="status2">
+                                    
+                                    <h1 class="title oneRowHide">{{item.title}}</h1>
+                                   
+                                </div>      
                                 <div class="content">
                                     <div class="left" style="padding-right:50px;;">
                                         <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>{{item.unit}}</p>
@@ -96,10 +100,113 @@
                 
             </div>
     </div>
+     <div class="qr-btn" node-type="qr-btn">扫描二维码1
+        <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+    </div>
 </div>
 </template>
 <script>
-    
+
+
+(function($) {
+    var Qrcode = function(tempBtn) {
+        var _this_ = this;
+        var isWeiboWebView = /__weibo__/.test(navigator.userAgent);
+
+        if (isWeiboWebView) {
+            if (window.WeiboJSBridge) {
+                _this_.bridgeReady(tempBtn);
+            } else {
+                document.addEventListener('WeiboJSBridgeReady', function() {
+                    _this_.bridgeReady(tempBtn);
+                });
+            }
+        } else {
+            _this_.nativeReady(tempBtn);
+        }
+    };
+
+    Qrcode.prototype = {
+        nativeReady: function(tempBtn) {
+            $('[node-type=jsbridge]',tempBtn).on('click',function(e){
+                e.stopPropagation();
+            });
+
+            $(tempBtn).bind('click',function(e){
+                $(this).find('input[node-type=jsbridge]').trigger('click');
+            });
+
+            $(tempBtn).bind('change', this.getImgFile);
+        },
+        bridgeReady: function(tempBtn) {
+            $(tempBtn).bind('click', this.weiBoBridge);
+        },
+        weiBoBridge: function() {
+            window.WeiboJSBridge.invoke('scanQRCode', null, function(params) {
+                //得到扫码的结果
+                $('.result-qrcode').append(params.result + '<br/>');
+            });
+        },
+        getImgFile: function() {
+            var _this_ = this;
+            var inputDom = $(this).find('input[node-type=jsbridge]');
+            var imgFile = inputDom[0].files;
+            var oFile = imgFile[0];
+            var oFReader = new FileReader();
+            var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+            if (imgFile.length === 0) {
+                return;
+            }
+
+            if (!rFilter.test(oFile.type)) {
+                alert("选择正确的图片格式!");
+                return;
+            }
+
+            oFReader.onload = function(oFREvent) {
+
+                qrcode.decode(oFREvent.target.result);
+                qrcode.callback = function(data) {
+                    //得到扫码的结果
+                    $('.result-qrcode').append(data + '<br/>');
+                };
+            };
+
+            oFReader.readAsDataURL(oFile);
+        },
+        destory: function() {
+            $(tempBtn).off('click');
+        }
+    };
+
+    Qrcode.init = function(tempBtn) {
+        var _this_ = this;
+
+        tempBtn.each(function() {
+            new _this_($(this));
+        });
+    };
+    window.Qrcode = Qrcode;
+})(window.Zepto ? Zepto : jQuery);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     import BScroll from 'better-scroll'
     import myScroll from '../../components/scroll/index.vue'
@@ -218,6 +325,10 @@
                         }
                     })
             },
+            findOthers:function(){
+                alert("gg")
+                return false;
+            }
            
         }, 
         created:function(){
@@ -235,8 +346,47 @@
 
     }
 </script>
+
+
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
+
+.jsbridge {
+    height: 200px;
+    width: 200px;
+    background-color: red;
+}
+
+.upimg {
+    height: 200px;
+    width: 200px;
+    background-color: green;
+    margin-bottom: 50px;
+}
+
+.qr-btn{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width:100%;
+    height:2rem;
+    background-color:#157EFB ;
+    line-height: 2rem;
+    text-align: center;
+    color:#fff;
+    border-radius: 10%  10%;
+    margin-bottom:10px;
+}
+
+input[node-type=jsbridge]{
+    visibility: hidden;
+}
+ 
+
+
+
+
+
 .index {
     .message {
         font-size: .3rem;
@@ -274,6 +424,7 @@
      .list {
             background-color: #fff;
             margin-bottom: .3rem;
+            width: 7.5rem;
             .status {
                 height: .5rem;
                 .word {
@@ -294,18 +445,10 @@
                     margin-right: .2rem;
                 }
             }
-            .status2{
-                display: flex;
-                padding: .35rem .1rem 0 .35rem;
-                .title {
-                    width: 60%;
-                    font-size: .34rem;
-                    width: 5.3rem;
-                    font-weight: 500;
-                }
-                .joinStatus{
+              .joinStatus{
                     font-size: .24rem;
-                    width: 44%;
+                    float: right;
+                    margin: .35rem .2rem 0
                     
                 }
                 .refuse{
@@ -322,6 +465,15 @@
                     border: 1px solid #178aff;
                     border-radius: 5px;
                     color: #178aff;
+                }
+            .status2{
+                display: flex;
+                padding: .35rem .1rem 0 .35rem;
+                .title {
+                    width: 60%;
+                    font-size: .34rem;
+                    width: 5.3rem;
+                    font-weight: 500;
                 }
             }
              &:last-child{
