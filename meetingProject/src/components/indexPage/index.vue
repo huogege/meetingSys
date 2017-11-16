@@ -221,8 +221,11 @@
            
         }, 
         created:function(){
-            this.request1(this.URL1,{phone:2,num:1000});
-            this.request2(this.URLS,{phone:2,num:this.num,page:1});    
+            this.$nextTick(function(){
+                this.request1(this.URL1,{phone:2,num:1000});
+                this.request2(this.URLS,{phone:2,num:this.num,page:1});    
+            })
+           
         },
         mounted:function(){   
          

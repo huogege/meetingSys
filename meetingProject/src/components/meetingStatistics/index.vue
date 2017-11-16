@@ -1,19 +1,59 @@
 <template>
   <div class="meetingStatistics">
-      <div class="eat">
-          <p class="word">会后是否用餐？</p>
-            <router-link :to="{ path: 'select1', query: { name: '住宿页'}}" class="router_link">
-                <span class="click">点击填写</span>
+      <div class="eat" v-for="item in list">
+          <p class="word">{{item.title}}</p>
+            <router-link :to="{ path: 'select2', query: { mid: mid,vid:item.id}}" class="router_link">
+                <span class="click">投票</span>
             </router-link>
-      </div>
-      <div class="live">
-          <p class="word">今晚(10.23)是否需要住宿？</p>
-           <router-link :to="{ path: 'meetingStatistics', query: { name: '住宿页'}}" class="router_link">
-                <span class="click">点击填写</span>
-           </router-link>
       </div>
   </div>
 </template>
+<script>
+    import fn from "../../common/js/index.js";    
+    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteList';
+    export default{
+        components:{
+         
+        },
+        data:function(){
+            return{
+               list:[],
+               mid:'',
+              
+            }
+        },
+        methods:{
+            request:function(params){
+                var _this = this;
+                var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                _this.mid = mid;
+                _this.$http.get(url, {
+                    params:{phone:2,mid:mid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                _this.list =  response.data.data.list;                                                        
+                            }
+                        }
+                    })
+            },
+        },
+        created:function(){
+            var mid = fn.QueryString('mid');
+            var title = decodeURIComponent(fn.QueryString('title'));
+            var time = decodeURIComponent(fn.QueryString('time'));
+            this.title = title;
+            this.time = time;
+            this.request();
+       
+        },
+        mounted:function(){
+            
+        }
+
+    }
+</script>
 <style lang="less" rel="stylesheet/less" scoped>
     .meetingStatistics{
         padding-top: .4rem;
@@ -27,7 +67,7 @@
         }
         .click{
             display: inline-block;
-            padding: .2rem; 
+            padding: .1rem.3rem; 
             font-size: .26rem;
             color: #fff;
             background-color: #2d95ff;

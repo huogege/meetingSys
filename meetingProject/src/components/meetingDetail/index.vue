@@ -36,8 +36,7 @@
                 <span class="icon_9">&#8195;</span>
                 <span class="word">会议纪要</span>
             </p>
-            <p class="content">监督学习认为人要把的 AI 来人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗人要把的 AI 来说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗说，你需要准备几千张照片，然后手把手教机器——哪张照片是猫，哪张照片是狗。机器会从中学习到分辨猫狗的细节，从毛发到眼睛到耳朵，然后举一反三得去判断一张它从没见过的照片是猫猫还是狗狗。
-而无监督学习认为机器要去自己摸索，自己发现规律。</p>
+            <p class="content">{{meeting.memo}}</p>
         </div>
         <div class="menuWrapper">
              <router-link :to="{ path: 'material', query: { mid: mid}}" class="router_link">
@@ -46,13 +45,13 @@
                     <span class="word">资料</span>
                 </div>
               </router-link>
-             <router-link :to="{ path: 'note', query: { title:title,mid: mid,time:time}}" class="router_link">
+             <router-link :to="{ path: 'note', query: { title:title,mid:mid,time:time}}" class="router_link">
                 <div class="submenu">
                     <span class="icon icon12">&#8195;</span>
                     <span class="word">笔记</span>
                 </div>
               </router-link>
-             <router-link :to="{ path: 'select2', query: { name: '投票页'}}" class="router_link">
+             <router-link :to="{ path: 'meetingStatistics', query: { mid: mid}}" class="router_link">
                 <div class="submenu">
                     <span class="icon icon13">&#8195;</span>
                     <span class="word">投票</span>
@@ -92,6 +91,7 @@
             request:function(params){
                  var _this = this;
                  var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                 _this.mid = mid;
                 _this.$http.get(url, {
                     params:{phone:2,mid:mid}
                     })
@@ -111,10 +111,12 @@
         }, 
         created:function(){
       
-           
-            this.request();
-            console.log(this.userList);
-            console.log(this.title)
+            this.$nextTick(function(){
+                this.request();
+                console.log(this.userList);
+                console.log(this.title)
+            })
+            
           
           
         },

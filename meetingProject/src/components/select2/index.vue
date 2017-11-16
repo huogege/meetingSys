@@ -1,20 +1,16 @@
 <template>
-<div class="select2">
+<div class="select2" :class="isVote == true? 'mengceng' : ''">
+    <div class="icon3" v-show="isVote"></div>
     <div class="title">
-         <p class="word">政务大厅服务人员投票<span style="font-size:.26rem;margin-left:1rem;">单选</span></p>    
+         <p class="word">{{voteModel.title}}<span style="font-size:.26rem;float:right;margin-right:1rem;">单选</span></p>    
     </div>
     <div class="content">
-        <div class="list">
-            <!-- <span class="colorCircle">&#8195;</span> -->
-            社保局-张德兰
-            <span class="icon">&#8195;</span>
-        </div>
-         <div class="list">
-           社保局-张德兰
-            <span class="icon choose">&#8195;</span>
+        <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index,item.id)">
+            {{item.options}}
+            <span class="icon" :class="index == currentSelect ? 'choose' : ''">&#8195;</span>
         </div>
         <div class="insureStatus">
-            <span class="insure">确认修改</span>
+            <span class="insure" @click="vote">确认投票</span>
         </div>
     </div>
 </div>
@@ -22,17 +18,93 @@
 </template>
 
 <script>
+    import fn from "../../common/js/index.js";
+
+  var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
+  var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteDo"
   export default {
     data () {
       return {
-        radio: '1'
+        isVote:false,
+        voteModel:'',
+        voteOptionModels:[],
+        currentSelect:0,
+        oid:''
+
       };
+    },
+    methods:{
+        handleSelect:function(index,oid){
+            this.currentSelect = index;
+            this.oid = oid;
+        },
+         request:function(params){
+                var _this = this;
+                var mid = fn.QueryString('mid');      
+                var vid =  fn.QueryString('vid');     
+                _this.$http.get(url, {
+                    params:{phone:2,mid:mid,vid:vid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                   _this.voteModel = response.data.data.voteModel;
+                                    _this.voteOptionModels = response.data.data.voteOptionModels;
+                                    _this.oid = response.data.data.voteOptionModels[0].id;
+                                    _this.isVote = response.data.data.isVote;
+                                    
+                            
+                            }
+                        }
+                    })
+        },
+        vote:function(){
+            var _this = this;
+            var mid = fn.QueryString('mid');      
+            var vid =  fn.QueryString('vid'); 
+            _this.$http.get(url2, {
+                    params:{phone:2,mid:mid,vid:vid,oid:this.oid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "5100"){
+                            console.log("success")
+                           _this.$router.push({path: 'voteResult', query: {mid: mid,vid:vid}});
+                        }
+                    })
+        }
+    },
+    created:function(){
+        this.request();
     }
   }
 </script>
 <style lang="less">
+    .mengceng:after{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #666;
+        opacity: .4;
+        content: "";
+    }
     .select2{
         padding-left: .5rem;
+        .icon3{
+            z-index: 5;
+            width: 3.24rem;
+            height: 3.33rem;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 4rem;
+            margin: auto;
+            background-image: url("./icon_3.png");
+            background-size: 3.24rem 3.33rem;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
          .title{
             .word{
                 line-height: 1.5rem;

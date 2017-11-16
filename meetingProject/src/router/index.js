@@ -9,6 +9,7 @@ import select1 from '@/components/select1/index'
 import select2 from '@/components/select2/index'
 import material from '@/components/material/index'
 import note from '@/components/note/index'
+import voteResult from '@/components/voteResult/index'
 
 
 Vue.use(Router)
@@ -59,6 +60,11 @@ export default new Router({
       path: '/note',
       name: '会议笔记',
       component: note
+    },
+    {
+      path: '/voteResult',
+      name: '投票结果',
+      component: voteResult
     },
   ]
 })

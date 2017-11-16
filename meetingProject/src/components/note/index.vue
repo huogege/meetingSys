@@ -1,7 +1,7 @@
 <template>
     <div class="note">
         <h1 class="title">会议:{{title}}</h1>
-        <h2 class="time">{{time}}</h2>
+        <h2 class="time">{{time}}<span class="submit">完成</span></h2>
         <div class="content">
             <textarea v-model="text" class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="20"></textarea>
         </div>
@@ -19,7 +19,7 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";    
-    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingData';
+    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote';
     export default{
         components:{
          
@@ -28,13 +28,30 @@
             return{
                 text:'',
                 title:'',
-                time:''
+                time:'',
+                memo:''
             }
         },
         methods:{
             delateText:function(){
                 this.text = '';
-            }
+            },
+            request:function(params){
+                var _this = this;
+                var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                _this.$http.get(url, {
+                    params:{phone:2,mid:mid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                   
+                                    
+                            
+                            }
+                        }
+                    })
+            },
         },
         created:function(){
             var mid = fn.QueryString('mid');
@@ -42,6 +59,7 @@
             var time = decodeURIComponent(fn.QueryString('time'));
             this.title = title;
             this.time = time;
+            this.request();
        
         },
         mounted:function(){
@@ -63,6 +81,14 @@
             color: #9e9e9e;
             line-height: .6rem;
             border-bottom: 1px solid #9e9e9e;
+            .submit{
+                float:right;
+                color:#fff;
+                padding: 0 .25rem;
+                border:1px solid #2d95ff;
+                border-radius:.2rem;
+                background-color: #2d95ff;
+            }
         }
         .content{
             .textarea{
