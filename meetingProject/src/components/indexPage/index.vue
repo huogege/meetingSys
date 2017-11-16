@@ -1,6 +1,8 @@
 <template>
   <div class="index">
-      
+         <div class="qr-btn" node-type="qr-btn">扫描二维码1
+        <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+    </div>
       <div class="top" ref="top">
              <div class="message" ref="message">
           <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
@@ -100,9 +102,7 @@
                 
             </div>
     </div>
-     <div class="qr-btn" node-type="qr-btn">扫描二维码1
-        <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
-    </div>
+  
 </div>
 </template>
 <script>
@@ -350,38 +350,6 @@
 
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
-
-.jsbridge {
-    height: 200px;
-    width: 200px;
-    background-color: red;
-}
-
-.upimg {
-    height: 200px;
-    width: 200px;
-    background-color: green;
-    margin-bottom: 50px;
-}
-
-.qr-btn{
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width:100%;
-    height:2rem;
-    background-color:#157EFB ;
-    line-height: 2rem;
-    text-align: center;
-    color:#fff;
-    border-radius: 10%  10%;
-    margin-bottom:10px;
-}
-
-input[node-type=jsbridge]{
-    visibility: hidden;
-}
- 
 
 
 
