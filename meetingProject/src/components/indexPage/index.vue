@@ -1,59 +1,59 @@
 <template>
   <div class="index">
          <div class="qr-btn" node-type="qr-btn">扫描二维码1
-        <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
-    </div>
-      <div class="top" ref="top">
-             <div class="message" ref="message">
-          <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
-          <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
-      </div>
-    <div class="newMessage oneRowHide"> 
-        <a class="a_link" href="#/inform">新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...</a>
-    </div>
+            <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+        </div>
+        <div class="top" ref="top" style="margin-top:5rem;">
+            <div class="message" ref="message">
+                <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
+                <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
+            </div>
+            <div class="newMessage oneRowHide"> 
+                <a class="a_link" href="#/inform">新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...</a>
+            </div>
 
-    <div class="meetingStatus" v-show="inList.length>0 || soonList.length>0">
-        <router-link v-if="inList&&inList.length>0" v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-            <div class="list">
-                <div class="status">
-                    <span class="word">会议进行中</span>
-                    <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
-                </div>        
-                <div class="content">
-                    <div class="left">
-                        <h1 class="title oneRowHide">{{item.title}}</h1>
-                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                        <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
-                    </div>
-                    <div class="right">
-                        <span class="icon"></span>
-                        <span class="word">扫码签到</span>
-                    </div>
-                </div>
-            </div>
-        </router-link>
-        <router-link v-if="soonList&&soonList.length>0"  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-            <div class="list">
-                <div class="status">
-                    <span class="word" style="background-color:#f1a54d">会议即将进行</span>
-                </div>        
-                <div class="content">
-                    <div class="left">
-                        <h1 class="title oneRowHide">{{item.title}}</h1>
-                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                        <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
-                    </div>
-                    <div class="right">
-                        <span class="icon"></span>
-                        <span class="word">扫码签到</span>
+         <div class="meetingStatus" v-show="inList.length>0 || soonList.length>0">
+            <router-link v-if="inList&&inList.length>0" v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+                <div class="list">
+                    <div class="status">
+                        <span class="word">会议进行中</span>
+                        <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
+                    </div>        
+                    <div class="content">
+                        <div class="left">
+                            <h1 class="title oneRowHide">{{item.title}}</h1>
+                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                        </div>
+                        <div class="right">
+                            <span class="icon"></span>
+                            <span class="word">扫码签到</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </router-link>       
-    </div>
-     <div class="menu">
-        <div class="submenu" v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
-    </div>
+            </router-link>
+            <router-link v-if="soonList&&soonList.length>0"  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+                <div class="list">
+                    <div class="status">
+                        <span class="word" style="background-color:#f1a54d">会议即将进行</span>
+                    </div>        
+                    <div class="content">
+                        <div class="left">
+                            <h1 class="title oneRowHide">{{item.title}}</h1>
+                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                        </div>
+                        <div class="right">
+                            <span class="icon"></span>
+                            <span class="word">扫码签到</span>
+                        </div>
+                    </div>
+                </div>
+            </router-link>       
+        </div>
+        <div class="menu">
+            <div class="submenu" v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
+        </div>
       </div>
    
     <div class="meetingType" >
@@ -190,22 +190,9 @@
     window.Qrcode = Qrcode;
 })(window.Zepto ? Zepto : jQuery);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  $(function() {
+        Qrcode.init($('[node-type=qr-btn]'));
+    });
 
 
     import BScroll from 'better-scroll'
@@ -332,10 +319,10 @@
            
         }, 
         created:function(){
-            this.$nextTick(function(){
-                this.request1(this.URL1,{phone:2,num:1000});
-                this.request2(this.URLS,{phone:2,num:this.num,page:1});    
-            })
+            // this.$nextTick(function(){
+            //     this.request1(this.URL1,{phone:2,num:1000});
+            //     this.request2(this.URLS,{phone:2,num:this.num,page:1});    
+            // })
            
         },
         mounted:function(){   
@@ -351,7 +338,34 @@
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
 
+.jsbridge {
+    height: 2rem;
+    width: 4rem;
+    background-color: red;
+}
 
+.upimg {
+    height: 4rem;
+    width: 4rem;
+    background-color: green;
+    margin-bottom: 1rem;
+}
+
+.qr-btn{
+    width:4rem;
+    height:4rem;
+    background-color:#157EFB ;
+    line-height: 2rem;
+    text-align: center;
+    color:#fff;
+    border-radius: 10%  10%;
+    margin-bottom:10px;
+    font-size: .5rem;
+}
+
+input[node-type=jsbridge]{
+    visibility: hidden;
+}
 
 
 
