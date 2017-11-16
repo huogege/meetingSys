@@ -9,7 +9,7 @@
         <a class="a_link" href="#/inform">新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...</a>
     </div>
 
-    <div class="meetingStatus">
+    <div class="meetingStatus" v-show="inList.length>0 || soonList.length>0">
         <router-link v-if="inList&&inList.length>0" v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
             <div class="list">
                 <div class="status">

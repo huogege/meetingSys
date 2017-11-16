@@ -1,16 +1,12 @@
 <template>
 <div class="select1">
     <div class="title">
-         <p class="word">会后是否用餐？<span style="font-size:.26rem;margin-left:1rem;">单选</span></p>    
+         <p class="word">{{voteModel.title}}<span style="font-size:.26rem;margin-left:1rem;">单选</span></p>    
     </div>
     <div class="content">
-        <div class="list">
-            是
-            <span class="icon">&#8195;</span>
-        </div>
-         <div class="list">
-            否
-            <span class="icon choose">&#8195;</span>
+        <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index)">
+            {{item.options}}
+              <span class="icon" :class="index == currentSelect ? 'choose' : ''">&#8195;</span>
         </div>
         <div class="insureStatus">
             <span class="icon">&#8195;</span>
@@ -23,11 +19,63 @@
 </template>
 
 <script>
+    import fn from "../../common/js/index.js";
+
+  var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
+  var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteDo"
   export default {
     data () {
       return {
-        radio: '1'
+        isVote:false,
+        voteModel:'',
+        voteOptionModels:[],
+        currentSelect:0,
+        oid:''
+
       };
+    },
+    methods:{
+        handleSelect:function(index,oid){
+            this.currentSelect = index;
+            this.oid = oid;
+        },
+         request:function(params){
+                var _this = this;
+                var mid = fn.QueryString('mid');      
+                var vid =  fn.QueryString('vid');     
+                _this.$http.get(url, {
+                    params:{phone:2,mid:mid,vid:vid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                   _this.voteModel = response.data.data.voteModel;
+                                    _this.voteOptionModels = response.data.data.voteOptionModels;
+                                    _this.oid = response.data.data.voteOptionModels[0].id;
+                                    _this.isVote = response.data.data.isVote;
+                                    
+                            
+                            }
+                        }
+                    })
+        },
+        vote:function(){
+            var _this = this;
+            var mid = fn.QueryString('mid');      
+            var vid =  fn.QueryString('vid'); 
+            _this.$http.get(url2, {
+                    params:{phone:2,mid:mid,vid:vid,oid:this.oid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "5100"){
+                            console.log("success")
+                           _this.$router.push({path: 'voteResult', query: {mid: mid,vid:vid}});
+                        }
+                    })
+        }
+    },
+    created:function(){
+        this.request();
     }
   }
 </script>
@@ -67,7 +115,7 @@
             }
             .insureStatus{
                 font-size: .3rem;
-                margin-top: 8rem;
+                margin-top: 6rem;
                 .icon{
                     background-image: url("./icon_2.png");
                     background-size: 100%;

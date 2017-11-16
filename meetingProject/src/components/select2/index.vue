@@ -144,7 +144,7 @@
             }
             .insureStatus{
                 font-size: .3rem;
-                margin-top: 8rem;
+                margin-top: 6rem;
                 .icon{
                     background-image: url("./icon_2.png");
                     background-size: 100%;

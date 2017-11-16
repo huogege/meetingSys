@@ -2,7 +2,7 @@
   <div class="meetingStatistics">
       <div class="eat" v-for="item in list">
           <p class="word">{{item.title}}</p>
-            <router-link :to="{ path: 'select2', query: { mid: mid,vid:item.id}}" class="router_link">
+            <router-link :to="{ path: path, query: { mid: mid,vid:item.id}}" class="router_link">
                 <span class="click">投票</span>
             </router-link>
       </div>
@@ -10,24 +10,30 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";    
-    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteList';
+    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/';
     export default{
         components:{
          
         },
         data:function(){
             return{
-               list:[],
-               mid:'',
-              
+                list:[],
+                mid:'',
+                path:''
             }
         },
         methods:{
             request:function(params){
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                var action = fn.QueryString('action');  
+                if(action == "meetingVoteList"){
+                    _this.path = "select2"
+                }else{
+                     _this.path = "select1"
+                }
                 _this.mid = mid;
-                _this.$http.get(url, {
+                _this.$http.get(url+action, {
                     params:{phone:2,mid:mid}
                     })
                     .then(function (response) {
