@@ -10,7 +10,7 @@
     </div>
 
     <div class="meetingStatus">
-        <router-link v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+        <router-link v-if="inList&&inList.length>0" v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
             <div class="list">
                 <div class="status">
                     <span class="word">会议进行中</span>
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </router-link>
-        <router-link  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+        <router-link v-if="soonList&&soonList.length>0"  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
             <div class="list">
                 <div class="status">
                     <span class="word" style="background-color:#f1a54d">会议即将进行</span>

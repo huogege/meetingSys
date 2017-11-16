@@ -20,9 +20,6 @@
 <script>
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingData';
-    var mid = fn.QueryString('mid');
-    var title = decodeURIComponent(fn.QueryString('title'));
-    var time = decodeURIComponent(fn.QueryString('time'));
     export default{
         components:{
          
@@ -40,10 +37,12 @@
             }
         },
         created:function(){
-          this.$nextTick(function(){
-                this.title = title;
-                this.time = time;
-            })
+            var mid = fn.QueryString('mid');
+            var title = decodeURIComponent(fn.QueryString('title'));
+            var time = decodeURIComponent(fn.QueryString('time'));
+            this.title = title;
+            this.time = time;
+       
         },
         mounted:function(){
             

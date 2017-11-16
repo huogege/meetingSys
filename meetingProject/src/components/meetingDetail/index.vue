@@ -69,7 +69,6 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";
-    var mid = fn.QueryString('mid');
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingInfo'
     export default{
         components:{
@@ -92,8 +91,9 @@
             formatMsgTime:fn.formatMsgTime,
             request:function(params){
                  var _this = this;
+                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
                 _this.$http.get(url, {
-                    params: params
+                    params:{phone:2,mid:mid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -110,11 +110,12 @@
             },
         }, 
         created:function(){
-            var _this = this;
-            setInterval(function(){
-                  _this.mid = mid;
-                _this.request({phone:2,mid:mid})
-            },3000)
+      
+           
+            this.request();
+            console.log(this.userList);
+            console.log(this.title)
+          
           
         },
         mounted:function(){
