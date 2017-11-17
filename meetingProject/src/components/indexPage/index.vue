@@ -168,6 +168,7 @@
 
                 qrcode.decode(oFREvent.target.result);
                 qrcode.callback = function(data) {
+                    console.log(qrcode)
                     //得到扫码的结果
                     $('.result-qrcode').append(data + '<br/>');
                 };
