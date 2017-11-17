@@ -1,9 +1,11 @@
 <template>
   <div class="index">
-         <div class="qr-btn" node-type="qr-btn">扫描二维码1
-            <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+         <div class="qr-btn" node-type="qr-btn">
+            <input node-type="jsbridge" type="file" name="myPhoto" value="扫描" />
         </div>
-        <div class="top" ref="top" style="margin-top:5rem;">
+          <div class="result-qrcode">
+    </div>
+        <div class="top" ref="top">
             <div class="message" ref="message">
                 <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
                 <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
@@ -145,6 +147,7 @@
             window.WeiboJSBridge.invoke('scanQRCode', null, function(params) {
                 //得到扫码的结果
                 $('.result-qrcode').append(params.result + '<br/>');
+                alert(data)
             });
         },
         getImgFile: function() {
@@ -171,6 +174,7 @@
                     console.log(qrcode)
                     //得到扫码的结果
                     $('.result-qrcode').append(data + '<br/>');
+                    alert("data")
                 };
             };
 
@@ -320,10 +324,10 @@
            
         }, 
         created:function(){
-            // this.$nextTick(function(){
-            //     this.request1(this.URL1,{phone:2,num:1000});
-            //     this.request2(this.URLS,{phone:2,num:this.num,page:1});    
-            // })
+            this.$nextTick(function(){
+                this.request1(this.URL1,{phone:2,num:1000});
+                this.request2(this.URLS,{phone:2,num:this.num,page:1});    
+            })
            
         },
         mounted:function(){   
@@ -353,15 +357,22 @@
 }
 
 .qr-btn{
-    width:4rem;
-    height:4rem;
-    background-color:#157EFB ;
-    line-height: 2rem;
+    position: fixed;
+    right: .25rem;;
+    top: .25rem;
+    width:1rem;
+    height:1rem;
+    line-height: 1rem;
     text-align: center;
-    color:#fff;
+    color:#666;
     border-radius: 10%  10%;
     margin-bottom:10px;
-    font-size: .5rem;
+    font-size: .3rem;
+    z-index: 10;
+    background-image: url("./icon_7.png");
+    background-size: .85rem .72rem ;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 input[node-type=jsbridge]{
