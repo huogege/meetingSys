@@ -9,7 +9,7 @@
                 <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
             </div>
             <div class="newMessage oneRowHide"> 
-                <a class="a_link" href="#/inform">新消息：12月12号，组织部邀请您参加“元旦活动讨论新消息...</a>
+                <a class="a_link oneRowHide" href="#/inform">新消息：{{oneMessage}}</a>
             </div>
 
          <div class="meetingStatus" v-show="inList.length>0 || soonList.length>0">
@@ -213,7 +213,8 @@
                 URLS:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingAll',
                 URL2:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingAll',//全部会议
                 URL3:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/notStartMeeting',// 未开始会议
-                URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议          
+                URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
+                URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
                submenuArr:[
                    {
                        name:'全部会议',
@@ -238,6 +239,7 @@
                inList:[],
                soonList:[], 
                changeList:[],
+               oneMessage:'',
                nowTime:'',    
                page:1,
                num:5
@@ -317,6 +319,19 @@
                         }
                     })
             },
+            getMessage:function(){
+                var _this = this;
+                _this.$http.get(this.URL5, {
+                    params: {phone:2,num:1}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                _this.oneMessage = response.data.data.list[0].content;
+                            }
+                        }
+                    })
+            },
             findOthers:function(){
                 alert("gg")
                 return false;
@@ -327,6 +342,7 @@
             this.$nextTick(function(){
                 this.request1(this.URL1,{phone:2,num:1000});
                 this.request2(this.URLS,{phone:2,num:this.num,page:1});    
+                this.getMessage();
             })
            
         },
