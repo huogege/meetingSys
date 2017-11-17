@@ -5,32 +5,11 @@
             <div class="number"><span>电话号码:</span><span style="margin-left:20px">12345678977</span></div>
         </div>
         <div class="content">
-           <router-link :to="{ path: 'informDetail', query: { name: '通知内容1'}}" class="router_link">
+           <router-link v-for="item in list" :to="{ path: 'informDetail', query: { content: item.content}}" class="router_link">
                 <div class="list">
-                    <span class="status">会议邀请</span>
-                    <p class="word">一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定</p>
-                    <span class="time">2017/11/5</span>
-                </div>
-            </router-link>
-             <router-link :to="{ path: 'informDetail', query: { name: '通知内容1'}}" class="router_link">
-                <div class="list">
-                    <span class="status">会议邀请</span>
-                    <p class="word">一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定</p>
-                    <span class="time">2017/11/5</span>
-                </div>
-            </router-link>
-             <router-link :to="{ path: 'informDetail', query: { name: '通知内容1'}}" class="router_link">
-                <div class="list">
-                    <span class="status">会议邀请</span>
-                    <p class="word">一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定</p>
-                    <span class="time">2017/11/5</span>
-                </div>
-            </router-link>
-             <router-link :to="{ path: 'informDetail', query: { name: '通知内容1'}}" class="router_link">
-                <div class="list">
-                    <span class="status">会议邀请</span>
-                    <p class="word">一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一定的编码基本上都是通过一定的编码基本上都是通过一定</p>
-                    <span class="time">2017/11/5</span>
+                    <span class="status">{{item.title}}</span>
+                    <p class="word">{{item.content}}</p>
+                    <span class="time">{{item.sendTime}}</span>
                 </div>
             </router-link>
         </div>
@@ -44,14 +23,32 @@
         },
         data:function(){
             return{
-                   
+                 URL:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList',
+                 list:[]
             
             }
         },
         methods:{
+            getMessage:function(){
+                var _this = this;
+                _this.$http.get(this.URL, {
+                    params: {phone:2}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                _this.list = response.data.data.list;
+                         
+                            }
+                        }
+                    })
+            },
         },
         created:function(){
-           
+            this.$nextTick(function(){
+                 this.getMessage();
+            })
+          
         },
 
     }
