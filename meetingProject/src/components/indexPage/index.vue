@@ -3,8 +3,6 @@
          <div class="qr-btn" node-type="qr-btn">
             <input node-type="jsbridge" type="file" name="myPhoto" value="扫描" />
         </div>
-          <div class="result-qrcode">
-    </div>
         <div class="top" ref="top">
             <div class="message" ref="message">
                 <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
@@ -146,8 +144,9 @@
         weiBoBridge: function() {
             window.WeiboJSBridge.invoke('scanQRCode', null, function(params) {
                 //得到扫码的结果
-                $('.result-qrcode').append(params.result + '<br/>');
-                alert(data)
+              
+                alert(params.result);
+                alert(1)
             });
         },
         getImgFile: function() {
@@ -173,8 +172,9 @@
                 qrcode.callback = function(data) {
                     console.log(qrcode)
                     //得到扫码的结果
-                    $('.result-qrcode').append(data + '<br/>');
-                    alert("data")
+                 
+                    alert(2)
+                    alert(data)
                 };
             };
 
