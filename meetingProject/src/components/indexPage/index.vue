@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-         <div class="qr-btn" node-type="qr-btn">
+         <div style="display:none" class="qr-btn" node-type="qr-btn">
             <input node-type="jsbridge" type="file" name="myPhoto" value="扫描" />
         </div>
         <div class="top" ref="top">
@@ -8,13 +8,17 @@
                 <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
                 <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
             </div>
-            <div class="newMessage oneRowHide"> 
-                <a class="a_link oneRowHide" href="#/inform">新消息：{{oneMessage}}</a>
+            <div class="newMessage"> 
+                 <router-link  :to="{ path: 'inform', query: {name:meetingUser.name,dept:meetingUser.dept,phone:meetingUser.phone}}" class="router_link a_link oneRowHide">
+                     新消息：{{oneMessage}}
+               
+                 </router-link>
             </div>
 
          <div class="meetingStatus" v-show="inList.length>0 || soonList.length>0">
-            <router-link v-if="inList&&inList.length>0" v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                <div class="list">
+            
+                <div class="list" v-if="inList&&inList.length>0" v-for="item in inList">
+                    <router-link  :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
                     <div class="status">
                         <span class="word">会议进行中</span>
                         <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
@@ -25,38 +29,41 @@
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
                             <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
                         </div>
-                        <div class="right">
-                            <span class="icon"></span>
-                            <span class="word">扫码签到</span>
-                        </div>
+                    </div>
+                   </router-link>    
+                    <div class="right" @click="handleClick()">
+                        <span class="icon"></span>
+                        <span class="word">扫码签到</span>
                     </div>
                 </div>
             </router-link>
-            <router-link v-if="soonList&&soonList.length>0"  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                <div class="list">
-                    <div class="status">
-                        <span class="word" style="background-color:#f1a54d">会议即将进行</span>
-                    </div>        
-                    <div class="content">
-                        <div class="left">
-                            <h1 class="title oneRowHide">{{item.title}}</h1>
-                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+           
+                <div class="list" v-if="soonList&&soonList.length>0"  v-for="item in soonList">
+                    <router-link  :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+                        <div class="status">
+                            <span class="word" style="background-color:#f1a54d">会议即将进行</span>
+                        </div>        
+                        <div class="content">
+                            <div class="left">
+                                <h1 class="title oneRowHide">{{item.title}}</h1>
+                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                            </div>
                         </div>
-                        <div class="right">
-                            <span class="icon"></span>
-                            <span class="word">扫码签到</span>
-                        </div>
+                    </router-link>    
+                     <div class="right" @click="handleClick()">
+                        <span class="icon"></span>
+                        <span class="word">扫码签到</span>
                     </div>
                 </div>
-            </router-link>       
+               
         </div>
         <div class="menu">
             <div class="submenu" v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
         </div>
       </div>
    
-    <div class="meetingType" >
+        <div class="meetingType" >
             <div class="menu_content">
                  <myScroll class="wrapper"
                     ref = "scroll"
@@ -67,20 +74,18 @@
                     <ul class="wrapper-content"  >
                         <div class="list" v-for="item in changeList">
                                 <div class="joinStatus" v-show="item.cj_status == 1">
-                                        <span class="findOthers" @click.stop.self="findOthers()">找人开会</span>
-                                        <span class="refuse" @click.stop.self="refuse()">不参与</span>
-                                    </div>
-                                    <div class="joinStatus" v-show="item.cj_status == 2">
-                                        <span class="findOthers">已确认参会</span>
-                                    </div>
-                                    <div class="joinStatus" v-show="item.cj_status == 3">
-                                        <span class="refuse">不参与</span>
-                                    </div>
-                                    <div class="joinStatus" v-show="item.cj_status == 4">
-                                        <span class="findOthers">已找人开会</span>
-                                        <span class="refuse">不参与</span>
-                                    </div>
-
+                                    <span class="findOthers" @click.stop.self="findOthers(item.id)">找人开会</span>
+                                    <span class="refuse" @click.stop.self="refuse()">不参与</span>
+                                </div>
+                                <div class="joinStatus" v-show="item.cj_status == 2">
+                                    <span class="findOthers gridStyle">已确认参会</span>
+                                </div>
+                                <div class="joinStatus" v-show="item.cj_status == 3">
+                                    <span class="refuse gridStyle">不参与</span>
+                                </div>
+                                <div class="joinStatus" v-show="item.cj_status == 4">
+                                    <span class="findOthers gridStyle">已找人开会</span>
+                                </div>
                                 <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
                                 <div class="status2">
                                     
@@ -98,12 +103,24 @@
                         </div>    
                     </ul>
                     <div class="loading-wrapper"></div>
-                 </myScroll>
-                
+                 </myScroll>          
             </div>
+        </div>
+        <div class="findOthersDiv" v-show="findOthersDivShow">
+            <div class="name_phone">
+                <p class="key">代会人姓名:</p>
+                <input class="value" type="text" placeholder="请输入代会人姓名" v-model="meetingName">
+            </div>
+             <div class="name_phone">
+                <p class="key">联系方式:</p>
+                <input class="value" type="text" placeholder="请输入代会人电话号码" v-model="meetingPhone">
+            </div>
+            <ul class="insure_cancel">
+                <li @click="hideMengceng"><span>取消</span></li>
+                <li @click="handleDaihuiren"><span class="insure">确认</span></li>
+            </ul>
+        </div>
     </div>
-  
-</div>
 </template>
 <script>
 
@@ -200,7 +217,6 @@
     });
 
 
-    import BScroll from 'better-scroll'
     import myScroll from '../../components/scroll/index.vue'
     import fn from "../../common/js/index.js";
     export default{
@@ -215,6 +231,7 @@
                 URL3:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/notStartMeeting',// 未开始会议
                 URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
                 URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
+                URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingQd',      //签到
                submenuArr:[
                    {
                        name:'全部会议',
@@ -232,6 +249,12 @@
                        data:[]
                    }
                ],
+               findOthersDivShow:false,
+               meetingName:'',     //代会人
+               meetingPhone:'',     //代会人号码
+               dept:'',            //部门
+               name:'',            //用户姓名
+               phone:'',           //用户电话
                currentItem:0,
                pullup:true,
                listenScroll:true,  
@@ -328,14 +351,37 @@
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
                                 _this.oneMessage = response.data.data.list[0].content;
+                                
                             }
                         }
                     })
             },
             findOthers:function(){
-                alert("gg")
-                return false;
+                this.findOthersDivShow = true;
+            },
+            handleClick:function(){
+                alert("还在开发中！")
+            },
+            hideMengceng:function(){
+                this.findOthersDivShow = false;
+            },
+            handleDaihuiren:function(){
+                 var _this = this;
+                _this.$http.get(this.URL6, {
+                    params: {
+                        phone:2,
+
+                    }
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                                    
+                            }
+                        }
+                    })
             }
+
            
         }, 
         created:function(){
@@ -398,6 +444,56 @@ input[node-type=jsbridge]{
 
 
 .index {
+    .findOthersDiv{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background-color: #fff;
+        .name_phone {
+            margin-left: .5rem;
+            padding: .5rem .5rem .1rem 0;
+            border-bottom: 1px solid #ccc;
+            .key{
+                font-size: .3rem;
+            }
+            .value{
+                height: .5rem;
+                line-height: .5rem;
+                font-size: .3rem;
+                background-color: #fff;
+                border: #007acc;
+               
+            }
+        }
+         .insure_cancel{
+                overflow: hidden;
+                margin-top: 4rem;
+                li{
+                    float: left;
+                    width: 50%;
+                    text-align: center;
+                    font-size: .3rem;
+                    span{
+                        display: inline-block;
+                        width: 1rem;
+                        height:1rem;
+                        text-align: center;
+                        color: #666;
+                        line-height: 1rem;
+                        border: 1px solid #ccc; 
+                        border-radius: 50%;
+                    }
+                    .insure{
+                        background-color: #3879d9;
+                        color: #fff;
+                    }
+                }
+            }
+    }
+    
     .message {
         font-size: .3rem;
         color: #fff;
@@ -424,7 +520,7 @@ input[node-type=jsbridge]{
         background-color: #f3f3f3;
         .a_link{
             display: grid;
-            text-align: center;
+            text-align: left;
         }
     }
     .meetingStatus {
@@ -432,6 +528,7 @@ input[node-type=jsbridge]{
         padding-bottom: .3rem;
     }
      .list {
+            position: relative;
             background-color: #fff;
             margin-bottom: .3rem;
             width: 7.5rem;
@@ -455,27 +552,31 @@ input[node-type=jsbridge]{
                     margin-right: .2rem;
                 }
             }
-              .joinStatus{
-                    font-size: .24rem;
-                    float: right;
-                    margin: .35rem .2rem 0
-                    
-                }
-                .refuse{
-                    display: inline-block;
-                    padding: .05rem .1rem;
-                    border: 1px solid #ff7e30;
-                    border-radius: 5px;
-                    color: #ff7e30;
-                    margin-left: .1rem;
-                }
-                .findOthers{
-                    display: inline-block;
-                    padding: .05rem .1rem;
-                    border: 1px solid #178aff;
-                    border-radius: 5px;
-                    color: #178aff;
-                }
+            .joinStatus{
+                font-size: .24rem;
+                float: right;
+                margin: .35rem .2rem 0
+                
+            }
+            .gridStyle{
+                border: 1px solid #f1f1f1;
+                background-color: grid;
+            }
+            .refuse{
+                display: inline-block;
+                padding: .05rem .1rem;
+                border: 1px solid #ff7e30;
+                border-radius: 5px;
+                color: #ff7e30;
+                margin-left: .1rem;
+            }
+            .findOthers{
+                display: inline-block;
+                padding: .05rem .1rem;
+                border: 1px solid #178aff;
+                border-radius: 5px;
+                color: #178aff;
+            }
             .status2{
                 display: flex;
                 padding: .35rem .1rem 0 .35rem;
@@ -528,33 +629,39 @@ input[node-type=jsbridge]{
                     font-size: .24rem;
                     margin-bottom: .2rem;
                     line-height: .35rem;
+                    width: 5.5rem;
                     &:last-child{
                         margin-bottom: 0;
                     }
                 }
             }
-            .right {
-                flex: 1;
-                width: 25%;
-                display: flex;
-                flex-direction: column;
-                padding-top: .2rem;
-                text-align: center;
-                .icon {
-                    display: inline-block;
-                    width: 1rem;
-                    height: 1rem;
-                    background-image: url("./icon_1.png");
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size:.85rem .72rem;
-                    margin: 0 auto;
-                }
-                .word {
-                    font-size: .24rem;
-                    margin-top: .2rem;
-                    color: #178aff;
-                }
+
+        }
+        .right {
+            position: absolute;
+            right: 0;
+            top: .5rem;
+            flex: 1;
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            padding-top: .2rem;
+            text-align: center;
+            z-index: 10;
+            .icon {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                background-image: url("./icon_1.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size:.85rem .72rem;
+                margin: 0 auto;
+            }
+            .word {
+                font-size: .24rem;
+                margin-top: .2rem;
+                color: #178aff;
             }
         }
         .menu{

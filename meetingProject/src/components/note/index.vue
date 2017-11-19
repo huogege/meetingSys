@@ -1,7 +1,7 @@
 <template>
     <div class="note">
         <h1 class="title">会议:{{title}}</h1>
-        <h2 class="time">{{time}}<span class="submit">完成</span></h2>
+        <h2 class="time">{{time}}<span @click="submit" class="submit">完成</span></h2>
         <div class="content">
             <textarea v-model="text" class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="20"></textarea>
         </div>
@@ -11,7 +11,7 @@
                     <div @click="delateText" class="delate"></div>
                 </li>
                 <li>
-                    <div class="photo"></div>
+                    <div @click="handleClick" class="photo"></div>
                 </li>
             </ul>
         </div>
@@ -19,7 +19,8 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";    
-    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote';
+    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote'; 
+    var url2 = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNoteUpdate';
     export default{
         components:{
          
@@ -29,14 +30,14 @@
                 text:'',
                 title:'',
                 time:'',
-                memo:''
+                nid:''
             }
         },
         methods:{
             delateText:function(){
                 this.text = '';
             },
-            request:function(params){
+            request1:function(params){
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
                 _this.$http.get(url, {
@@ -45,21 +46,46 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                   
-                                    
-                            
+                                  _this.text =  response.data.data.note;
+                                  //  _this.nid  = response.data.data.
+
                             }
                         }
                     })
             },
+            request2:function(params){
+                var _this = this;
+                var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                _this.$http.get(url, {
+                    params:{phone:2,mid:mid,content:this.text}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!='' && response.data.rtnCode == "0000"){
+                                  
+                                    alert("您的笔记已保存")
+
+                            }
+                        }
+                    })
+            },
+            handleClick:function(){
+                alert("还在开发中！")
+            },
+            submit:function(){
+                if(this.text == ''){
+                    alert("请您完成笔记再提交哦！")
+                }else{
+                    this.request2();
+                }
+            }
         },
         created:function(){
-            var mid = fn.QueryString('mid');
             var title = decodeURIComponent(fn.QueryString('title'));
             var time = decodeURIComponent(fn.QueryString('time'));
             this.title = title;
             this.time = time;
-            this.request();
+            this.request1();
        
         },
         mounted:function(){
@@ -85,7 +111,6 @@
                 float:right;
                 color:#fff;
                 padding: 0 .25rem;
-                border:1px solid #2d95ff;
                 border-radius:.2rem;
                 background-color: #2d95ff;
             }

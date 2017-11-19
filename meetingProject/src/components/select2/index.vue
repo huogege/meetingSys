@@ -63,10 +63,10 @@
             var mid = fn.QueryString('mid');      
             var vid =  fn.QueryString('vid'); 
             _this.$http.get(url2, {
-                    params:{phone:2,mid:mid,vid:vid,oid:this.oid}
+                    params:{phone:2,mid:mid,vid:vid,oid:_this.oid}
                     })
                     .then(function (response) {
-                        if(response.status == "200" && response.data.rtnCode == "5100"){
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
                             console.log("success")
                            _this.$router.push({path: 'voteResult', query: {mid: mid,vid:vid}});
                         }

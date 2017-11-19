@@ -4,14 +4,14 @@
          <p class="word">{{voteModel.title}}<span style="font-size:.26rem;margin-left:1rem;">单选</span></p>    
     </div>
     <div class="content">
-        <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index)">
+        <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index,item.id)">
             {{item.options}}
               <span class="icon" :class="index == currentSelect ? 'choose' : ''">&#8195;</span>
         </div>
         <div class="insureStatus">
             <span class="icon">&#8195;</span>
-            <span class="revise">修改</span>
-            <span class="insure">确认修改</span>
+            <span @click= "revise" class="revise">修改</span>
+            <span @click="vote" class="insure">{{btn_word}}</span>
         </div>
     </div>
 </div>
@@ -22,7 +22,7 @@
     import fn from "../../common/js/index.js";
 
   var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
-  var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteDo"
+  var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCountUpdate"
   export default {
     data () {
       return {
@@ -30,7 +30,9 @@
         voteModel:'',
         voteOptionModels:[],
         currentSelect:0,
-        oid:''
+        oid:'',
+        alert:'统计成功',
+        btn_word:'确认统计'
 
       };
     },
@@ -54,7 +56,7 @@
                                     _this.oid = response.data.data.voteOptionModels[0].id;
                                     _this.isVote = response.data.data.isVote;
                                     
-                            
+
                             }
                         }
                     })
@@ -63,16 +65,25 @@
             var _this = this;
             var mid = fn.QueryString('mid');      
             var vid =  fn.QueryString('vid'); 
+            console.log(_this.oid)
             _this.$http.get(url2, {
-                    params:{phone:2,mid:mid,vid:vid,oid:this.oid}
+                    params:{phone:2,mid:mid,vid:vid,newoid :_this.oid}
                     })
                     .then(function (response) {
-                        if(response.status == "200" && response.data.rtnCode == "5100"){
-                            console.log("success")
-                           _this.$router.push({path: 'voteResult', query: {mid: mid,vid:vid}});
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            alert(_this.alert);
+                            _this.handleSelect = false;
                         }
                     })
-        }
+        },
+        revise:function(){
+            this.alert = "修改统计成功！";
+            this.btn_word = "确认修改";
+            this.handleSelect = function(index,oid){
+                this.currentSelect = index;
+                this.oid = oid;
+            }
+         }
     },
     created:function(){
         this.request();

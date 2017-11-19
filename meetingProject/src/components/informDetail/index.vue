@@ -1,16 +1,40 @@
 <template>
   <div class="informDetail">
      <div class="message">
-         <span class="from">发件人:组织部</span>
-         <span class="time">2017-11-11  15:48</span>
+         <span class="from">发件人:{{from}}</span>
+         <span class="time">{{format( time,'yyyy-MM-dd  hh:mm')}}</span>
      </div>
      <div class="content">
-       <p>一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过，一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。</p>
-       <p>而你平时下载的高清电影基本上都是通过一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。
-而你平时下载的高清电影基本上都是通过一般来说PR生成的AVI文件都是无压缩的，方便后期剪辑。而你平时下载的高清电影基本上都是通过</p>
+       <p>{{content}}</p>
      </div>
   </div>
 </template>
+<script>
+    import fn from "../../common/js/index.js"; 
+      export default{
+        data:function(){
+            return{
+               from:'',
+               time:'',
+               content :''   
+            }
+        },
+        methods:{
+          format:fn.format
+        },
+        created:function(){
+            this.from = decodeURIComponent(fn.QueryString('from'));
+            this.time =fn.QueryString('time');
+            this.content = decodeURIComponent(fn.QueryString('content'))
+        },
+        mounted:function(){
+          
+        }
+
+      }
+
+    
+</script>
 <style lang="less" rel="stylesheet/less" scoped>
   .informDetail{
     padding-left: .4rem;

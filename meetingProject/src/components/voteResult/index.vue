@@ -92,6 +92,7 @@ export default {
                    margin-right: .5rem;
                    margin-top: .25rem;
                    background-color: #e4ebee;
+                   text-align: center;
                    
                 } 
             }

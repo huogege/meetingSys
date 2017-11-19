@@ -12,7 +12,7 @@
                         <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{meeting.addr}}</p>
                         <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长:</span>{{meeting.estime}}</p>
                     </div>
-                    <div class="right">
+                    <div class="right" @click="handleClick()">
                         <span class="icon"></span>
                         <span class="word">扫码签到</span>
                     </div>
@@ -107,6 +107,9 @@
                             }
                         }
                     })
+            },
+            handleClick:function(){
+                alert("还在开发中！")
             },
         }, 
         created:function(){
