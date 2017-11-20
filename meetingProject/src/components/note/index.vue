@@ -3,7 +3,10 @@
         <h1 class="title">会议:{{title}}</h1>
         <h2 class="time">{{time}}<span @click="submit" class="submit">完成</span></h2>
         <div class="content">
-            <textarea v-model="text" class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="20"></textarea>
+            <textarea v-model="text"  class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="15">
+                <img src="photo.png" alt="">
+            </textarea>
+            <div id="img_box"></div>
         </div>
         <div class="menu">
             <ul>
@@ -11,13 +14,108 @@
                     <div @click="delateText" class="delate"></div>
                 </li>
                 <li>
-                    <div @click="handleClick" class="photo"></div>
+                    <div class="qr-btn" node-type="qr-btn">
+                        <input node-type="jsbridge" type="file" name="myPhoto" value="扫描" />
+                    </div>
                 </li>
             </ul>
         </div>
     </div>
 </template>
 <script>
+    (function($) {
+        var Qrcode = function(tempBtn) {
+            var _this_ = this;
+            var isWeiboWebView = /__weibo__/.test(navigator.userAgent);
+
+            if (isWeiboWebView) {
+                if (window.WeiboJSBridge) {
+                    _this_.bridgeReady(tempBtn);
+                } else {
+                    document.addEventListener('WeiboJSBridgeReady', function() {
+                        _this_.bridgeReady(tempBtn);
+                    });
+                }
+            } else {
+                _this_.nativeReady(tempBtn);
+            }
+        };
+
+        Qrcode.prototype = {
+            nativeReady: function(tempBtn) {
+                $('[node-type=jsbridge]',tempBtn).on('click',function(e){
+                    e.stopPropagation();
+                });
+
+                $(tempBtn).bind('click',function(e){
+                    $(this).find('input[node-type=jsbridge]').trigger('click');
+                });
+
+                $(tempBtn).bind('change', this.getImgFile);
+            },
+            bridgeReady: function(tempBtn) {
+                $(tempBtn).bind('click', this.weiBoBridge);
+            },
+            weiBoBridge: function() {
+                window.WeiboJSBridge.invoke('scanQRCode', null, function(params) {
+                    //得到扫码的结果
+                });
+            },
+            getImgFile: function() {
+                var _this_ = this;
+                var inputDom = $(this).find('input[node-type=jsbridge]');
+                var imgFile = inputDom[0].files;
+                var oFile = imgFile[0];
+                var oFReader = new FileReader();
+                var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+                if (imgFile.length === 0) {
+                    return;
+                }
+                
+                if (!rFilter.test(oFile.type)) {
+                    alert("选择正确的图片格式!");
+                    return;
+                }
+
+                oFReader.onload = function(oFREvent) {
+                    qrcode.decode(oFREvent.target.result);
+                    var img = new Image();
+                    img.width = 600;
+                    img.height = 800;
+                    img.onload=function(){
+                       
+                    };  
+                    img.src = oFREvent.target.result;
+                    $("#img_box").append(img);
+                    qrcode.callback = function(data) {
+                        //扫描毁掉函数
+                    };
+                    debugger
+                    
+                };
+
+                oFReader.readAsDataURL(oFile);
+            },
+            destory: function() {
+                $(tempBtn).off('click');
+            }
+        };
+
+        Qrcode.init = function(tempBtn) {
+            var _this_ = this;
+
+            tempBtn.each(function() {
+                new _this_($(this));
+            });
+        };
+        window.Qrcode = Qrcode;
+    })(window.Zepto ? Zepto : jQuery);
+
+    $(function() {
+        Qrcode.init($('[node-type=qr-btn]'));
+    });
+
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote'; 
     var url2 = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNoteUpdate';
@@ -69,9 +167,6 @@
                         }
                     })
             },
-            handleClick:function(){
-                alert("还在开发中！")
-            },
             submit:function(){
                 if(this.text == ''){
                     alert("请您完成笔记再提交哦！")
@@ -97,6 +192,7 @@
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
     .note{
+        position: relative;
         padding: .4rem .36rem;
         .title{
             font-size: .36rem;
@@ -123,9 +219,19 @@
                 font-size: .3rem;
                 line-height: .4rem;
             }
+              #img_box{
+                    width: 100%;
+                    height: 5rem;
+                    text-align: center;
+                    img{
+                        width: 6rem;
+                        height: 9rem;
+                        margin: 0 auto;
+                    }
+                }
         }
         .menu{
-            position: absolute;
+            position: fixed;
             left: 0;
             bottom: 0;
             width: 100%;
@@ -145,11 +251,35 @@
                         background-position: center;
                     }
                   .photo{
-                      height: 1.2rem;;
+                        height: 1.2rem;;
                         background-image: url("./photo.png");
                         background-size: 1.14rem;
                         background-repeat: no-repeat;
                         background-position: center;                       
+                    }
+                    .jsbridge {
+                        height: 2rem;
+                        width: 4rem;
+                        background-color: red;
+                    }
+
+                    .upimg {
+                        height: 4rem;
+                        width: 4rem;
+                        background-color: green;
+                        margin-bottom: 1rem;
+                    }
+
+                    .qr-btn{
+                        z-index: 10;
+                        background-image: url("./photo.png");
+                        background-size: 1.14rem ;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
+
+                    input[node-type=jsbridge]{
+                        visibility: hidden;
                     }
                  }
              }
