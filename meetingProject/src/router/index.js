@@ -4,12 +4,14 @@ import indexPage from '@/components/indexPage/index'
 import inform from '@/components/inform/index'
 import informDetail from '@/components/informDetail/index'
 import meetingDetail from '@/components/meetingDetail/index'
-import meetingStatistics from '@/components/meetingStatistics/index'
-import select1 from '@/components/select1/index'
-import select2 from '@/components/select2/index'
+import statisticsList from '@/components/statisticsList/index'  //会议统计列表
+import statisticsSelect from '@/components/statisticsSelect/index'   //统计选择
+import voteList from '@/components/voteList/index'  //投票列表
+import voteSelect from '@/components/voteSelect/index'  //投票选择
+import voteResult from '@/components/voteResult/index'  //投票结果
 import material from '@/components/material/index'
 import note from '@/components/note/index'
-import voteResult from '@/components/voteResult/index'
+
 
 
 Vue.use(Router)
@@ -37,21 +39,6 @@ export default new Router({
       component: meetingDetail
     },
     {
-      path: '/meetingStatistics',
-      name: '会议统计',
-      component: meetingStatistics
-    },
-    {
-      path: '/select1',
-      name: '选择1',
-      component: select1
-    },
-    {
-      path: '/select2',
-      name: '投票',
-      component: select2
-    },
-    {
       path: '/material',
       name: '资料',
       component: material
@@ -60,6 +47,26 @@ export default new Router({
       path: '/note',
       name: '会议笔记',
       component: note
+    },
+    {
+      path: '/statisticsList',
+      name: '统计列表',
+      component: statisticsList
+    },
+    {
+      path: '/statisticsSelect',
+      name: '统计选择',
+      component: statisticsSelect
+    },
+    {
+      path: '/voteList',
+      name: '投票列表',
+      component: voteList
+    },
+    {
+      path: '/voteSelect',
+      name: '投票选择',
+      component: voteSelect
     },
     {
       path: '/voteResult',

@@ -51,13 +51,13 @@
                     <span class="word">笔记</span>
                 </div>
               </router-link>
-             <router-link :to="{ path: 'meetingStatistics', query: { mid: mid,action:'meetingVoteList'}}" class="router_link">
+             <router-link :to="{ path: 'voteList', query: { mid: mid,action:'meetingVoteList'}}" class="router_link">
                 <div class="submenu">
                     <span class="icon icon13">&#8195;</span>
                     <span class="word">投票</span>
                 </div>
               </router-link>
-            <router-link :to="{ path: 'meetingStatistics', query: { mid: mid,action:'meetingCountList'}}" class="router_link">
+            <router-link :to="{ path: 'statisticsList', query: { mid: mid,action:'meetingCountList'}}" class="router_link">
                 <div class="submenu">
                     <span class="icon icon14">&#8195;</span>
                     <span class="word">统计</span>
@@ -113,14 +113,8 @@
             },
         }, 
         created:function(){
-      
-            this.$nextTick(function(){
-                this.request();
-                console.log(this.userList);
-                console.log(this.title)
-            })
-            
-          
+
+            this.request();
           
         },
         mounted:function(){

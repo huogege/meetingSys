@@ -91,7 +91,7 @@
                     qrcode.callback = function(data) {
                         //扫描毁掉函数
                     };
-                    debugger
+                    
                     
                 };
 
@@ -112,13 +112,10 @@
         window.Qrcode = Qrcode;
     })(window.Zepto ? Zepto : jQuery);
 
-    $(function() {
-        Qrcode.init($('[node-type=qr-btn]'));
-    });
 
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote'; 
-    var url2 = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNoteUpdate';
+    var urls = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNoteUpdate';
     export default{
         components:{
          
@@ -154,13 +151,12 @@
             request2:function(params){
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
-                _this.$http.get(url, {
-                    params:{phone:2,mid:mid,content:this.text}
+                _this.$http.get(urls, {
+                    phone:2,mid:mid,content:this.text
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!='' && response.data.rtnCode == "0000"){
-                                  
                                     alert("您的笔记已保存")
 
                             }
@@ -176,15 +172,16 @@
             }
         },
         created:function(){
+            
             var title = decodeURIComponent(fn.QueryString('title'));
             var time = decodeURIComponent(fn.QueryString('time'));
             this.title = title;
             this.time = time;
             this.request1();
-       
+           
         },
         mounted:function(){
-            
+            Qrcode.init($('[node-type=qr-btn]'));  //待页面dom渲染完成再init
         }
 
     }
