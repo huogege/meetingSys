@@ -13,7 +13,7 @@
     </div>
      <div class="insureStatus">
             <span class="insure" style="background-color:#ccc" >{{voteWord}}</span>
-            <router-link :to="{ path: 'meetingStatistics', query: { mid: mid,action:action}}" class="router_link">
+            <router-link :to="{ path: 'voteList', query: { mid: mid,action:action}}" class="router_link">
                <span class="insure">回到列表</span>
             </router-link>
         </div>

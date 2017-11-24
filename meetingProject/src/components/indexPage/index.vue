@@ -12,43 +12,76 @@
             </div>
 
          <div class="meetingStatus">
-            <router-link v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                <div class="list">
-                    <div class="status">
-                        <span class="word">会议进行中</span>
-                        <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
-                    </div>        
-                    <div class="content">
-                        <div class="left">
-                            <h1 class="title oneRowHide">{{item.title}}</h1>
-                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                <div class="list" v-for="item in inList">
+                    <router-link  :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+                        <div class="status">
+                            <span class="word">会议进行中</span>
+                            <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
+                        </div>        
+                        <div class="content">
+                            <div class="left">
+                                <h1 class="title oneRowHide">{{item.title}}</h1>
+                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                            </div>
                         </div>
-                        <div class="right">
-                            <span class="icon"></span>
-                            <span class="word">扫码签到</span>
+                     </router-link>
+                     <div class="right">
+                        <span class="icon"></span>
+                        <span class="word">扫码签到</span>
+                    </div>
+            </div>
+                <div class="list" v-for="item in soonList">
+                    <router-link   :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
+                        <div class="status">
+                            <span class="word" style="background-color:#f1a54d">会议即将进行</span>
+                        </div>        
+                        <div class="content">
+                            <div class="left">
+                                <h1 class="title oneRowHide">{{item.title}}</h1>
+                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                            </div>
                         </div>
+                     </router-link>    
+                    <div class="right">
+                        <span class="icon"></span>
+                        <span class="word">扫码签到</span>
                     </div>
                 </div>
-            </router-link>
-            <router-link  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                <div class="list">
-                    <div class="status">
-                        <span class="word" style="background-color:#f1a54d">会议即将进行</span>
-                    </div>        
-                    <div class="content">
-                        <div class="left">
-                            <h1 class="title oneRowHide">{{item.title}}</h1>
-                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+           
+             <div class="list" v-for="(item,index) in changeList" :class="index == changeList.length-1? 'marginNone':''">
+                        <div class="joinStatus" v-show="item.cj_status == 1 && item.qr_type == 2">
+                            <span class="findOthers" @click.stop.self="findOthers()">找人开会</span>
+                            <span class="refuse" @click.stop.self="refuse()">不参与</span>
                         </div>
-                        <div class="right">
-                            <span class="icon"></span>
-                            <span class="word">扫码签到</span>
+                        <div class="joinStatus" v-show="item.cj_status == 2 && item.qr_type == 2">
+                            <span class="findOthers">已确认参会</span>
+                            <span class="refuse" @click.stop.self="refuse()">不参与</span>
+                        </div>
+                        <div class="joinStatus" v-show="item.cj_status == 3 && item.qr_type == 2">
+                            <span class="refuse">暂不参与不参与</span>
+                        </div>
+                        <div class="joinStatus" v-show="item.cj_status == 4 && item.qr_type == 2">
+                            <span class="findOthers">已找人开会</span>
+                            <span class="refuse">不参与</span>
+                        </div>
+
+                    <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
+                    <div class="status2">
+                        
+                        <h1 class="title oneRowHide">{{item.title}}</h1>
+                    
+                    </div>      
+                    <div class="content">
+                        <div class="left" style="padding-right:50px;;">
+                            <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>{{item.unit}}</p>
+                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                            <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>{{item.addr}}</p>
                         </div>
                     </div>
-                </div>
-            </router-link>    
+                </router-link>
+            </div>  
             <router-link  :to="{ path: 'meetingList'}"class="router_link">
                 <div class="moreMeeting">更多会议</div>   
             </router-link>   
@@ -72,11 +105,17 @@
                 URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
                 URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
                meetingUser:'' ,
+                currentItem:0,
+               pullup:true,
+               listenScroll:true,  
+               meetingUser:'' ,
                inList:[],
                soonList:[], 
+               changeList:[],
                oneMessage:'',
                nowTime:'',    
-
+               page:1,
+               num:5
 
             }
         },
@@ -97,6 +136,21 @@
                                  _this.nowTime =  response.data.data.params.nowtime;
                                  
                                                     
+                            }
+                        }
+                    })
+            },
+            request2:function(url,params){
+                 var _this = this;
+                _this.$http.get(url, {
+                    params: params
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                var thisData = response.data.data.list.list;
+                                _this.changeList = thisData
+                                  
                             }
                         }
                     })
@@ -123,6 +177,7 @@
         created:function(){
         
             this.request1(this.URL1,{phone:phone,num:1000});
+             this.request2(this.URLS,{phone:phone,num:this.num});    
             this.getMessage();
        
            
@@ -186,10 +241,16 @@
             background-size:.4rem .4rem;
         }
     }
-     .list {
+    
+    .marginNone{
+        margin: 0!important;
+    }
+
+    .list {
             background-color: #fff;
             margin-bottom: .3rem;
             width: 7.5rem;
+            position: relative;
             .status {
                 height: .5rem;
                 .word {
@@ -210,11 +271,10 @@
                     margin-right: .2rem;
                 }
             }
-              .joinStatus{
+            .joinStatus{
                     font-size: .24rem;
                     float: right;
-                    margin: .35rem .2rem 0
-                    
+                    margin: .35rem .2rem 0 
                 }
                 .refuse{
                     display: inline-block;
@@ -240,9 +300,6 @@
                     width: 5.3rem;
                     font-weight: 500;
                 }
-            }
-             &:last-child{
-                margin-bottom: 0;
             }
         }
         .content {
@@ -288,13 +345,19 @@
                     }
                 }
             }
-            .right {
+            
+        }
+        .right {
+                position: absolute;
+                top: .5rem;
+                right: 0;
                 flex: 1;
                 width: 25%;
                 display: flex;
                 flex-direction: column;
                 padding-top: .2rem;
                 text-align: center;
+               
                 .icon {
                     display: inline-block;
                     width: 1rem;
@@ -311,7 +374,6 @@
                     color: #178aff;
                 }
             }
-        }
         .menu{
                display:flex;
                border-bottom:1px solid #e5e5e5;

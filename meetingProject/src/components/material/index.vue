@@ -6,6 +6,7 @@
                     <div class="icon" :class="cutPostfix(item.name)"><p class="word oneRowHide">{{item.name}}</p></div>
                 </li>
             </ul>
+            <h1 style="font-size:.3rem;" v-show="list.length == 0">没有资料</h1>
         </div>
         <div class="mengceng" v-show="mengcengShow">
             <div class="bgColor"></div>
