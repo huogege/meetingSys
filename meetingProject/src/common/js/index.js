@@ -1,4 +1,6 @@
 var unitFun = {
+
+  phone:'15826177123',
   QueryString: function (val) {
     var uri = window.location.href;
     var re = new RegExp("" + val + "\=([^\&\?]*)", "ig");

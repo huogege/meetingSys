@@ -103,7 +103,7 @@
         }
         .content{
                padding-left: .5rem;
-               min-height: 8rem;
+               min-height: 7rem;
             .list{
                 border-top: 1px solid #666;
                 font-size: .3rem;
@@ -130,7 +130,7 @@
         }
            .insureStatus{
                 font-size: .3rem;
-                margin-top: 2rem;
+                margin-top: 1rem;
                 text-align: center;
                 .icon{
                     background-image: url("./icon_2.png");

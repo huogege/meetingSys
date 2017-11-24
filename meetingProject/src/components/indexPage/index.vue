@@ -71,9 +71,10 @@
                                     </div>
                                     <div class="joinStatus" v-show="item.cj_status == 2">
                                         <span class="findOthers">已确认参会</span>
+                                         <span class="refuse" @click.stop.self="refuse()">不参与</span>
                                     </div>
                                     <div class="joinStatus" v-show="item.cj_status == 3">
-                                        <span class="refuse">不参与</span>
+                                        <span class="refuse">暂不参与不参与</span>
                                     </div>
                                     <div class="joinStatus" v-show="item.cj_status == 4">
                                         <span class="findOthers">已找人开会</span>
@@ -108,6 +109,7 @@
     import BScroll from 'better-scroll'
     import myScroll from '../../components/scroll/index.vue'
     import fn from "../../common/js/index.js";
+    var phone = fn.phone;
     export default{
         components:{
             'myScroll':myScroll,
@@ -162,17 +164,17 @@
                          this.changeList = [];
                          this.page = 1;
                          this.URLS = this.URL2;
-                         this.request2(this.URLS,{phone:2,num:this.num,page:1});
+                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
                     }else if(index == 1){
                           this.changeList = [];
                         this.page = 1;
                          this.URLS = this.URL3;
-                         this.request2(this.URLS,{phone:2,num:this.num,page:1});
+                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
                     }else if(index ==2){
                           this.changeList = [];
                          this.page = 1;
                          this.URLS = this.URL4;
-                         this.request2(this.URLS,{phone:2,num:this.num,page:1});
+                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
                     }
                    
                 } 
@@ -227,7 +229,7 @@
             getMessage:function(){
                 var _this = this;
                 _this.$http.get(this.URL5, {
-                    params: {phone:2,num:1}
+                    params: {phone:phone,num:1}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -245,8 +247,8 @@
         }, 
         created:function(){
             this.$nextTick(function(){
-                this.request1(this.URL1,{phone:2,num:1000});
-                this.request2(this.URLS,{phone:2,num:this.num,page:1});    
+                this.request1(this.URL1,{phone:phone,num:1000});
+                this.request2(this.URLS,{phone:phone,num:this.num,page:1});    
                 this.getMessage();
             })
            
