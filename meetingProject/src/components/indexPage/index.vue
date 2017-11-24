@@ -51,20 +51,11 @@
                 </div>
            
              <div class="list" v-for="(item,index) in changeList" :class="index == changeList.length-1? 'marginNone':''">
-                        <div class="joinStatus" v-show="item.cj_status == 1 && item.qr_type == 2">
-                            <span class="findOthers" @click.stop.self="findOthers()">找人开会</span>
-                            <span class="refuse" @click.stop.self="refuse()">不参与</span>
-                        </div>
-                        <div class="joinStatus" v-show="item.cj_status == 2 && item.qr_type == 2">
-                            <span class="findOthers">已确认参会</span>
-                            <span class="refuse" @click.stop.self="refuse()">不参与</span>
-                        </div>
-                        <div class="joinStatus" v-show="item.cj_status == 3 && item.qr_type == 2">
-                            <span class="refuse">暂不参与不参与</span>
-                        </div>
-                        <div class="joinStatus" v-show="item.cj_status == 4 && item.qr_type == 2">
-                            <span class="findOthers">已找人开会</span>
-                            <span class="refuse">不参与</span>
+
+
+                         <div class="joinStatus" v-show="item.qr_type == 2">
+                            <span :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</span>
+                            <span :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</span>
                         </div>
 
                     <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
@@ -104,6 +95,7 @@
                 URL3:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/notStartMeeting',// 未开始会议
                 URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
                 URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
+                URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',    //参会确认
                meetingUser:'' ,
                 currentItem:0,
                pullup:true,
@@ -115,7 +107,10 @@
                oneMessage:'',
                nowTime:'',    
                page:1,
-               num:5
+               num:5,
+
+               changeWord1:'',
+               changeWord2:''
 
             }
         },
@@ -168,10 +163,68 @@
                         }
                     })
             },
-            findOthers:function(){
-                alert("gg")
-                return false;
-            }
+            meetingInsue:function(cj_status,mid,callback){
+                var _this = this;
+                _this.$http.get(this.URL6, {
+                    params: {
+                        cj_status:cj_status,
+                        mid:mid,
+                        phone:phone,
+                    }
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            callback()    
+                        }
+                    })
+            },
+            changeWord1Fun:function(status,id,name){
+              console.log(status);
+              switch (status){
+                case 2:   //找人代会
+                    this.$router.push({path: 'daihuiren', query: {mid: id}});  
+                break;
+                case 3:   //赞不参与
+                    return false;
+                break;
+                case 4:   //已找人代会
+                    return false;
+                break;
+              }
+
+            },
+            changeWord2Fun:function(status,id,name){
+               var status = status;
+               var _this = this;
+               switch (status){
+                case 2:   //不参与
+                    _this.meetingInsue(3,id,function(){
+                        _this.changeWord2 = '参会';
+                        alert("您的会议状态已改为：暂不参会");
+                        window.location.reload();
+
+                    })  
+                break;
+                case 3:  //参会
+                    _this.meetingInsue(2,id,function(){
+                        _this.changeWord2 = '暂不参会';
+                        alert("您的会议状态已改为：参会");
+                          window.location.reload();
+
+
+                    })
+                break;
+                case 4:  //不参会
+                    _this.meetingInsue(3,id,function(){
+                        _this.changeWord2 = '参会';
+                        alert("您的会议状态已改为：暂不参会");
+                          window.location.reload();
+
+
+                    })   
+                break;
+              }
+            },
            
         }, 
         created:function(){
@@ -274,8 +327,16 @@
             .joinStatus{
                     font-size: .24rem;
                     float: right;
-                    margin: .35rem .2rem 0 
+                    margin: .35rem .2rem 0 ;
                 }
+                .grid{
+                    display: inline-block;
+                    padding: .05rem .1rem;
+                    border: 1px solid #9e9e9e;
+                    border-radius: 5px;
+                    color: #9e9e9e;
+                    margin-left: .1rem;
+                    }
                 .refuse{
                     display: inline-block;
                     padding: .05rem .1rem;
@@ -290,6 +351,13 @@
                     border: 1px solid #178aff;
                     border-radius: 5px;
                     color: #178aff;
+                }
+                .join{
+                    display: inline-block;
+                    padding: .05rem .1rem;
+                    border: 1px solid #7dd43c;
+                    border-radius: 5px;
+                    color: #7dd43c;
                 }
             .status2{
                 display: flex;

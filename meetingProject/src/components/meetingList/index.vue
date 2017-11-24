@@ -16,21 +16,10 @@
                    >
                     <ul class="wrapper-content"  >
                         <div class="list" v-for="item in changeList">
-                                <div class="joinStatus" v-show="item.cj_status == 1">
-                                        <span class="findOthers" @click.stop.self="findOthers()">找人开会</span>
-                                        <span class="refuse" @click.stop.self="refuse()">不参与</span>
-                                    </div>
-                                    <div class="joinStatus" v-show="item.cj_status == 2">
-                                        <span class="findOthers">已确认参会</span>
-                                         <span class="refuse" @click.stop.self="refuse()">不参与</span>
-                                    </div>
-                                    <div class="joinStatus" v-show="item.cj_status == 3">
-                                        <span class="refuse">暂不参与不参与</span>
-                                    </div>
-                                    <div class="joinStatus" v-show="item.cj_status == 4">
-                                        <span class="findOthers">已找人开会</span>
-                                        <span class="refuse">不参与</span>
-                                    </div>
+                                  <div class="joinStatus" v-show="item.qr_type == 2">
+                                    <span class="findOthers" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</span>
+                                    <span class="refuse" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</span>
+                                </div>
 
                                 <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
                                 <div class="status2">
@@ -73,6 +62,7 @@
                 URL3:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/notStartMeeting',// 未开始会议
                 URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
                 URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
+                  URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',    //参会确认
                submenuArr:[
                    {
                        name:'全部会议',
@@ -100,7 +90,11 @@
                oneMessage:'',
                nowTime:'',    
                page:1,
-               num:5
+               num:5,
+
+
+               changeWord1:'',
+               changeWord2:''
 
 
             }
@@ -167,10 +161,68 @@
                         }
                     })
             },
-            findOthers:function(){
-                alert("gg")
-                return false;
-            }
+            meetingInsue:function(cj_status,mid,callback){
+                var _this = this;
+                _this.$http.get(this.URL6, {
+                    params: {
+                        cj_status:cj_status,
+                        mid:mid,
+                        phone:phone,
+                    }
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            callback()    
+                        }
+                    })
+            },
+            changeWord1Fun:function(status,id,name){
+              console.log(status);
+              switch (status){
+                case 2:   //找人代会
+                    this.$router.push({path: 'daihuiren', query: {mid: id}});  
+                break;
+                case 3:   //赞不参与
+                    return false;
+                break;
+                case 4:   //已找人代会
+                    return false;
+                break;
+              }
+
+            },
+            changeWord2Fun:function(status,id,name){
+               var status = status;
+               var _this = this;
+               switch (status){
+                case 2:   //不参与
+                    _this.meetingInsue(3,id,function(){
+                        _this.changeWord2 = '参会';
+                        alert("您的会议状态已改为：暂不参会");
+                        window.location.reload();
+
+                    })  
+                break;
+                case 3:  //参会
+                    _this.meetingInsue(2,id,function(){
+                        _this.changeWord2 = '暂不参会';
+                        alert("您的会议状态已改为：参会");
+                          window.location.reload();
+
+
+                    })
+                break;
+                case 4:  //不参会
+                    _this.meetingInsue(3,id,function(){
+                        _this.changeWord2 = '参会';
+                        alert("您的会议状态已改为：暂不参会");
+                          window.location.reload();
+
+
+                    })   
+                break;
+              }
+            },
            
         }, 
         created:function(){

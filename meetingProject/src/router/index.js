@@ -13,6 +13,9 @@ import voteResult from '@/components/voteResult/index'  //投票结果
 import material from '@/components/material/index'
 import note from '@/components/note/index'
 
+import daihuiren from '@/components/daihuiren/index'
+
+
 
 
 Vue.use(Router)
@@ -38,6 +41,11 @@ export default new Router({
       path: '/informDetail',
       name: '通知详情',
       component: informDetail
+    },
+    {
+      path: '/daihuiren',
+      name: '通知详情',
+      component: daihuiren
     },
     {
       path: '/meetingDetail',
