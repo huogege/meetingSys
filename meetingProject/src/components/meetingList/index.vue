@@ -1,67 +1,69 @@
 <template>
   <div class="index">
-        <div class="top">
-            <div class="message">
-                <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
-                <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
+        <div class="top" ref="top">
+            <div class="menu">
+                <div class="submenu" v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
             </div>
-            <div class="newMessage oneRowHide"> 
-                    <router-link :to="{ path: 'inform', query: { name : meetingUser.name,phone:meetingUser.phone,dept:meetingUser.dept }}" class="router_link">
-                        新消息：{{oneMessage}}
-                    </router-link>
-            </div>
-
-         <div class="meetingStatus">
-            <router-link v-for="item in inList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                <div class="list">
-                    <div class="status">
-                        <span class="word">会议进行中</span>
-                        <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
-                    </div>        
-                    <div class="content">
-                        <div class="left">
-                            <h1 class="title oneRowHide">{{item.title}}</h1>
-                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
-                        </div>
-                        <div class="right">
-                            <span class="icon"></span>
-                            <span class="word">扫码签到</span>
-                        </div>
-                    </div>
-                </div>
-            </router-link>
-            <router-link  v-for="item in soonList" :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">
-                <div class="list">
-                    <div class="status">
-                        <span class="word" style="background-color:#f1a54d">会议即将进行</span>
-                    </div>        
-                    <div class="content">
-                        <div class="left">
-                            <h1 class="title oneRowHide">{{item.title}}</h1>
-                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                            <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
-                        </div>
-                        <div class="right">
-                            <span class="icon"></span>
-                            <span class="word">扫码签到</span>
-                        </div>
-                    </div>
-                </div>
-            </router-link>    
-            <router-link  :to="{ path: 'meetingList'}"class="router_link">
-                <div class="moreMeeting">更多会议</div>   
-            </router-link>   
         </div>
+   
+    <div class="meetingType" >
+            <div class="menu_content">
+                 <myScroll class="wrapper"
+                    ref = "scroll"
+                    :data="changeList"
+                    :pullup="pullup"
+                    @scrollToEnd="request2(URLS,{phone:2,num:num,page:page})"
+                   >
+                    <ul class="wrapper-content"  >
+                        <div class="list" v-for="item in changeList">
+                                <div class="joinStatus" v-show="item.cj_status == 1">
+                                        <span class="findOthers" @click.stop.self="findOthers()">找人开会</span>
+                                        <span class="refuse" @click.stop.self="refuse()">不参与</span>
+                                    </div>
+                                    <div class="joinStatus" v-show="item.cj_status == 2">
+                                        <span class="findOthers">已确认参会</span>
+                                         <span class="refuse" @click.stop.self="refuse()">不参与</span>
+                                    </div>
+                                    <div class="joinStatus" v-show="item.cj_status == 3">
+                                        <span class="refuse">暂不参与不参与</span>
+                                    </div>
+                                    <div class="joinStatus" v-show="item.cj_status == 4">
+                                        <span class="findOthers">已找人开会</span>
+                                        <span class="refuse">不参与</span>
+                                    </div>
+
+                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
+                                <div class="status2">
+                                    
+                                    <h1 class="title oneRowHide">{{item.title}}</h1>
+                                   
+                                </div>      
+                                <div class="content">
+                                    <div class="left" style="padding-right:50px;;">
+                                        <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>{{item.unit}}</p>
+                                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                        <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>{{item.addr}}</p>
+                                    </div>
+                                </div>
+                            </router-link>
+                        </div>    
+                    </ul>
+                    <div class="loading-wrapper"></div>
+                 </myScroll>
+                
+            </div>
     </div>
+  
 </div>
 </template>
 <script>
+    import BScroll from 'better-scroll'
+    import myScroll from '../../components/scroll/index.vue'
     import fn from "../../common/js/index.js";
     var phone = fn.phone;
     export default{
         components:{
-         
+            'myScroll':myScroll,
         },
         data:function(){
             return{     
@@ -71,11 +73,34 @@
                 URL3:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/notStartMeeting',// 未开始会议
                 URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
                 URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
+               submenuArr:[
+                   {
+                       name:'全部会议',
+                       type:0,
+                       data:[]
+                   },
+                    {
+                       name:'未开始会议',
+                       type:1,
+                       data:[]
+                   },
+                    {
+                       name:'已结束会议',
+                       type:2,
+                       data:[]
+                   }
+               ],
+               currentItem:0,
+               pullup:true,
+               listenScroll:true,  
                meetingUser:'' ,
                inList:[],
                soonList:[], 
+               changeList:[],
                oneMessage:'',
                nowTime:'',    
+               page:1,
+               num:5
 
 
             }
@@ -83,7 +108,31 @@
         methods:{
             formatTime:fn.format,
             formatMsgTime:fn.formatMsgTime,
-            request1:function(url,params){
+            selectItem:function(index,name){
+                if(index != this.currentItem){
+                    this.currentItem = index;
+                    if(index == 0){
+                         this.changeList = [];
+                         this.page = 1;
+                         this.URLS = this.URL2;
+                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
+                    }else if(index == 1){
+                          this.changeList = [];
+                        this.page = 1;
+                         this.URLS = this.URL3;
+                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
+                    }else if(index ==2){
+                          this.changeList = [];
+                         this.page = 1;
+                         this.URLS = this.URL4;
+                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
+                    }
+                   
+                } 
+              
+
+            },
+            request2:function(url,params){
                  var _this = this;
                 _this.$http.get(url, {
                     params: params
@@ -91,12 +140,16 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                 _this.meetingUser = response.data.data.meetingUser;
-                                 _this.inList =  response.data.data.list;
-                                _this.soonList =  response.data.data.soonlist;
-                                 _this.nowTime =  response.data.data.params.nowtime;
-                                 
-                                                    
+                                var pageAll = Math.ceil(response.data.data.list.total/_this.num);
+                                if(response.data.data.list.total>0 && params.page <= pageAll){
+                                     var thisData = response.data.data.list.list;
+                                    _this.changeList = thisData.concat(_this.changeList);
+                                    _this.page++;
+                                    console.log(_this.changeList)
+                        
+                                }else if(params.page > pageAll){
+                                    return false
+                                }
                             }
                         }
                     })
@@ -121,10 +174,10 @@
            
         }, 
         created:function(){
-        
-            this.request1(this.URL1,{phone:phone,num:1000});
-            this.getMessage();
-       
+            this.$nextTick(function(){
+                this.request2(this.URLS,{phone:phone,num:this.num,page:1});    
+                this.getMessage();
+            })
            
         },
         mounted:function(){   
@@ -176,15 +229,7 @@
     }
     .meetingStatus {
         background-color: #f1f1f1;
-        .moreMeeting{
-            font-size: .32rem;
-            line-height: .8rem;
-            text-align: center;
-            background-image: url("./bottom.png");
-            background-repeat: no-repeat;
-            background-position: 37%;
-            background-size:.4rem .4rem;
-        }
+        padding-bottom: .3rem;
     }
      .list {
             background-color: #fff;
@@ -335,8 +380,8 @@
         .menu_content{
             .wrapper{
                 position: absolute;
-                top: 5rem;
-                bottom: -5rem;
+                top: .96rem;
+                bottom: 0rem;
                 left: 0;
                 overflow: hidden;
             }

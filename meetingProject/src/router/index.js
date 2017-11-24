@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import indexPage from '@/components/indexPage/index'
+import meetingList from '@/components/meetingList/index'
 import inform from '@/components/inform/index'
 import informDetail from '@/components/informDetail/index'
 import meetingDetail from '@/components/meetingDetail/index'
@@ -22,6 +23,11 @@ export default new Router({
       path: '/',
       name: '首页',
       component: indexPage
+    },
+    {
+      path: '/meetingList',
+      name: '更多会议',
+      component: meetingList
     },
     {
       path: '/inform',
