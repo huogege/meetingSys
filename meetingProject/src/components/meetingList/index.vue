@@ -308,25 +308,39 @@
                 }
             }
               .joinStatus{
-                    font-size: .24rem;
-                    float: right;
-                    margin: .35rem .2rem 0
-                    
-                }
+                        font-size: .24rem;
+                        float: right;
+                        margin: .35rem .2rem 0 ;
+                    }
+                .grid{
+                    display: inline-block;
+                     padding: .15rem .2rem;
+                    border: 1px solid #9e9e9e;
+                    border-radius: .15rem;
+                    color: #9e9e9e;
+                    margin-left: .1rem;
+                    }
                 .refuse{
                     display: inline-block;
-                    padding: .05rem .1rem;
+                      padding: .15rem .2rem;
                     border: 1px solid #ff7e30;
-                    border-radius: 5px;
+                   border-radius: .15rem;
                     color: #ff7e30;
                     margin-left: .1rem;
                 }
                 .findOthers{
                     display: inline-block;
-                    padding: .05rem .1rem;
+                   padding: .15rem .2rem;
                     border: 1px solid #178aff;
-                    border-radius: 5px;
+                  border-radius: .15rem;
                     color: #178aff;
+                }
+                .join{
+                    display: inline-block;
+                  padding: .15rem .2rem;
+                    border: 1px solid #7dd43c;
+                    border-radius: .15rem;
+                    color: #7dd43c;
                 }
             .status2{
                 display: flex;
@@ -348,7 +362,7 @@
             .left {
                     flex: 3;
                     width: 75%;
-                    padding: .35rem 0 .35rem .35rem;
+                    padding: 0 0 .35rem .35rem;
                 .title{
                     font-size: .34rem;
                     width: 5.3rem;
@@ -436,6 +450,7 @@
                 bottom: 0rem;
                 left: 0;
                 overflow: hidden;
+                background-color: #f1f1f1;
             }
         }
        

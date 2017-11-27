@@ -74,10 +74,23 @@
                            _this.$router.push({path: 'voteResult', query: {mid: mid,vid:vid,action:_this.action}});
                         }
                     })
+        },
+        backCkick:function(){
+            var _this= this;
+            var mid = fn.QueryString('mid');
+            if (window.history && window.history.pushState) {
+                $(window).on('popstate', function () {
+                        
+                        _this.$router.push({path: '/meetingDetail', query: {mid:mid}});  
+                        $(window).unbind('popstate');
+                        
+                });
+            }
         }
     },
     created:function(){
         this.request();
+        this.backCkick();
     }
   }
 </script>

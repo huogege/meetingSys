@@ -5,9 +5,9 @@
     </div>
     <div class="content">
         <div class="list" v-for="item in voteOptionModels">
-            <span class="word oneRowHide">{{item.options}}</span>
-            <span class="bar" :style="{width:item.percent*0.035+'rem',backgroundColor:'#'+('00000'+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6)}" ref="bar"></span>
-            <span class="icon">{{item.nums}}</span>
+            <span class="word oneRowHide">{{item.options}}文字文字文字文字文字文字</span>
+            <span class="bar" :style="{width:item.percent*0.03+'rem',backgroundColor:'#'+('00000'+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6)}" ref="bar"></span>
+            <span class="icon">{{item.nums}}000SS</span>
         </div>
 
     </div>
@@ -83,7 +83,7 @@ export default {
         }
         .content{
              margin-left: .5rem;
-            min-height: 10rem;
+            min-height: 7rem;
             .list{
                 border-top: 1px solid #666;
                 font-size: .3rem;
@@ -92,6 +92,7 @@ export default {
                 .word{
                     display: inline-block;
                     width: 2rem;
+                    line-height: .5rem;
                 }
                 .bar{
                     display: inline-block;

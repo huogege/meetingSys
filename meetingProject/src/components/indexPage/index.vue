@@ -2,8 +2,9 @@
   <div class="index">
         <div class="top">
             <div class="message">
-                <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{meetingUser.name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{meetingUser.dept}}</span></div>
-                <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{meetingUser.phone}}</span></div>
+                <div class="nameDepart"><span >部门:</span><span style="margin-left:.5rem">{{meetingUser.dept}}</span></div>
+                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem">{{meetingUser.phone}}</span></div>
+                <div class="name" style="margin-left:.2rem">{{meetingUser.name}}</div>
             </div>
             <div class="newMessage oneRowHide"> 
                     <router-link :to="{ path: 'inform', query: { name : meetingUser.name,phone:meetingUser.phone,dept:meetingUser.dept }}" class="router_link">
@@ -65,7 +66,7 @@
                     
                     </div>      
                     <div class="content">
-                        <div class="left" style="padding-right:50px;;">
+                        <div class="left" style="padding-right:.5rem;;">
                             <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>{{item.unit}}</p>
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
                             <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>{{item.addr}}</p>
@@ -265,6 +266,12 @@
         .nameDepart {
             margin-bottom: .2rem;
         }
+        .name{
+             position: absolute;
+            right: .4rem;
+            top: .5rem;
+            font-size: .4rem;
+        }
     }
     .newMessage {
         height: .7rem;
@@ -331,32 +338,32 @@
                 }
                 .grid{
                     display: inline-block;
-                    padding: .05rem .1rem;
+                     padding: .15rem .2rem;
                     border: 1px solid #9e9e9e;
-                    border-radius: 5px;
+                    border-radius: .15rem;
                     color: #9e9e9e;
                     margin-left: .1rem;
                     }
                 .refuse{
                     display: inline-block;
-                    padding: .05rem .1rem;
+                      padding: .15rem .2rem;
                     border: 1px solid #ff7e30;
-                    border-radius: 5px;
+                   border-radius: .15rem;
                     color: #ff7e30;
                     margin-left: .1rem;
                 }
                 .findOthers{
                     display: inline-block;
-                    padding: .05rem .1rem;
+                   padding: .15rem .2rem;
                     border: 1px solid #178aff;
-                    border-radius: 5px;
+                  border-radius: .15rem;
                     color: #178aff;
                 }
                 .join{
                     display: inline-block;
-                    padding: .05rem .1rem;
+                  padding: .15rem .2rem;
                     border: 1px solid #7dd43c;
-                    border-radius: 5px;
+                    border-radius: .15rem;
                     color: #7dd43c;
                 }
             .status2{
@@ -376,7 +383,7 @@
             .left {
                     flex: 3;
                     width: 75%;
-                    padding: .35rem 0 .35rem .35rem;
+                    padding: 0 0 .35rem .35rem;
                 .title{
                     font-size: .34rem;
                     width: 5.3rem;

@@ -41,14 +41,28 @@
                         }
                     })
             },
+            backCkick:function(){
+                var _this= this;
+                var mid = fn.QueryString('mid');
+                if (window.history && window.history.pushState) {
+                    $(window).on('popstate', function () {
+                           
+                            _this.$router.push({path: '/meetingDetail', query: {mid:mid}});  
+                            $(window).unbind('popstate');
+                            
+                    });
+                }
+            }
         },
         created:function(){
+            this.backCkick();
             var mid = fn.QueryString('mid');
             var title = decodeURIComponent(fn.QueryString('title'));
             var time = decodeURIComponent(fn.QueryString('time'));
             this.title = title;
             this.time = time;
             this.request();
+            
        
         },
         mounted:function(){
