@@ -94,7 +94,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .mengceng:after{
         position: absolute;
         left: 0;

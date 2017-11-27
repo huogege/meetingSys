@@ -6,7 +6,10 @@
     <div class="content">
         <div class="list" v-for="item in voteOptionModels">
             <span class="word oneRowHide">{{item.options}}文字文字文字文字文字文字</span>
-            <span class="bar" :style="{width:item.percent*0.03+'rem',backgroundColor:'#'+('00000'+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6)}" ref="bar"></span>
+            <span class="barContent">
+                  <span class="bar" :style="{width:item.percent*0.045+'rem',backgroundColor:'#'+('00000'+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6)}" ref="bar"></span>
+            </span>
+          
             <span class="icon">{{item.nums}}000SS</span>
         </div>
 
@@ -70,7 +73,7 @@ export default {
 }
         
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .select1{
          .title{
              margin-left: .5rem;
@@ -90,26 +93,36 @@ export default {
                 line-height: 1rem;
                 border-bottom: 1px solid #ccc;
                 .word{
-                    display: inline-block;
-                    width: 2rem;
+                    display: block;
+                    padding-right: .5rem;
                     line-height: .5rem;
+                    text-align: justify;
                 }
-                .bar{
-                    display: inline-block;
-                    height: .2rem;
-                    width: 0rem;
-                    background-color: #ee472c;
-                    border-radius: .2rem;
+                .barContent{
+                         position: relative;
+                        display: inline-block;
+                        height: .2rem;
+                        width: 4.5rem;
+                        border: 1px solid  #575757;
+                         border-radius: .2rem;
+                     .bar{
+                         position: absolute;
+                         top: 0;
+                         left: 0;
+                        display: inline-block;
+                        height: .2rem;
+                        width: 0rem;
+                        background-color: #ee472c;
+                        border-radius: .2rem;
+                    }
                 }
                 .icon{
                    display: inline-block;
-                   float: right;
                    height: .5rem;
                    padding: 0 .1rem;
                    line-height: .5rem;
                    border-radius: .2rem;
-                   margin-right: .5rem;
-                   margin-top: .25rem;
+                   margin-left: .5rem;
                    background-color: #e4ebee;
                    text-align: center;
                    

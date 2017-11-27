@@ -7,6 +7,7 @@
      <div class="content">
        <p>{{content}}</p>
      </div>
+      
   </div>
 </template>
 <script>

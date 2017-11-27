@@ -1,8 +1,9 @@
 <template>
   <div class="inform">
         <div class="message">
-            <div class="nameDepart"><span>姓名:</span><span style="margin-left:20px">{{name}}</span><span style="margin-left:50px">部门:</span><span style="margin-left:20px">{{dept}}</span></div>
-            <div class="number"><span>电话号码:</span><span style="margin-left:20px">{{phone}}</span></div>
+            <div class="nameDepart"><span >部门:</span><span style="margin-left:.2rem">{{dept}}</span></div>
+            <div class="number"><span>电话号码:</span><span style="margin-left:.2rem">{{phone}}</span></div>
+            <div class="name">{{name}}</div>
         </div>
         <div class="content">
             <myScroll class="wrapper"
@@ -23,6 +24,7 @@
                     <div class="loading-wrapper"></div>
                  </myScroll>          
         </div>
+        <button>按钮</button>
   </div>
 </template>
 <script>
@@ -89,6 +91,12 @@
         .nameDepart {
             margin-bottom: .2rem;
         }
+        .name{
+            position: absolute;
+            right: .4rem;
+            top: .5rem;
+            font-size: .4rem;
+        }
     }   
     .content{
         .wrapper{
@@ -97,6 +105,7 @@
             bottom: 0;
             left: 0;
             overflow: hidden;
+             background-color: #f1f1f1;
             .router_link{
                 .list{
                     padding: 0 .3rem .2rem .3rem;

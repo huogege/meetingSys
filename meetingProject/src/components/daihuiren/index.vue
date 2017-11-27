@@ -11,7 +11,7 @@
             </li>
         </ul>
         <ul class="bottom">
-            <li><span @click="meetingInsue(cjname,cjphone)">确定</span></li>
+            <li><span @click="meetingInsue(cjname,cjphone)" @touchstart="alert('gg')">确定</span></li>
             <router-link :to="{ path: '/', query: { mid: mid,action:'meetingCountList'}}" class="router_link">
                 <li><span >取消</span></li>
             </router-link>
