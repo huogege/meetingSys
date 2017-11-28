@@ -14,7 +14,7 @@ import material from '@/components/material/index'
 import note from '@/components/note/index'
 
 import daihuiren from '@/components/daihuiren/index'
-
+import blackPage from '@/components/blackPage/index'
 
 
 
@@ -86,6 +86,11 @@ export default new Router({
       path: '/voteResult',
       name: '投票结果',
       component: voteResult
+    },
+    {
+      path: '/blackPage',
+      name: '',
+      component: blackPage
     },
   ]
 })

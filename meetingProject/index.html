@@ -25,13 +25,13 @@
       setTimeout(func,"500");
       function func(){
         try { //判断是否在APP打开	
-            window.AppJsObj.appSessionToken("getToken", 1);
+            window.AppJsObj.appSessionToken("getToken", 2);
             IsAPP = true;
             alert("true")
         
           } catch(e) {
             IsAPP = false;
-            alert("fasle")
+            alert("请在app中打开网页！")
           }		
       }
       if(IsAPP =true){

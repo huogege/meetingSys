@@ -12,7 +12,7 @@
                     ref = "scroll"
                     :data="changeList"
                     :pullup="pullup"
-                    @scrollToEnd="request2(URLS,{phone:2,num:num,page:page})"
+                    @scrollToEnd="request2(URLS,{phone:phone,num:num,page:page})"
                    >
                     <ul class="wrapper-content"  >
                         <div class="list" v-for="item in changeList">
@@ -227,8 +227,10 @@
         }, 
         created:function(){
             this.$nextTick(function(){
+                this.phone = phone;
                 this.request2(this.URLS,{phone:phone,num:this.num,page:1});    
                 this.getMessage();
+
             })
            
         },

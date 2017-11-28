@@ -202,7 +202,7 @@
                     _this.meetingInsue(3,id,function(){
                         _this.changeWord2 = '参会';
                         alert("您的会议状态已改为：暂不参会");
-                        window.location.reload();
+                        _this.$router.push({path: '/blackPage', query: {}});       //跳到一个空白页，再调回来,实现当前页面的刷新。
 
                     })  
                 break;
@@ -210,8 +210,7 @@
                     _this.meetingInsue(2,id,function(){
                         _this.changeWord2 = '暂不参会';
                         alert("您的会议状态已改为：参会");
-                          window.location.reload();
-
+                         _this.$router.push({path: '/blackPage', query: {}});  
 
                     })
                 break;
@@ -219,7 +218,7 @@
                     _this.meetingInsue(3,id,function(){
                         _this.changeWord2 = '参会';
                         alert("您的会议状态已改为：暂不参会");
-                          window.location.reload();
+                         _this.$router.push({path: '/blackPage', query: {}});  
 
 
                     })   
@@ -331,11 +330,11 @@
                     margin-right: .2rem;
                 }
             }
-            .joinStatus{
-                    font-size: .24rem;
-                    float: right;
-                    margin: .35rem .2rem 0 ;
-                }
+                .joinStatus{
+                        font-size: .24rem;
+                        float: right;
+                        margin: .35rem .2rem 0 ;
+                    }
                 .grid{
                     display: inline-block;
                      padding: .15rem .2rem;
