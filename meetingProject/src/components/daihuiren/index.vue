@@ -11,11 +11,12 @@
             </li>
         </ul>
         <ul class="bottom">
-            <li><span @click="meetingInsue(cjname,cjphone)" @touchstart="alert('gg')">确定</span></li>
+            <li><mt-button @click="meetingInsue(cjname,cjphone)" class="buttonReclass" type="primary">确定</mt-button></li>
             <router-link :to="{ path: '/', query: { mid: mid,action:'meetingCountList'}}" class="router_link">
-                <li><span >取消</span></li>
+                <li><mt-button class="buttonReclass" type="default">取消</mt-button></li>
             </router-link>
         </ul>
+
     </div>
 </template>
 <script>
@@ -81,6 +82,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+    @import "../../common/css/common.less";
     .daihuiren{
         font-size: .32rem;
         padding: .2rem;
@@ -119,12 +121,12 @@ export default {
             margin: auto;
             padding: .5rem;
              li{
-                 width: 50%;
+                width: 50%;
                 overflow: hidden;
                 margin-bottom: .2rem;
                 float: left;
                 text-align: center;
-                span{
+                .btn{
                     border: 1px solid #2d95ff;
                     border-radius: .2rem;
                     line-height: 1rem;

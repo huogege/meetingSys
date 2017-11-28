@@ -3,8 +3,9 @@
 import Vue from 'vue'
 import axios from 'axios'
 
-//import { Button, Select ,Radio} from 'element-ui'
-
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI);
 
 
 
@@ -12,9 +13,6 @@ import axios from 'axios'
 import App from './App'
 
 
-// Vue.use(Button)
-// Vue.use(Select)
-// Vue.use(Radio)
 
 
 
