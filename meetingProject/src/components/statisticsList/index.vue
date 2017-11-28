@@ -28,10 +28,11 @@
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
                 var action = fn.QueryString('action');  
+                var phone = localStorage.phone;
                 _this.action = action;
                 _this.mid = mid;
                 _this.$http.get(url+action, {
-                    params:{phone:2,mid:mid}
+                    params:{phone:phone,mid:mid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){

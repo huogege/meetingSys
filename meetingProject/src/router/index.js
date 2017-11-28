@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+
 import indexPage from '@/components/indexPage/index'
 import meetingList from '@/components/meetingList/index'
 import inform from '@/components/inform/index'
@@ -13,14 +15,15 @@ import voteResult from '@/components/voteResult/index'  //投票结果
 import material from '@/components/material/index'
 import note from '@/components/note/index'
 
-import daihuiren from '@/components/daihuiren/index'
+import daihuiren from '@/components/daihuiren/index'  
 import blackPage from '@/components/blackPage/index'
 
 
+import setWechatTitle from '../common/js/setWechatTitle'   //标题文件
 
 Vue.use(Router)
 
-export default new Router({
+var router =  new Router({
   routes: [
     {
       path: '/',
@@ -93,4 +96,12 @@ export default new Router({
       component: blackPage
     },
   ]
-})
+});
+router.afterEach((transition) => {
+  console.log(transition)
+  var title = transition.name;
+  setWechatTitle(title)
+});
+
+export default router;
+

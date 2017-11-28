@@ -15,7 +15,7 @@
                 </li>
                 <li>
                     <div class="qr-btn" node-type="qr-btn">
-                        <input node-type="jsbridge" type="file" name="myPhoto" value="扫描" />
+                        <input node-type="jsbridge" type="file" name="myPhoto" value="拍照" />
                     </div>
                 </li>
             </ul>
@@ -134,16 +134,21 @@
             },
             request1:function(params){
                 var _this = this;
-                var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                var mid = fn.QueryString('mid');     
+                var phone = localStorage.phone;
                 _this.$http.get(url, {
-                    params:{phone:2,mid:mid}
+                    params:{phone:phone,mid:mid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                  _this.text =  response.data.data.note;
-                                  //  _this.nid  = response.data.data.
-
+                                if(response.data.data.note!=''){
+                                    _this.text =  response.data.data.note.content;
+                                    _this.nid  = response.data.data.note.id;
+                                }else{
+                                     _this.nid  =null;
+                                }
+                                 
                             }
                         }
                     })
@@ -151,14 +156,14 @@
             request2:function(params){
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
-                _this.$http.get(urls, {
-                    phone:2,mid:mid,content:this.text
+                var phone = localStorage.phone;
+                _this.$http.post(urls, {
+                    phone:phone,mid:mid,content:this.text,nid:_this.nid
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!='' && response.data.rtnCode == "0000"){
-                                    alert("您的笔记已保存")
-
+                                    alert("您的笔记已保存");
                             }
                         }
                     })

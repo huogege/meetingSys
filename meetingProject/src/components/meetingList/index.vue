@@ -49,7 +49,6 @@
     import BScroll from 'better-scroll'
     import myScroll from '../../components/scroll/index.vue'
     import fn from "../../common/js/index.js";
-    var phone = fn.phone;
     export default{
         components:{
             'myScroll':myScroll,
@@ -103,6 +102,7 @@
             formatTime:fn.format,
             formatMsgTime:fn.formatMsgTime,
             selectItem:function(index,name){
+                 var phone = localStorage.phone;
                 if(index != this.currentItem){
                     this.currentItem = index;
                     if(index == 0){
@@ -150,6 +150,7 @@
             },
             getMessage:function(){
                 var _this = this;
+                var phone = localStorage.phone;
                 _this.$http.get(this.URL5, {
                     params: {phone:phone,num:1}
                     })
@@ -163,6 +164,7 @@
             },
             meetingInsue:function(cj_status,mid,callback){
                 var _this = this;
+                var phone = localStorage.phone;
                 _this.$http.get(this.URL6, {
                     params: {
                         cj_status:cj_status,
@@ -226,6 +228,7 @@
            
         }, 
         created:function(){
+            var phone = localStorage.phone;
             this.$nextTick(function(){
                 this.phone = phone;
                 this.request2(this.URLS,{phone:phone,num:this.num,page:1});    

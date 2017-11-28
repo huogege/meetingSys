@@ -13,7 +13,7 @@
             <ul class="menu">
                 <!-- <li class="subMenu">预览</li>
                 <li class="subMenu">发送</li> -->
-                <li class="subMenu"><a :href="downloadUrl" :download=" downloadName">下载</a></li>
+                <li class="subMenu"><a :href="downloadUrl" :download=" downloadName">查看/下载</a></li>
                 <li class="subMenu" @click="hideMengceng">取消</li>
             </ul>
         </div>

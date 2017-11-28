@@ -83,7 +83,6 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";
-    var phone = fn.phone;
     export default{
         components:{
          
@@ -153,6 +152,7 @@
             },
             getMessage:function(){
                 var _this = this;
+                var phone = localStorage.phone;
                 _this.$http.get(this.URL5, {
                     params: {phone:phone,num:1}
                     })
@@ -166,6 +166,7 @@
             },
             meetingInsue:function(cj_status,mid,callback){
                 var _this = this;
+                var phone = localStorage.phone;
                 _this.$http.get(this.URL6, {
                     params: {
                         cj_status:cj_status,
@@ -228,7 +229,7 @@
            
         }, 
         created:function(){
-        
+            var phone = localStorage.phone;
             this.request1(this.URL1,{phone:phone,num:1000});
              this.request2(this.URLS,{phone:phone,num:this.num});    
             this.getMessage();

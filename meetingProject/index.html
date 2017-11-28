@@ -25,7 +25,7 @@
       setTimeout(func,"500");
       function func(){
         try { //判断是否在APP打开	
-            window.AppJsObj.appSessionToken("getToken", 2);
+            window.AppJsObj.appSessionToken("getToken", 1);
             IsAPP = true;
             alert("true")
         
@@ -44,6 +44,9 @@
             token = sessionObj.token;    
           }
       }
+      localStorage.sessionId = 'sessionId-123456';
+      localStorage.token = 'token-123456789';
+      localStorage.phone = '15826177123'
     </script> 
   </body>
 </html>

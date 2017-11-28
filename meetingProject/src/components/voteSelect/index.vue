@@ -44,9 +44,10 @@
                 var mid = fn.QueryString('mid');      
                 var vid =  fn.QueryString('vid');   
                 var action = fn.QueryString('action');
+                var phone = localStorage.phone;
                 _this.action = action;
                 _this.$http.get(url, {
-                    params:{phone:2,mid:mid,vid:vid}
+                    params:{phone:phone,mid:mid,vid:vid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -65,8 +66,9 @@
             var _this = this;
             var mid = fn.QueryString('mid');      
             var vid =  fn.QueryString('vid'); 
+            var phone = localStorage.phone;
             _this.$http.get(url2, {
-                    params:{phone:2,mid:mid,vid:vid,oid:_this.oid}
+                    params:{phone:phone,mid:mid,vid:vid,oid:_this.oid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){

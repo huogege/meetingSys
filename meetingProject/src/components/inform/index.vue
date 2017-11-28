@@ -51,8 +51,9 @@
         methods:{
             getMessage:function(num,page){
                 var _this = this;
+                var phone = localStorage.phone;
                 _this.$http.get(this.URL, {
-                    params: {phone:2,num:num,page:page}
+                    params: {phone:phone,num:num,page:page}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
