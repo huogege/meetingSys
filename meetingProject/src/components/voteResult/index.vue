@@ -5,19 +5,19 @@
     </div>
     <div class="content">
         <div class="list" v-for="item in voteOptionModels">
-            <span class="word oneRowHide">{{item.options}}文字文字文字文字文字文字</span>
+            <span class="word oneRowHide">{{item.options}}</span>
             <span class="barContent">
                   <span class="bar" :style="{width:item.percent*0.045+'rem',backgroundColor:'#'+('00000'+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6)}" ref="bar"></span>
             </span>
           
-            <span class="icon">{{item.nums}}000SS</span>
+            <span class="icon">{{item.nums}}</span>
         </div>
 
     </div>
      <div class="insureStatus">
-            <span class="insure" style="background-color:#ccc" >{{voteWord}}</span>
+         <mt-button type="default" class="insure" style="background-color:#ccc" >{{voteWord}}</mt-button>
             <router-link :to="{ path: 'voteList', query: { mid: mid,action:action}}" class="router_link">
-               <span class="insure">回到列表</span>
+               <mt-button type="default" class="insure">回到列表</mt-button>
             </router-link>
         </div>
 </div>
@@ -137,7 +137,10 @@ export default {
                 text-align: center;
                 .insure{
                     display: inline-block;
-                    padding: .2rem .4rem;;
+                    width: 1.8rem;
+                    height: .7rem;
+                    line-height: .7rem;
+                    font-size: .3rem;
                     color: #fff;
                     background-color: #2d95ff;
                     border-radius: .4rem;

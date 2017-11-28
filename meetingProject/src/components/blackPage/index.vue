@@ -2,12 +2,16 @@
   
 </template>
 <script>
+ import fn from "../../common/js/index.js"; 
 export default {
   data(){
-       this.$router.push({path: '/', query: {}});  
        return{
 
        }
+  },
+  created:function(){
+       var path = decodeURIComponent(fn.QueryString('way'));
+       this.$router.push({path: path, query: {}});  
   }
 }
 </script>

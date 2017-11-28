@@ -37,7 +37,12 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                _this.list =  response.data.data.list;                                                        
+                              if(response.data.data.list.length>0){
+                                      _this.list =  response.data.data.list;   
+                                }else{
+                                    alert("暂时没有统计");
+                                     _this.$router.push({path: 'meetingDetail', query: {mid:mid}});  
+                                }                                                       
                             }
                         }
                     })

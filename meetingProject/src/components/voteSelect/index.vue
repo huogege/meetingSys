@@ -6,19 +6,19 @@
     </div>
     <div class="content">
         <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index,item.id)">
-            {{item.options}}
+            <p class="word">{{item.options}}</p>
             <span class="icon" :class="index == currentSelect ? 'choose' : ''">&#8195;</span>
         </div>
     </div>
     <div class="insureStatus">
-            <span class="insure" @click="vote">确认投票</span>
+            <mt-button type="default" class="insure" @click="vote">确认投票</mt-button>
     </div>
 </div>
  
 </template>
 
 <script>
-    import fn from "../../common/js/index.js";
+  import fn from "../../common/js/index.js";
 
   var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
   var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteDo"
@@ -161,6 +161,12 @@
                     background-position: center;
                     
                 } 
+                .word{
+                   display: inline-block;
+                    width: 75%;
+                    text-align: justify;
+                    line-height: .7rem;
+                }
             }
            
         }
@@ -178,8 +184,11 @@
                     color: #2d95ff;
                 }
                 .insure{
-                    display: inline-block;
-                    padding: .2rem .4rem;;
+                 display: inline-block;
+                    width: 1.8rem;
+                    height: .7rem;
+                    line-height: .7rem;
+                    font-size: .3rem;
                     color: #fff;
                     background-color: #2d95ff;
                     border-radius: .4rem;

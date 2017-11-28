@@ -10,9 +10,11 @@
         </div>
     </div>
     <div class="insureStatus">
-        <span class="icon">&#8195;</span>
-        <span @click= "revise" class="revise">修改</span>
-        <span @click="vote" class="insure">{{btn_word}}</span>
+         <mt-button class="revise_btn">
+            <span class="icon">&#8195;</span>
+             <span @click= "revise" class="revise">修改</span>
+         </mt-button>
+        <mt-button type="primary"  @click="vote" class="insure">{{btn_word}}</mt-button >
     </div>
 </div>
  
@@ -73,7 +75,9 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             alert(_this.alert);
-                            _this.handleSelect = false;
+                            _this.handleSelect = function(){
+                                alert("请您先点击修改")
+                            };
                         }
                     })
         },
@@ -91,7 +95,7 @@
     }
   }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     .select1{
          .title{
                 padding-left: .5rem;
@@ -137,20 +141,29 @@
                     background-image: url("./icon_2.png");
                     background-size: 100%;
                     background-repeat: no-repeat;
-                    background-position: center;
+                    background-position: left;
                 }
                 .revise{
                     color: #2d95ff;
-                      margin-right: .8rem;
                 }
                 .insure{
                     display: inline-block;
-                    padding: .2rem .4rem;;
+                    width: 1.8rem;
+                    height: .7rem;
+                    line-height: .7rem;
+                    font-size: .3rem;
                     color: #fff;
                     background-color: #2d95ff;
                     border-radius: .4rem;
-                  
-                
+                }
+                .revise_btn{
+                    display: inline-block;
+                    width: 1.8rem;
+                    height: .7rem;
+                    line-height: .7rem;
+                    font-size: .3rem;
+                    color: #fff;
+                    border-radius: .4rem;
                 }
             }
     }

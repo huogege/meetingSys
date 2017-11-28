@@ -1,7 +1,7 @@
 <template>
     <div class="note">
         <h1 class="title">会议:{{title}}</h1>
-        <h2 class="time">{{time}}<span @click="submit" class="submit">完成</span></h2>
+        <h2 class="time">{{time}}<mt-button type="primary" @click="submit" class="submit">完成</mt-button></h2>
         <div class="content">
             <textarea v-model="text"  class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="15">
                 <img src="photo.png" alt="">
@@ -206,12 +206,15 @@
             line-height: .6rem;
             border-bottom: 1px solid #9e9e9e;
             .submit{
-                float:right;
-                color:#fff;
-                padding: 0 .25rem;
-                border-radius:.2rem;
+                float: right;
+                color: #fff;
+                border-radius: .2rem;
                 background-color: #2d95ff;
-            }
+                font-size: .28rem;
+                width: 1rem;
+                height: .5rem;
+                line-height: .5rem;
+                        }
         }
         .content{
             .textarea{

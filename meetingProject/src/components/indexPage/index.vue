@@ -55,10 +55,10 @@
 
 
                          <div class="joinStatus" v-show="item.qr_type == 2">
-                            <span :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</span>
-                            <span :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</span>
+                            <mt-button class="buttonReclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
+                            <mt-button  class="buttonReclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
                         </div>
-
+                        <div class="joinStatus" v-show="item.qr_type !== 2" style="height:.8rem;"></div>
                     <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
                     <div class="status2">
                         
@@ -74,8 +74,8 @@
                     </div>
                 </router-link>
             </div>  
-            <router-link  :to="{ path: 'meetingList'}"class="router_link">
-                <div class="moreMeeting">更多会议</div>   
+            <router-link  :to="{ path: 'meetingList'}"class="router_link" style="display:grid">
+                <mt-button  class="buttonReclass moreMeeting">更多会议</mt-button>     
             </router-link>   
         </div>
     </div>
@@ -184,7 +184,7 @@
               console.log(status);
               switch (status){
                 case 2:   //找人代会
-                    this.$router.push({path: 'daihuiren', query: {mid: id}});  
+                    this.$router.push({path: 'daihuiren', query: {mid: id,way:'/'}});  
                 break;
                 case 3:   //赞不参与
                     return false;
@@ -203,7 +203,7 @@
                     _this.meetingInsue(3,id,function(){
                         _this.changeWord2 = '参会';
                         alert("您的会议状态已改为：暂不参会");
-                        _this.$router.push({path: '/blackPage', query: {}});       //跳到一个空白页，再调回来,实现当前页面的刷新。
+                        _this.$router.push({path: '/blackPage', query: {way:'/'}});       //跳到一个空白页，再调回来,实现当前页面的刷新。
 
                     })  
                 break;
@@ -211,7 +211,7 @@
                     _this.meetingInsue(2,id,function(){
                         _this.changeWord2 = '暂不参会';
                         alert("您的会议状态已改为：参会");
-                         _this.$router.push({path: '/blackPage', query: {}});  
+                         _this.$router.push({path: '/blackPage',query: {way:'/'}});
 
                     })
                 break;
@@ -219,7 +219,7 @@
                     _this.meetingInsue(3,id,function(){
                         _this.changeWord2 = '参会';
                         alert("您的会议状态已改为：暂不参会");
-                         _this.$router.push({path: '/blackPage', query: {}});  
+                         _this.$router.push({path: '/blackPage', query: {way:'/'}});
 
 
                     })   
@@ -292,12 +292,13 @@
     .meetingStatus {
         background-color: #f1f1f1;
         .moreMeeting{
+            width: 100%;
             font-size: .32rem;
             line-height: .8rem;
             text-align: center;
             background-image: url("./bottom.png");
             background-repeat: no-repeat;
-            background-position: 37%;
+            background-position: 28%;
             background-size:.4rem .4rem;
         }
     }

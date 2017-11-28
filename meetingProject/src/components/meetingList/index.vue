@@ -16,12 +16,13 @@
                    >
                     <ul class="wrapper-content"  >
                         <div class="list" v-for="item in changeList">
-                                  <div class="joinStatus" v-show="item.qr_type == 2">
-                                    <span class="findOthers" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</span>
-                                    <span class="refuse" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</span>
-                                </div>
-
-                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
+                                 
+                         <div class="joinStatus" v-show="item.qr_type == 2">
+                            <mt-button class="buttonReclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
+                            <mt-button  class="buttonReclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
+                        </div>
+                        <div class="joinStatus" v-show="item.qr_type !== 2" style="height:.8rem;"></div>
+                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id,way:'meetingList' }}" class="router_link">  
                                 <div class="status2">
                                     
                                     <h1 class="title oneRowHide">{{item.title}}</h1>
@@ -182,7 +183,7 @@
               console.log(status);
               switch (status){
                 case 2:   //找人代会
-                    this.$router.push({path: 'daihuiren', query: {mid: id}});  
+                     this.$router.push({path: 'daihuiren', query: {mid: id,way:'meetingList'}});  
                 break;
                 case 3:   //赞不参与
                     return false;
@@ -201,7 +202,7 @@
                     _this.meetingInsue(3,id,function(){
                         _this.changeWord2 = '参会';
                         alert("您的会议状态已改为：暂不参会");
-                        window.location.reload();
+                          _this.$router.push({path: '/blackPage', query: {way:'meetingList'}}); 
 
                     })  
                 break;
@@ -209,7 +210,7 @@
                     _this.meetingInsue(2,id,function(){
                         _this.changeWord2 = '暂不参会';
                         alert("您的会议状态已改为：参会");
-                          window.location.reload();
+                        _this.$router.push({path: '/blackPage', query: {way:'meetingList'}}); 
 
 
                     })
@@ -218,17 +219,28 @@
                     _this.meetingInsue(3,id,function(){
                         _this.changeWord2 = '参会';
                         alert("您的会议状态已改为：暂不参会");
-                          window.location.reload();
+                         _this.$router.push({path: '/blackPage', query: {way:'meetingList'}}); 
 
 
                     })   
                 break;
               }
             },
+             backCkick:function(){
+                 var _this= this;
+                if (window.history && window.history.pushState) {
+                    $(window).bind('popstate', function () {
+                        _this.$router.push({path: '/', query: {}});  
+                        $(window).unbind('popstate');
+                            
+                    });
+                }
+            }
            
         }, 
         created:function(){
             var phone = localStorage.phone;
+            this.backCkick();
             this.$nextTick(function(){
                 this.phone = phone;
                 this.request2(this.URLS,{phone:phone,num:this.num,page:1});    

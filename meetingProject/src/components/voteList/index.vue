@@ -2,9 +2,9 @@
   <div class="meetingStatistics">
       <div class="eat" v-for="item in list">
           <p class="word">{{item.title}}</p>
-            <router-link :to="{ path:item.status == 2?'voteSelect':'voteresult', query: { mid: mid,vid:item.id,action:action}}" class="router_link">
-                <span class="click">投票</span>
-            </router-link>
+
+         <span class="click" @click="handleClick(item.id,item.status)">投票</span>
+  
       </div>
   </div>
 </template>
@@ -28,19 +28,27 @@
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
                 var action = fn.QueryString('action');  
+                var phone = localStorage.phone;
                 _this.action = action;
                 _this.mid = mid;
                 _this.$http.get(url+action, {
-                    params:{phone:2,mid:mid}
+                    params:{phone:phone,mid:mid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                _this.list =  response.data.data.list;                                                        
+                                if(response.data.data.list.length>0){
+                                      _this.list =  response.data.data.list;   
+                                }else{
+                                    alert("暂时没有投票");
+                                     _this.$router.push({path: 'meetingDetail', query: {mid:mid}});  
+                                }
+                                                                                   
                             }
                         }
                     })
             },
+
             backCkick:function(){
                 var _this= this;
                 var mid = fn.QueryString('mid');
@@ -51,6 +59,20 @@
                             $(window).unbind('popstate');
                             
                     });
+                }
+            },
+            handleClick:function(vid,status){
+                switch(status){
+                    case 1:
+                        alert("该投票还未开始，宁可以查看其它投票");
+                    break;
+                    case 2:
+                        this.$router.push({path: 'voteSelect', query: { mid: this.mid,vid:vid,action:this.action}});  
+                    break;
+                    case 3:
+                         this.$router.push({path: 'voteResult', query: { mid: this.mid,vid:vid,action:this.action}});  
+                    break;
+                    default:
                 }
             }
         },

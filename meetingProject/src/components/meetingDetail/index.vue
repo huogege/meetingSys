@@ -112,10 +112,21 @@
             handleClick:function(){
                 alert("还在开发中！")
             },
+             backCkick:function(){
+                var _this= this;
+                var path = decodeURIComponent(fn.QueryString('way'));
+                if (window.history && window.history.pushState) {
+                    $(window).on('popstate', function () {
+                            _this.$router.push({path: path, query: {}});  
+                            debugger
+                            $(window).unbind('popstate');      
+                    });
+                }
+            },
         }, 
         created:function(){
-
             this.request();
+             this.backCkick();
           
         },
         mounted:function(){

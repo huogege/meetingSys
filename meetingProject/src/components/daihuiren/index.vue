@@ -12,7 +12,7 @@
         </ul>
         <ul class="bottom">
             <li><mt-button @click="meetingInsue(cjname,cjphone)" class="buttonReclass" type="primary">确定</mt-button></li>
-            <router-link :to="{ path: '/', query: { mid: mid,action:'meetingCountList'}}" class="router_link">
+            <router-link :to="{ path: path, query: {}}" class="router_link">
                 <li><mt-button class="buttonReclass" type="default">取消</mt-button></li>
             </router-link>
         </ul>
@@ -27,7 +27,8 @@ export default {
           cjname:'',
           cjphone:'',
           mid :'',
-          URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj'
+          URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',
+          path:''
 
       }
   },
@@ -75,7 +76,7 @@ export default {
             },
   },
   created:function(){
-
+       this.path = decodeURIComponent(fn.QueryString('way'));
 
   }
 }
