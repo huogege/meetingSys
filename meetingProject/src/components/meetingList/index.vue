@@ -18,11 +18,11 @@
                         <div class="list" v-for="item in changeList">
                                  
                          <div class="joinStatus" v-show="item.qr_type == 2">
-                            <mt-button class="buttonReclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
-                            <mt-button  class="buttonReclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
+                            <mt-button class="button2Reclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
+                            <mt-button  class="button2Reclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
                         </div>
                         <div class="joinStatus" v-show="item.qr_type !== 2" style="height:.8rem;"></div>
-                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id,way:'meetingList' }}" class="router_link">  
+                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
                                 <div class="status2">
                                     
                                     <h1 class="title oneRowHide">{{item.title}}</h1>
@@ -94,7 +94,9 @@
 
 
                changeWord1:'',
-               changeWord2:''
+               changeWord2:'',
+
+             
 
 
             }
@@ -230,9 +232,8 @@
                  var _this= this;
                 if (window.history && window.history.pushState) {
                     $(window).bind('popstate', function () {
-                        _this.$router.push({path: '/', query: {}});  
-                        $(window).unbind('popstate');
-                            
+                          $(window).unbind('popstate');
+                        _this.$router.push({path: '/', query: {}});         
                     });
                 }
             }
@@ -240,7 +241,7 @@
         }, 
         created:function(){
             var phone = localStorage.phone;
-            this.backCkick();
+            //this.backCkick();
             this.$nextTick(function(){
                 this.phone = phone;
                 this.request2(this.URLS,{phone:phone,num:this.num,page:1});    
@@ -327,11 +328,11 @@
               .joinStatus{
                         font-size: .24rem;
                         float: right;
-                        margin: .35rem .2rem 0 ;
+                        margin: .25rem .2rem 0 0;
                     }
                 .grid{
                     display: inline-block;
-                     padding: .15rem .2rem;
+                   
                     border: 1px solid #9e9e9e;
                     border-radius: .15rem;
                     color: #9e9e9e;
@@ -339,7 +340,7 @@
                     }
                 .refuse{
                     display: inline-block;
-                      padding: .15rem .2rem;
+                   
                     border: 1px solid #ff7e30;
                    border-radius: .15rem;
                     color: #ff7e30;
@@ -347,26 +348,27 @@
                 }
                 .findOthers{
                     display: inline-block;
-                   padding: .15rem .2rem;
+                 
                     border: 1px solid #178aff;
                   border-radius: .15rem;
                     color: #178aff;
                 }
                 .join{
                     display: inline-block;
-                  padding: .15rem .2rem;
+              
                     border: 1px solid #7dd43c;
                     border-radius: .15rem;
                     color: #7dd43c;
                 }
             .status2{
                 display: flex;
-                padding: .35rem .1rem 0 .35rem;
-                .title {
+                padding: .25rem .1rem 0 .35rem;
+              .title {
                     width: 60%;
                     font-size: .34rem;
                     width: 5.3rem;
                     font-weight: 500;
+                    line-height: .6rem;
                 }
             }
              &:last-child{
@@ -411,6 +413,7 @@
                     font-size: .24rem;
                     margin-bottom: .2rem;
                     line-height: .35rem;
+                      margin-top: .1rem;
                     &:last-child{
                         margin-bottom: 0;
                     }

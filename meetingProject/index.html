@@ -22,12 +22,11 @@
     <script type="text/javascript" src="js/vconsole.min.js"></script>
     <script type="text/javascript">
       var IsAPP =  false;
-      setTimeout(func,"500");
+      setTimeout(func,"600");
       function func(){
         try { //判断是否在APP打开	
             window.AppJsObj.appSessionToken("getToken", 1);
             IsAPP = true;
-            alert("true")
         
           } catch(e) {
             IsAPP = false;
@@ -35,18 +34,22 @@
           }		
       }
       if(IsAPP =true){
-      setTimeout(getToken,"600");
+      setTimeout(getToken,"800");
           function getToken(params) { //获取token
             sessionStr = params;
             var sessionObj = eval("(" + sessionStr + ")");
             localStorage.sessionId = sessionObj.sessionId;
             localStorage.token = sessionObj.token;
+            if(sessionObj.phone!=''){
+              localStorage.phone = sessionObj.phone;
+            }else{
+              alert("您当前没有注册，请注册再登录！")
+            }
+           
             token = sessionObj.token;    
           }
       }
-      localStorage.sessionId = 'sessionId-123456';
-      localStorage.token = 'token-123456789';
-      localStorage.phone = '15826177123'
+     
     </script> 
   </body>
 </html>

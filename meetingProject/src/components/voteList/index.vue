@@ -1,10 +1,9 @@
 <template>
   <div class="meetingStatistics">
+      <div class="noContent" v-show="list.length == 0">当前没有投票</div>
       <div class="eat" v-for="item in list">
           <p class="word">{{item.title}}</p>
-
          <span class="click" @click="handleClick(item.id,item.status)">投票</span>
-  
       </div>
   </div>
 </template>
@@ -37,13 +36,9 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                if(response.data.data.list.length>0){
+                                if(response.data.data.list){
                                       _this.list =  response.data.data.list;   
-                                }else{
-                                    alert("暂时没有投票");
-                                     _this.$router.push({path: 'meetingDetail', query: {mid:mid}});  
-                                }
-                                                                                   
+                                }                                                    
                             }
                         }
                     })
@@ -53,10 +48,10 @@
                 var _this= this;
                 var mid = fn.QueryString('mid');
                 if (window.history && window.history.pushState) {
-                    $(window).on('popstate', function () {
-                           
-                            _this.$router.push({path: '/meetingDetail', query: {mid:mid}});  
-                            $(window).unbind('popstate');
+                    $(window).bind('popstate', function () {                     
+                            _this.$router.push({path: '/meetingDetail', query: {mid:mid}});
+                              $(window).unbind('popstate');  
+                         
                             
                     });
                 }
@@ -77,7 +72,7 @@
             }
         },
         created:function(){
-            this.backCkick();
+           // this.backCkick();
             var mid = fn.QueryString('mid');
             var title = decodeURIComponent(fn.QueryString('title'));
             var time = decodeURIComponent(fn.QueryString('time'));
@@ -94,8 +89,15 @@
     }
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
+   
     .meetingStatistics{
-        padding-top: .4rem;
+        padding-top: .2rem;
+         .noContent{
+            font-size: .32rem;
+            background-color: #f1f1f1;
+            line-height: 1rem;
+            text-indent: .2rem;
+        }
         .word{
             font-size: .32rem;
             float: left;

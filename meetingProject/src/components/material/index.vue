@@ -130,6 +130,12 @@
                 .png{
                     background-image: url("./png.png")
                 }
+                .xlsx{
+                     background-image: url("./unknow.png")
+                }
+                .pdf{
+                     background-image: url("./pdf.png")
+                }
             }
         }
         .mengceng{

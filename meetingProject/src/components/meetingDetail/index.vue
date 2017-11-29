@@ -39,25 +39,25 @@
             <p class="content">{{meeting.memo}}</p>
         </div>
         <div class="menuWrapper">
-             <router-link :to="{ path: 'material', query: { mid: mid}}" class="router_link">
+             <router-link :to="{ path: 'material', query: { mid: mid}}"  class="router_link">
                 <div class="submenu">
                     <span class="icon icon11">&#8195;</span>
                     <span class="word">资料</span>
                 </div>
               </router-link>
-             <router-link :to="{ path: 'note', query: { title:title,mid:mid,time:time}}" class="router_link">
+             <router-link :to="{ path: 'note', query: { title:title,mid:mid,time:time}}"  class="router_link">
                 <div class="submenu">
                     <span class="icon icon12">&#8195;</span>
                     <span class="word">笔记</span>
                 </div>
               </router-link>
-             <router-link :to="{ path: 'voteList', query: { mid: mid,action:'meetingVoteList'}}" class="router_link">
+             <router-link :to="{ path: 'voteList', query: { mid: mid,action:'meetingVoteList'}}"  class="router_link">
                 <div class="submenu">
                     <span class="icon icon13">&#8195;</span>
                     <span class="word">投票</span>
                 </div>
               </router-link>
-            <router-link :to="{ path: 'statisticsList', query: { mid: mid,action:'meetingCountList'}}" class="router_link">
+            <router-link :to="{ path: 'statisticsList', query: { mid: mid,action:'meetingCountList'}}"  class="router_link">
                 <div class="submenu">
                     <span class="icon icon14">&#8195;</span>
                     <span class="word">统计</span>
@@ -114,19 +114,21 @@
             },
              backCkick:function(){
                 var _this= this;
+                console.log(fn)
                 var path = decodeURIComponent(fn.QueryString('way'));
+                console.log(fn.QueryString('way'))
                 if (window.history && window.history.pushState) {
-                    $(window).on('popstate', function () {
+                    $(window).bind('popstate', function () {
+                            $(window).unbind('popstate');   
                             _this.$router.push({path: path, query: {}});  
-                            debugger
-                            $(window).unbind('popstate');      
+                             
                     });
                 }
             },
         }, 
         created:function(){
             this.request();
-             this.backCkick();
+            // this.backCkick();
           
         },
         mounted:function(){

@@ -81,10 +81,10 @@
             var _this= this;
             var mid = fn.QueryString('mid');
             if (window.history && window.history.pushState) {
-                $(window).on('popstate', function () {
-                        
+                $(window).bind('popstate', function () {
+                          $(window).unbind('popstate');
                         _this.$router.push({path: '/meetingDetail', query: {mid:mid}});  
-                        $(window).unbind('popstate');
+                      
                         
                 });
             }
@@ -92,7 +92,7 @@
     },
     created:function(){
         this.request();
-        this.backCkick();
+        //this.backCkick();
     }
   }
 </script>

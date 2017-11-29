@@ -98,7 +98,6 @@ var router =  new Router({
   ]
 });
 router.afterEach((transition) => {
-  console.log(transition)
   var title = transition.name;
   setWechatTitle(title)
 });

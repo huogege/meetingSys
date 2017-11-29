@@ -1,5 +1,6 @@
 <template>
   <div class="meetingStatistics">
+      <div class="noContent" v-show="list.length == 0">当前没有统计</div>
       <div class="eat" v-for="item in list">
           <p class="word">{{item.title}}</p>
             <router-link :to="{ path:'statisticsSelect', query: { mid: mid,vid:item.id,action:action}}" class="router_link">
@@ -37,12 +38,9 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                              if(response.data.data.list.length>0){
+                              if(response.data.data.list){
                                       _this.list =  response.data.data.list;   
-                                }else{
-                                    alert("暂时没有统计");
-                                     _this.$router.push({path: 'meetingDetail', query: {mid:mid}});  
-                                }                                                       
+                                }                                                    
                             }
                         }
                     })
@@ -65,7 +63,13 @@
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
     .meetingStatistics{
-        padding-top: .4rem;
+        padding-top: .2rem;
+          .noContent{
+            font-size: .32rem;
+            background-color: #f1f1f1;
+            line-height: 1rem;
+            text-indent: .2rem;
+        }
         .word{
             font-size: .32rem;
             float: left;
