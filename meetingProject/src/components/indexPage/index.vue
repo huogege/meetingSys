@@ -230,8 +230,9 @@
         }, 
         created:function(){
             var phone = localStorage.phone;
+            alert(phone)
             this.request1(this.URL1,{phone:phone,num:1000});
-             this.request2(this.URLS,{phone:phone,num:this.num});    
+            this.request2(this.URLS,{phone:phone,num:this.num});    
             this.getMessage();
        
            
