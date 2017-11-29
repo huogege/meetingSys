@@ -4,15 +4,15 @@
          <p class="word">{{voteModel.title}}<span style="font-size:.26rem;margin-left:1rem;">单选</span></p>    
     </div>
     <div class="content">
-        <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index,item.id)">
+        <div class="list" v-for="(item,index) in voteOptionModels" @click="handleSelect(index,item.id,flag)">
             {{item.options}}
               <span class="icon" :class="index == currentSelect ? 'choose' : ''">&#8195;</span>
         </div>
     </div>
     <div class="insureStatus">
-         <mt-button class="revise_btn">
+         <mt-button @click= "revise()" class="revise_btn">
             <span class="icon">&#8195;</span>
-             <span @click= "revise" class="revise">修改</span>
+             <span  class="revise">修改</span>
          </mt-button>
         <mt-button type="primary"  @click="vote" class="insure">{{btn_word}}</mt-button >
     </div>
@@ -34,14 +34,20 @@
         currentSelect:0,
         oid:'',
         alert:'统计成功',
-        btn_word:'确认统计'
-
+        btn_word:'确认统计',
+        flag:true
       };
     },
     methods:{
-        handleSelect:function(index,oid){
-            this.currentSelect = index;
-            this.oid = oid;
+        handleSelect:function(index,oid,flag){
+            
+            if(flag){
+                this.currentSelect = index;
+                this.oid = oid;
+            }else{
+                alert("请您先点击修改");
+            }
+          
         },
          request:function(params){
                 var _this = this;
@@ -75,19 +81,14 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             alert(_this.alert);
-                            _this.handleSelect = function(){
-                                alert("请您先点击修改")
-                            };
+                            _this.flag = false;
                         }
                     })
         },
         revise:function(){
+            this.flag = true;
             this.alert = "修改统计成功！";
             this.btn_word = "确认修改";
-            this.handleSelect = function(index,oid){
-                this.currentSelect = index;
-                this.oid = oid;
-            }
          }
     },
     created:function(){
