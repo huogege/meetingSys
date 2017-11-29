@@ -75,6 +75,6 @@ var unitFun = {
     var index2 = str.length;
     var suffix = str.substring(index1 + 1, index2);//后缀名
     return suffix
-  }
+  },
 }
 export default unitFun;

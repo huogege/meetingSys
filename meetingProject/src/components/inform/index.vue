@@ -24,12 +24,13 @@
                     <div class="loading-wrapper"></div>
                  </myScroll>          
         </div>
-        <button>按钮</button>
+      
   </div>
 </template>
 <script>
      import fn from "../../common/js/index.js"; 
      import myScroll from '../../components/scroll/index.vue'
+     var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
     export default{
         components:{
              'myScroll':myScroll,
@@ -51,7 +52,6 @@
         methods:{
             getMessage:function(num,page){
                 var _this = this;
-                var phone = localStorage.phone;
                 _this.$http.get(this.URL, {
                     params: {phone:phone,num:num,page:page}
                     })

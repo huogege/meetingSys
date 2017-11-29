@@ -1,10 +1,10 @@
 <template>
   <div class="index">
         <div class="top">
-            <div class="message">
-                <div class="nameDepart"><span >部门:</span><span style="margin-left:.5rem">{{meetingUser.dept}}</span></div>
-                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem">{{meetingUser.phone}}</span></div>
-                <div class="name" style="margin-left:.2rem">{{meetingUser.name}}</div>
+            <div class="message" v-show="meetingUser!=''">
+                <div class="nameDepart"><span >部门:</span><span style="margin-left:.5rem">{{meetingUser['dept']}}</span></div>
+                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem">{{meetingUser['phone']}}</span></div>
+                <div class="name" style="margin-left:.2rem">{{meetingUser['name']}}</div>
             </div>
             <div class="newMessage oneRowHide"> 
                     <router-link :to="{ path: 'inform', query: { name : meetingUser.name,phone:meetingUser.phone,dept:meetingUser.dept }}" class="router_link">
@@ -81,6 +81,8 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";
+    var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
+    console.log(phone)
     export default{
         components:{
          
@@ -95,7 +97,7 @@
                 URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
                 URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',    //参会确认
                meetingUser:'' ,
-                currentItem:0,
+               currentItem:0,
                pullup:true,
                listenScroll:true,  
                meetingUser:'' ,
@@ -125,9 +127,11 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                 _this.meetingUser = response.data.data.meetingUser;
-                                 _this.inList =  response.data.data.list;
-                                _this.soonList =  response.data.data.soonlist;
+                                if(response.data.data.meetingUser!=''){
+                                     _this.meetingUser = response.data.data.meetingUser;
+                                }
+                                if(response.data.data.list>0){ _this.inList =  response.data.data.list;}
+                                if(response.data.data.soonlist.length>0){_this.soonList =  response.data.data.soonlist;}
                                  _this.nowTime =  response.data.data.params.nowtime;
                                  
                                                     
@@ -143,30 +147,32 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                var thisData = response.data.data.list.list;
-                                _this.changeList = thisData
-                                  
+                                if(response.data.data.list.list.length>0){
+                                     _this.changeList = response.data.data.list.list;
+                                    
+                                }      
                             }
                         }
                     })
             },
             getMessage:function(){
                 var _this = this;
-                var phone = localStorage.phone;
                 _this.$http.get(this.URL5, {
                     params: {phone:phone,num:1}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                _this.oneMessage = response.data.data.list[0].content;
+                                if(response.data.data.list.length>0){
+                                      _this.oneMessage = response.data.data.list[0].content;
+                                }
+                              
                             }
                         }
                     })
             },
             meetingInsue:function(cj_status,mid,callback){
                 var _this = this;
-                var phone = localStorage.phone;
                 _this.$http.get(this.URL6, {
                     params: {
                         cj_status:cj_status,
@@ -229,8 +235,6 @@
            
         }, 
         created:function(){
-            var phone = localStorage.phone;
-            alert(phone)
             this.request1(this.URL1,{phone:phone,num:1000});
             this.request2(this.URLS,{phone:phone,num:this.num});    
             this.getMessage();

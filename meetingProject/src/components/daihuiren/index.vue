@@ -21,6 +21,7 @@
 </template>
 <script>
 import fn from "../../common/js/index.js";   
+var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
 export default {
   data:function(){
       return{
@@ -50,7 +51,6 @@ export default {
      meetingInsue:function (cjphone,cjname){
                 var _this = this;
                 var mid = fn.QueryString("mid");
-                var phone = localStorage.phone;
                 if(_this.cjname != '' && _this.cjphone!=''){
                      _this.$http.get(this.URL6, {
                     params: {

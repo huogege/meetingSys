@@ -27,6 +27,7 @@
 <script>
 import fn from "../../common/js/index.js";
 var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo"
+var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
 export default {
     data () {
       return {
@@ -43,7 +44,6 @@ export default {
                 var mid = fn.QueryString('mid');      
                 var vid =  fn.QueryString('vid');   
                 var action =  fn.QueryString('action');   
-                var phone = localStorage.phone;
                 _this.action = action;
                 _this.mid = mid;
                 _this.$http.get(url, {

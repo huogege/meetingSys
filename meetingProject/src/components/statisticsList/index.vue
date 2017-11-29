@@ -12,6 +12,7 @@
 <script>
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/';
+    var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
     export default{
         components:{
          
@@ -29,7 +30,6 @@
                 var _this = this;
                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
                 var action = fn.QueryString('action');  
-                var phone = localStorage.phone;
                 _this.action = action;
                 _this.mid = mid;
                 _this.$http.get(url+action, {

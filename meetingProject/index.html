@@ -38,17 +38,44 @@
           function getToken(params) { //获取token
             sessionStr = params;
             var sessionObj = eval("(" + sessionStr + ")");
-            localStorage.sessionId = sessionObj.sessionId;
-            localStorage.token = sessionObj.token;
-            if(sessionObj.phone!=''){
-              localStorage.phone = sessionObj.phone;
+            if(localStorage.userInfor){
+              localStorage.removeItem("userInfor")
             }else{
-              alert("您当前没有注册，请注册再登录！")
+              var userInfor = {};
+              userInfor.sessionId = sessionObj.sessionId;
+              userInfor.token = sessionObj.token;
+              userInfor.phone = sessionObj.phone;
+              if(sessionObj.phone ==''){
+                  alert("您当前没有注册，请注册再登录！")
+              }
             }
-            token = sessionObj.token;    
+            
           }
       }
-     
+      
+
+      function testLocalstorage(){
+        var sessionObj = {
+          sessionId:'sessionId_123',
+          token:'token_123',
+          phone:'15826177123'
+        }
+        if(localStorage.userInfor){
+              localStorage.removeItem("userInfor")
+            }else{
+              var userInfor = {};
+              userInfor.sessionId = sessionObj.sessionId;
+              userInfor.token = sessionObj.token;
+              userInfor.phone = sessionObj.phone;
+              localStorage.setItem('userInfor',JSON.stringify(userInfor));
+              if(sessionObj.phone ==''){
+                  alert("您当前没有注册，请注册再登录！")
+              }
+            }
+            
+      }
+     //testLocalstorage()
+      
     </script> 
   </body>
 </html>

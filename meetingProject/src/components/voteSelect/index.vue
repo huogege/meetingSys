@@ -22,6 +22,7 @@
 
   var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
   var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteDo"
+  var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
   export default {
     data () {
       return {
@@ -44,7 +45,6 @@
                 var mid = fn.QueryString('mid');      
                 var vid =  fn.QueryString('vid');   
                 var action = fn.QueryString('action');
-                var phone = localStorage.phone;
                 _this.action = action;
                 _this.$http.get(url, {
                     params:{phone:phone,mid:mid,vid:vid}
@@ -66,7 +66,6 @@
             var _this = this;
             var mid = fn.QueryString('mid');      
             var vid =  fn.QueryString('vid'); 
-            var phone = localStorage.phone;
             _this.$http.get(url2, {
                     params:{phone:phone,mid:mid,vid:vid,oid:_this.oid}
                     })
