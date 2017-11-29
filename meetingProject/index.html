@@ -15,17 +15,16 @@
     <script>
         
     </script>
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="config/config.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="config/config.js"></script> -->
     <script type="text/javascript" src="js/jbase64.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
-    <script type="text/javascript" src="js/vconsole.min.js"></script>
     <script type="text/javascript">
       var IsAPP =  false;
-      setTimeout(func,"600");
+      setTimeout(func,"1000");
       function func(){
         try { //判断是否在APP打开	
-            window.AppJsObj.appSessionToken("getToken", 1);
+            window.AppJsObj.appSessionToken("getToken", 2);
             IsAPP = true;
         
           } catch(e) {
@@ -33,26 +32,31 @@
             alert("请在app中打开网页！")
           }		
       }
-      if(IsAPP =true){
-      setTimeout(getToken,"800");
-          function getToken(params) { //获取token
-            sessionStr = params;
-            var sessionObj = eval("(" + sessionStr + ")");
-            if(localStorage.userInfor){
-              localStorage.removeItem("userInfor")
-            }else{
-              var userInfor = {};
-              userInfor.sessionId = sessionObj.sessionId;
-              userInfor.token = sessionObj.token;
-              userInfor.phone = sessionObj.phone;
-              if(sessionObj.phone ==''){
-                  alert("您当前没有注册，请注册再登录！");
-                  window.AppJsObj.appSessionToken("getToken", 1);
-              }
-            }
+    if(IsAPP =true){
+     //setTimeout(function(){getToken},1100)
+          // function getToken(params) { //获取token
+          //   sessionStr = params;
+          //   var sessionObj = eval("(" + sessionStr + ")");
+          //   alert(sessionObj.sessionId)
+          //   alert(sessionObj.token)
+          //   alert(sessionObj.phone)
+          //   if(localStorage.userInfor){
+          //     localStorage.removeItem("userInfor")
+          //   }else{
+          //     var userInfor = {};
+          //     userInfor.sessionId = sessionObj.sessionId;
+          //     userInfor.token = sessionObj.token;
+          //     userInfor.phone = sessionObj.phone;
+          //     localStorage.setItem('userInfor',JSON.stringify(userInfor));
+          //     if(sessionObj.phone ==''){
+          //         alert("您当前没有注册，请注册再登录！");
+          //         window.AppJsObj.appSessionToken("getToken", 2);
+          //     }
+          //     alert( userInfor.phone)
+          //   }
             
-          }
-      }
+          // }
+    }
       
 
       function testLocalstorage(){
@@ -75,7 +79,8 @@
             }
             
       }
-     //testLocalstorage()
+      //testLocalstorage()
+     //setTimeout(function(){testLocalstorage()}) 
       
     </script> 
   </body>
