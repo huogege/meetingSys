@@ -46,7 +46,8 @@
               userInfor.token = sessionObj.token;
               userInfor.phone = sessionObj.phone;
               if(sessionObj.phone ==''){
-                  alert("您当前没有注册，请注册再登录！")
+                  alert("您当前没有注册，请注册再登录！");
+                  window.AppJsObj.appSessionToken("getToken", 1);
               }
             }
             
