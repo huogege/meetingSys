@@ -3,12 +3,12 @@
         <div class="top">
             <div class="message" v-show="meetingUser!=''">
                 <div class="nameDepart"><span >部门:</span><span style="margin-left:.5rem">{{meetingUser['dept']}}</span></div>
-                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem">{{meetingUser['phone']}}</span></div>
+                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem;color:#fff">{{meetingUser['phone']}}</span></div>
                 <div class="name" style="margin-left:.2rem">{{meetingUser['name']}}</div>
             </div>
             <div class="newMessage oneRowHide"> 
                     <router-link :to="{ path: 'inform', query: { name : meetingUser.name,phone:meetingUser.phone,dept:meetingUser.dept }}" class="router_link">
-                        新消息：{{oneMessage}}
+                        新消息：{{oneMessage == ''? '您当前没有任何消息!':oneMessage}}
                     </router-link>
             </div>
 
@@ -61,9 +61,8 @@
                     <div class="status2">
                         
                         <h1 class="title oneRowHide">{{item.title}}</h1>
-                    
                     </div>      
-                    <div class="content">
+                    <div class="content">t
                         <div class="left" style="padding-right:.5rem;;">
                             <p class="from"><span class="icon_3">&#8195;</span><span>发起单位:</span>{{item.unit}}</p>
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
@@ -71,7 +70,9 @@
                         </div>
                     </div>
                 </router-link>
+          
             </div>  
+             
             <router-link  :to="{ path: 'meetingList'}"class="router_link" style="display:grid">
                 <mt-button  class="buttonReclass moreMeeting">更多会议</mt-button>     
             </router-link>   
@@ -82,7 +83,8 @@
 <script>
     import fn from "../../common/js/index.js";
     var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
-    console.log(phone)
+    //console.log(phone)
+    alert(phone)
     export default{
         components:{
          
@@ -277,6 +279,7 @@
             top: .5rem;
             font-size: .4rem;
         }
+       
     }
     .newMessage {
         height: .7rem;

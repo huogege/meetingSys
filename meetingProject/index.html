@@ -21,7 +21,72 @@
     <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript">
       var IsAPP =  false;
-      setTimeout(func,"1000");
+
+      /*alert("gg")
+      var userInfor = {};
+      function getToken(params) { //获取token
+        sessionStr = params;
+        var sessionObj = eval("(" + sessionStr + ")");
+        alert(sessionObj.sessionId)
+        alert(sessionObj.token)
+        alert(sessionObj.phone)
+        if(localStorage.userInfor){
+          localStorage.removeItem("userInfor")
+        }else{
+          var userInfor = {};
+          userInfor.sessionId = sessionObj.sessionId;
+          userInfor.token = sessionObj.token;
+          userInfor.phone = sessionObj.phone;
+          localStorage.setItem('userInfor',JSON.stringify(userInfor));
+          if(sessionObj.phone ==''){
+              alert("您当前没有注册，请注册再登录！");
+              window.AppJsObj.appSessionToken("getToken", 2);
+          }
+          alert( userInfor.phone)
+      }
+      alert(getToken)
+      var timer = setInterval(function(){
+        if(window.AppJsObj){
+          clearInterval(timer)
+          //window.AppJsObj.appSessionToken("getToken", 2);
+          //IsAPP = true;
+          getToken();
+
+        }else{
+          //IsAPP = false;
+          alert("请在APP中打开网页！")
+        }
+      },200)*/
+
+
+
+      function getToken(params) { //获取token
+            sessionStr = params;
+            var sessionObj = eval("(" + sessionStr + ")");
+            alert(sessionObj.sessionId)
+            alert(sessionObj.token)
+            alert(sessionObj.phone)
+            if(sessionObj.phone == undefined){
+                  alert("后台系统没有您的名单，请联系管理员添加！");
+                  return false;
+            }else{
+              if(localStorage.userInfor){
+                localStorage.removeItem("userInfor")
+              }else{
+                var userInfor = {};
+                userInfor.sessionId = sessionObj.sessionId;
+                userInfor.token = sessionObj.token;
+                userInfor.phone = sessionObj.phone;
+                localStorage.setItem('userInfor',JSON.stringify(userInfor));
+                alert( userInfor.phone)
+              }
+            }
+          }
+
+
+
+
+      setTimeout(func,"2000");
       function func(){
         try { //判断是否在APP打开	
             window.AppJsObj.appSessionToken("getToken", 2);
@@ -29,33 +94,11 @@
         
           } catch(e) {
             IsAPP = false;
-            alert("请在app中打开网页！")
+           // alert("请在app中打开网页！")
           }		
       }
     if(IsAPP =true){
-     //setTimeout(function(){getToken},1100)
-          // function getToken(params) { //获取token
-          //   sessionStr = params;
-          //   var sessionObj = eval("(" + sessionStr + ")");
-          //   alert(sessionObj.sessionId)
-          //   alert(sessionObj.token)
-          //   alert(sessionObj.phone)
-          //   if(localStorage.userInfor){
-          //     localStorage.removeItem("userInfor")
-          //   }else{
-          //     var userInfor = {};
-          //     userInfor.sessionId = sessionObj.sessionId;
-          //     userInfor.token = sessionObj.token;
-          //     userInfor.phone = sessionObj.phone;
-          //     localStorage.setItem('userInfor',JSON.stringify(userInfor));
-          //     if(sessionObj.phone ==''){
-          //         alert("您当前没有注册，请注册再登录！");
-          //         window.AppJsObj.appSessionToken("getToken", 2);
-          //     }
-          //     alert( userInfor.phone)
-          //   }
-            
-          // }
+     setTimeout(function(){getToken()},"1200")   
     }
       
 
@@ -76,8 +119,7 @@
               if(sessionObj.phone ==''){
                   alert("您当前没有注册，请注册再登录！")
               }
-            }
-            
+            } 
       }
       //testLocalstorage()
      //setTimeout(function(){testLocalstorage()}) 
