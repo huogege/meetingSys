@@ -50,7 +50,6 @@
     import BScroll from 'better-scroll'
     import myScroll from '../../components/scroll/index.vue'
     import fn from "../../common/js/index.js";
-    var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
     export default{
         components:{
             'myScroll':myScroll,
@@ -96,6 +95,7 @@
 
                changeWord1:'',
                changeWord2:'',
+               phone:''
 
              
 
@@ -112,17 +112,17 @@
                          this.changeList = [];
                          this.page = 1;
                          this.URLS = this.URL2;
-                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
+                         this.request2(this.URLS,{phone:this.phone,num:this.num,page:1});
                     }else if(index == 1){
                           this.changeList = [];
                         this.page = 1;
                          this.URLS = this.URL3;
-                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
+                         this.request2(this.URLS,{phone:this.phone,num:this.num,page:1});
                     }else if(index ==2){
                           this.changeList = [];
                          this.page = 1;
                          this.URLS = this.URL4;
-                         this.request2(this.URLS,{phone:phone,num:this.num,page:1});
+                         this.request2(this.URLS,{phone:this.phone,num:this.num,page:1});
                     }
                    
                 } 
@@ -155,7 +155,7 @@
                 var _this = this;
       
                 _this.$http.get(this.URL5, {
-                    params: {phone:phone,num:1}
+                    params: {phone:_this.phone,num:1}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -172,7 +172,7 @@
                     params: {
                         cj_status:cj_status,
                         mid:mid,
-                        phone:phone,
+                        phone:_this.phone,
                     }
                     })
                     .then(function (response) {
@@ -240,9 +240,8 @@
            
         }, 
         created:function(){   
-            //this.backCkick();
             this.$nextTick(function(){
-                this.phone = phone;
+                this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
                 this.request2(this.URLS,{phone:phone,num:this.num,page:1});    
                 this.getMessage();
 

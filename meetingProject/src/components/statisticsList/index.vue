@@ -12,7 +12,6 @@
 <script>
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/';
-    var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
     export default{
         components:{
          
@@ -22,7 +21,8 @@
                 list:[],
                 mid:'',
                 path:'',
-                action:''
+                action:'',
+                phone:''
             }
         },
         methods:{
@@ -33,7 +33,7 @@
                 _this.action = action;
                 _this.mid = mid;
                 _this.$http.get(url+action, {
-                    params:{phone:phone,mid:mid}
+                    params:{phone:_this.phone,mid:mid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -47,6 +47,7 @@
             },
         },
         created:function(){
+            this. phone = JSON.parse(localStorage.getItem('userInfor')).phone;
             var mid = fn.QueryString('mid');
             var title = decodeURIComponent(fn.QueryString('title'));
             var time = decodeURIComponent(fn.QueryString('time'));

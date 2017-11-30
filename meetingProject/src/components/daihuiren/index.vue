@@ -21,7 +21,6 @@
 </template>
 <script>
 import fn from "../../common/js/index.js";   
-var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
 export default {
   data:function(){
       return{
@@ -29,7 +28,8 @@ export default {
           cjphone:'',
           mid :'',
           URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',
-          path:''
+          path:'',
+          phone:''
 
       }
   },
@@ -56,7 +56,7 @@ export default {
                     params: {
                         cj_status:4,
                         mid:5,
-                        phone:phone,
+                        phone:_this.phone,
                         cjphone:cjphone || null,
                         cjname:cjname || null
                     }
@@ -76,6 +76,7 @@ export default {
             },
   },
   created:function(){
+      this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
        this.path = decodeURIComponent(fn.QueryString('way'));
 
   }

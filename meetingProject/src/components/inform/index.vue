@@ -30,7 +30,6 @@
 <script>
      import fn from "../../common/js/index.js"; 
      import myScroll from '../../components/scroll/index.vue'
-     var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
     export default{
         components:{
              'myScroll':myScroll,
@@ -53,7 +52,7 @@
             getMessage:function(num,page){
                 var _this = this;
                 _this.$http.get(this.URL, {
-                    params: {phone:phone,num:num,page:page}
+                    params: {phone:_this.phone,num:num,page:page}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){

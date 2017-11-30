@@ -82,9 +82,6 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";
-    var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
-    //console.log(phone)
-    alert(phone)
     export default{
         components:{
          
@@ -114,7 +111,8 @@
                changeWord1:'',
                changeWord2:'',
 
-               way:'/'
+               way:'/',
+               phone:''
 
             }
         },
@@ -160,7 +158,7 @@
             getMessage:function(){
                 var _this = this;
                 _this.$http.get(this.URL5, {
-                    params: {phone:phone,num:1}
+                    params: {phone:_this.phone,num:1}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -179,7 +177,7 @@
                     params: {
                         cj_status:cj_status,
                         mid:mid,
-                        phone:phone,
+                        phone:_this.phone,
                     }
                     })
                     .then(function (response) {
@@ -237,8 +235,9 @@
            
         }, 
         created:function(){
-            this.request1(this.URL1,{phone:phone,num:1000});
-            this.request2(this.URLS,{phone:phone,num:this.num});    
+            this. phone = JSON.parse(localStorage.getItem('userInfor')).phone;
+            this.request1(this.URL1,{phone:this.phone,num:1000});
+            this.request2(this.URLS,{phone:this.phone,num:this.num});    
             this.getMessage();
        
            

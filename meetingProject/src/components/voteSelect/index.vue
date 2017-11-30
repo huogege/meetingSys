@@ -22,7 +22,6 @@
 
   var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
   var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteDo"
-  var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
   export default {
     data () {
       return {
@@ -31,7 +30,8 @@
         voteOptionModels:[],
         currentSelect:0,
         oid:'',
-        action:''
+        action:'',
+        phone:''
 
       };
     },
@@ -47,7 +47,7 @@
                 var action = fn.QueryString('action');
                 _this.action = action;
                 _this.$http.get(url, {
-                    params:{phone:phone,mid:mid,vid:vid}
+                    params:{phone:_this.phone,mid:mid,vid:vid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -67,7 +67,7 @@
             var mid = fn.QueryString('mid');      
             var vid =  fn.QueryString('vid'); 
             _this.$http.get(url2, {
-                    params:{phone:phone,mid:mid,vid:vid,oid:_this.oid}
+                    params:{phone:_this.phone,mid:mid,vid:vid,oid:_this.oid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -90,6 +90,7 @@
         }
     },
     created:function(){
+        this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
         this.request();
         //this.backCkick();
     }

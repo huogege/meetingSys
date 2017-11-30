@@ -25,7 +25,6 @@
 
   var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo";
   var url2 = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCountUpdate"
-  var phone = JSON.parse(localStorage.getItem('userInfor')).phone;
   export default {
     data () {
       return {
@@ -36,7 +35,8 @@
         oid:'',
         alert:'统计成功',
         btn_word:'确认统计',
-        flag:true
+        flag:true,
+        phone:''
       };
     },
     methods:{
@@ -56,7 +56,7 @@
                 var vid =  fn.QueryString('vid');     
 
                 _this.$http.get(url, {
-                    params:{phone:phone,mid:mid,vid:vid}
+                    params:{phone:_this.phone,mid:mid,vid:vid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -77,7 +77,7 @@
             var vid =  fn.QueryString('vid'); 
   
             _this.$http.get(url2, {
-                    params:{phone:phone,mid:mid,vid:vid,newoid :_this.oid}
+                    params:{phone:_this.phone,mid:mid,vid:vid,newoid :_this.oid}
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
@@ -93,6 +93,7 @@
          }
     },
     created:function(){
+        this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
         this.request();
     }
   }
