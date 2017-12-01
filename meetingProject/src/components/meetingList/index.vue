@@ -17,25 +17,26 @@
                     <ul class="wrapper-content"  >
                         <div class="list" v-for="item in changeList">
                                  
-                         <div class="joinStatus" v-show="item.qr_type == 2">
+                         <div class="joinStatus" v-show="item.qr_type == 2&&item.status !==4">
                             <mt-button class="button2Reclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
                             <mt-button  class="button2Reclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
                         </div>
                         <div class="joinStatus" v-show="item.qr_type !== 2" style="height:.8rem;"></div>
-                                <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
-                                <div class="status2">
-                                    
-                                    <h1 class="title oneRowHide">{{item.title}}</h1>
-                                   
-                                </div>      
-                                <div class="content">
-                                    <div class="left" style="padding-right:50px;;">
-                                        <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>{{item.unit}}</p>
-                                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                                        <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>{{item.addr}}</p>
-                                    </div>
-                                </div>
-                            </router-link>
+                        <div class="endSign" v-show="item.status == 4"><img src="./icon_9.png" alt=""></div>
+                        <router-link :to="{ path: 'meetingDetail', query: { mid : item.id }}" class="router_link">  
+                        <div class="status2">
+                            
+                            <h1 class="title oneRowHide">{{item.title}}</h1>
+                            
+                        </div>      
+                        <div class="content">
+                            <div class="left" style="padding-right:50px;;">
+                                <p class="from"><span class="icon_3">&#8195;</span><span>发起单位</span>{{item.unit}}</p>
+                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点</span>{{item.addr}}</p>
+                            </div>
+                        </div>
+                    </router-link>
                         </div>    
                     </ul>
                     <div class="loading-wrapper"></div>
@@ -242,7 +243,7 @@
         created:function(){   
             this.$nextTick(function(){
                 this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
-                this.request2(this.URLS,{phone:phone,num:this.num,page:1});    
+                this.request2(this.URLS,{phone:this.phone,num:this.num,page:1});    
                 this.getMessage();
 
             })
@@ -303,6 +304,12 @@
             background-color: #fff;
             margin-bottom: .3rem;
             width: 7.5rem;
+            position: relative;
+            .endSign{
+                position: absolute;
+                top: 0;
+                right: .25rem;
+            }
             .status {
                 height: .5rem;
                 .word {

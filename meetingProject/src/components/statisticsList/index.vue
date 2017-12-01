@@ -1,6 +1,11 @@
 <template>
   <div class="meetingStatistics">
-      <div class="noContent" v-show="list.length == 0">当前没有统计</div>
+       <div class="noMaterial" v-if="list.length <= 0">
+            <img class="img" src="./icon1.png" alt="">
+            <h1 class="words">
+                空空如也~~<br>当前没有会议统计
+            </h1>
+        </div>
       <div class="eat" v-for="item in list">
           <p class="word">{{item.title}}</p>
             <router-link :to="{ path:'statisticsSelect', query: { mid: mid,vid:item.id,action:action}}" class="router_link">
@@ -65,11 +70,22 @@
 <style lang="less" rel="stylesheet/less" scoped>
     .meetingStatistics{
         padding-top: .2rem;
-          .noContent{
-            font-size: .32rem;
+          .noMaterial{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
             background-color: #f1f1f1;
-            line-height: 1rem;
-            text-indent: .2rem;
+            .img{
+                margin-top: 3rem;
+
+            }
+            .words{
+                font-size: .3rem;
+                color: #bfbfbf;
+            }
         }
         .word{
             font-size: .32rem;

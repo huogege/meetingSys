@@ -6,7 +6,13 @@
                     <div class="icon" :class="cutPostfix(item.name)"><p class="word oneRowHide">{{item.name}}</p></div>
                 </li>
             </ul>
-            <h1 style="font-size:.3rem;" v-show="list.length == 0">没有资料</h1>
+
+            <div class="noMaterial" v-show="list.length == 0">
+                <img class="img" src="./icon1.png" alt="">
+                <h1 class="word">
+                    空空如也~~<br>当前没有会议资料
+                </h1>
+            </div>
         </div>
         <div class="mengceng" v-show="mengcengShow">
             <div class="bgColor"></div>
@@ -69,6 +75,23 @@
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
     .material{
+        .noMaterial{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            background-color: #f1f1f1;
+            .img{
+                margin-top: 3rem;
+
+            }
+            .word{
+                font-size: .3rem;
+                color: #bfbfbf;
+            }
+        }
         .content{
             overflow: hidden;
             padding: .35rem;

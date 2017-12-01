@@ -168,6 +168,7 @@
                     color: #fff;
                     background-color: #57cb4e;
                     font-size: .26rem;
+                    
                 }
                 .time {
                     line-height: .5rem;
@@ -192,8 +193,9 @@
                 .title{
                     font-size: .34rem;
                     width: 5.3rem;
-                    font-weight: 500;
+                    font-weight: 700;
                     margin-bottom: .4rem;
+
                 }
                 .icon_2 {
                     background-image: url("./icon_2.png");

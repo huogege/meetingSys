@@ -16,7 +16,7 @@
                         <router-link v-for="item in list" :to="{ path: 'informDetail', query: { content: item.content,from:item.senduser,time:item.sendtime}}" class="router_link">
                             <div class="list">
                                 <span class="status">{{item.title}}</span>
-                                <p class="word">{{item.content}}</p>
+                                <div class="content"><p class="word" v-for="item in splitWords(item.content)">{{item}}</p></div>  
                                 <span class="time">{{item.sendTime}}</span>
                             </div>
                         </router-link>
@@ -28,8 +28,8 @@
   </div>
 </template>
 <script>
-     import fn from "../../common/js/index.js"; 
-     import myScroll from '../../components/scroll/index.vue'
+    import fn from "../../common/js/index.js"; 
+    import myScroll from '../../components/scroll/index.vue'
     export default{
         components:{
              'myScroll':myScroll,
@@ -63,6 +63,7 @@
                         }
                     })
             },
+            splitWords:fn.splitWords
         },
         created:function(){
             this.$nextTick(function(){
@@ -90,17 +91,31 @@
         background-repeat: no-repeat;
         .nameDepart {
             margin-bottom: .2rem;
+            margin-top: .1rem;
+            span{
+                 font-weight: 700;
+            }
         }
         .name{
             position: absolute;
-            right: .4rem;
-            top: .5rem;
+            right: .1rem;
+            top: .55rem;
             font-size: .4rem;
+            width: 2rem;
+            text-align: center;
+            margin-left: .2rem;
+            font-weight: 700;
+        }
+        .number{
+            span{
+                font-weight: 700;
+            }
         }
     }   
     .content{
         .wrapper{
             position: absolute;
+            width: 100%;
             top: 1.5rem;
             bottom: 0;
             left: 0;
@@ -113,25 +128,27 @@
                     margin-top: .3rem;
                     overflow: hidden;
                     .status{
-                        display: inline-block;
+                        position: absolute;
                         padding: .1rem .3rem;
-                        min-width:1rem; 
-                
                         text-align: center;
                         background-color: #5ab155; 
                         border-radius: 0 0 .2rem .2rem;
                         font-size: .26rem;
                         color: #fff;
-                        float: left;
+                       
                     }
-                    .word{
-                        margin-top: .2rem;
-                        min-width: 3rem;;
-                        font-size: .28rem;
-                        color: #575757;
-                        float: left;
-                        line-height: .35rem;
+                    .content{
+                        margin-top: .5rem;
+                        .word{
+                            margin-top: .2rem;
+                          
+                            font-size: .28rem;
+                            color: #575757;
+                        
+                            line-height: .35rem;
+                        }
                     }
+                    
                     .time{
                         float: right;
                         font-size: .24rem;

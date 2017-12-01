@@ -45,20 +45,20 @@
                 alert( userInfor.phone)
               }
       }
-      var timer = setInterval(function(){
-        try { //判断是否在APP打开
-            if(window.AppJsObj){
-              clearInterval(timer);
-              localStorage.removeItem('userInfor');
-              window.AppJsObj.appSessionToken("getToken", 2);
-              IsAPP = true;
-              getToken()
-            }	          
-          } catch(e) {
-            IsAPP = false;
-           // alert("请在app中打开网页！")
-          }	
-      },"200");
+      // var timer = setInterval(function(){
+      //   try { //判断是否在APP打开
+      //       if(window.AppJsObj){
+      //         clearInterval(timer);
+      //         localStorage.removeItem('userInfor');
+      //         window.AppJsObj.appSessionToken("getToken", 2);
+      //         IsAPP = true;
+      //         getToken()
+      //       }	          
+      //     } catch(e) {
+      //       IsAPP = false;
+      //      // alert("请在app中打开网页！")
+      //     }	
+      // },"200");
 
       
     
@@ -66,7 +66,7 @@
         var sessionObj = {
           sessionId:'sessionId_123',
           token:'token_123',
-          phone:'18996394903'
+          phone:'15826177123'
         }
         if(localStorage.userInfor){
               localStorage.removeItem("userInfor")
@@ -82,7 +82,7 @@
             } 
       }
       //testLocalstorage()
-     //setTimeout(function(){testLocalstorage()}) 
+     setTimeout(function(){testLocalstorage()}) 
       
     </script> 
   </body>

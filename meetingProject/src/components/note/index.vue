@@ -3,7 +3,7 @@
         <h1 class="title">会议:{{title}}</h1>
         <h2 class="time">{{time}}<mt-button type="primary" @click="submit" class="submit">完成</mt-button></h2>
         <div class="content">
-            <textarea v-model="text"  class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="15">
+            <textarea v-model="text"  class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="10">
                 <img src="photo.png" alt="">
             </textarea>
             <div id="img_box"></div>
@@ -11,7 +11,7 @@
         <div class="menu">
             <ul>
                 <li>
-                    <div @click="delateText" class="delate"></div>
+                    <div @click="delatePhoto" class="delate"></div>
                 </li>
                 <li>
                     <div class="qr-btn" node-type="qr-btn">
@@ -129,8 +129,21 @@
             }
         },
         methods:{
-            delateText:function(){
-                this.text = '';
+            delatePhoto:function(){
+                // function test(){
+                //     alert(1)
+                // }
+                // var optionJson={
+				// 	title:"删除",//非必传,app判断空时默认为”提示”
+				// 	msg:"确认要删除最近的一张照片吗？",//必传
+				// 	callback:test()            //  顺序反了
+				// }
+                // window.AppJsObj.appConfirm(JSON.stringify(optionJson));
+                var $imgBox = $("#img_box");
+            
+
+
+
             },
             request1:function(params){
                 var _this = this;
@@ -173,7 +186,7 @@
                 }else{
                     this.request2();
                 }
-            }
+            },
         },
         created:function(){
             this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
@@ -198,6 +211,7 @@
         .title{
             font-size: .36rem;
             line-height: .5rem;
+            font-weight: 700;
         }
         .time{
             font-size: .24rem;
@@ -218,7 +232,7 @@
         .content{
             .textarea{
                 width:100%;
-                min-height: 3rem;
+                min-height: 2rem;
                 border: none;
                 font-size: .3rem;
                 line-height: .4rem;

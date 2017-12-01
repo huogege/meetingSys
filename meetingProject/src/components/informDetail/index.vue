@@ -5,7 +5,7 @@
          <span class="time">{{format( time,'yyyy-MM-dd  hh:mm')}}</span>
      </div>
      <div class="content">
-       <p>{{content}}</p>
+       <p v-for="item in splitWords(content)">{{item}}</p>
      </div>
       
   </div>
@@ -21,7 +21,8 @@
             }
         },
         methods:{
-          format:fn.format
+          format:fn.format,
+          splitWords:fn.splitWords
         },
         created:function(){
             this.from = decodeURIComponent(fn.QueryString('from'));
