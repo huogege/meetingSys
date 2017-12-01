@@ -10,6 +10,9 @@
   </head>
   <body>
     <div id="app"></div>
+    <div class="notUser" style="position:absolute;left:0;top:0;width:100%;height:100%;background:#fff;display:none">
+      <h1 style="font-size:.3rem;line-height: 1rem;text-indent: .3rem;">后台名单中未找到您，请联系后台管理员！</h1>
+    </div>
     <!-- built files will be auto injected -->
     <script type=text/javascript>var deviceWidth = document.documentElement.clientWidth;document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';</script>
     <script>
@@ -22,91 +25,48 @@
     <script type="text/javascript">
       var IsAPP =  false;
 
-      /*alert("gg")
-      var userInfor = {};
-      function getToken(params) { //获取token
-        sessionStr = params;
-        var sessionObj = eval("(" + sessionStr + ")");
-        alert(sessionObj.sessionId)
-        alert(sessionObj.token)
-        alert(sessionObj.phone)
-        if(localStorage.userInfor){
-          localStorage.removeItem("userInfor")
-        }else{
-          var userInfor = {};
-          userInfor.sessionId = sessionObj.sessionId;
-          userInfor.token = sessionObj.token;
-          userInfor.phone = sessionObj.phone;
-          localStorage.setItem('userInfor',JSON.stringify(userInfor));
-          if(sessionObj.phone ==''){
-              alert("您当前没有注册，请注册再登录！");
-              window.AppJsObj.appSessionToken("getToken", 2);
-          }
-          alert( userInfor.phone)
-      }
-      alert(getToken)
-      var timer = setInterval(function(){
-        if(window.AppJsObj){
-          clearInterval(timer)
-          //window.AppJsObj.appSessionToken("getToken", 2);
-          //IsAPP = true;
-          getToken();
-
-        }else{
-          //IsAPP = false;
-          alert("请在APP中打开网页！")
-        }
-      },200)*/
-
-
-
       function getToken(params) { //获取token
             sessionStr = params;
             var sessionObj = eval("(" + sessionStr + ")");
             alert(sessionObj.sessionId)
             alert(sessionObj.token)
             alert(sessionObj.phone)
-            if(sessionObj.phone == undefined){
+            if(sessionObj.phone == undefined){  
+                  $(".notUser").show();
                   alert("后台系统没有您的名单，请联系管理员添加！");
                   return false;
             }else{
-              if(localStorage.userInfor){
-                localStorage.removeItem("userInfor")
-              }else{
                 var userInfor = {};
                 userInfor.sessionId = sessionObj.sessionId;
                 userInfor.token = sessionObj.token;
                 userInfor.phone = sessionObj.phone;
                 localStorage.setItem('userInfor',JSON.stringify(userInfor));
+                $(".notUser").hide();
                 alert( userInfor.phone)
               }
-            }
-          }
-
-
-
-
-      setTimeout(func,"2000");
-      function func(){
-        try { //判断是否在APP打开	
-            window.AppJsObj.appSessionToken("getToken", 2);
-            IsAPP = true;
-        
+      }
+      var timer = setInterval(function(){
+        try { //判断是否在APP打开
+            if(window.AppJsObj){
+              clearInterval(timer);
+              localStorage.removeItem('userInfor');
+              window.AppJsObj.appSessionToken("getToken", 2);
+              IsAPP = true;
+              getToken()
+            }	          
           } catch(e) {
             IsAPP = false;
            // alert("请在app中打开网页！")
-          }		
-      }
-    if(IsAPP =true){
-     setTimeout(function(){getToken()},"1200")   
-    }
-      
+          }	
+      },"200");
 
+      
+    
       function testLocalstorage(){
         var sessionObj = {
           sessionId:'sessionId_123',
           token:'token_123',
-          phone:'15826177123'
+          phone:'18996394903'
         }
         if(localStorage.userInfor){
               localStorage.removeItem("userInfor")

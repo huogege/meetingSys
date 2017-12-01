@@ -1,12 +1,12 @@
 <template>
-  <div class="index">
+  <div class="index ">
         <div class="top">
             <div class="message" v-show="meetingUser!=''">
                 <div class="nameDepart"><span >部门:</span><span style="margin-left:.5rem">{{meetingUser['dept']}}</span></div>
                 <div class="number"><span>电话号码:</span><span style="margin-left:.2rem;color:#fff">{{meetingUser['phone']}}</span></div>
                 <div class="name" style="margin-left:.2rem">{{meetingUser['name']}}</div>
             </div>
-            <div class="newMessage oneRowHide"> 
+            <div class="newMessage oneRowHide" v-show="oneMessage!=''"> 
                     <router-link :to="{ path: 'inform', query: { name : meetingUser.name,phone:meetingUser.phone,dept:meetingUser.dept }}" class="router_link">
                         新消息：{{oneMessage == ''? '您当前没有任何消息!':oneMessage}}
                     </router-link>
@@ -62,7 +62,7 @@
                         
                         <h1 class="title oneRowHide">{{item.title}}</h1>
                     </div>      
-                    <div class="content">t
+                    <div class="content">
                         <div class="left" style="padding-right:.5rem;;">
                             <p class="from"><span class="icon_3">&#8195;</span><span>发起单位:</span>{{item.unit}}</p>
                             <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
@@ -73,7 +73,7 @@
           
             </div>  
              
-            <router-link  :to="{ path: 'meetingList'}"class="router_link" style="display:grid">
+            <router-link v-show="changeList.length>0||inList.length>0||soonList.length>0"  :to="{ path: 'meetingList'}"class="router_link" style="display:grid">
                 <mt-button  class="buttonReclass moreMeeting">更多会议</mt-button>     
             </router-link>   
         </div>
@@ -235,11 +235,15 @@
            
         }, 
         created:function(){
-            this. phone = JSON.parse(localStorage.getItem('userInfor')).phone;
-            this.request1(this.URL1,{phone:this.phone,num:1000});
-            this.request2(this.URLS,{phone:this.phone,num:this.num});    
-            this.getMessage();
-       
+            var timer = setInterval(()=>{
+                this. phone = JSON.parse(localStorage.getItem('userInfor')).phone;
+                if(this.phone !=''){
+                    clearInterval(timer);
+                    this.request1(this.URL1,{phone:this.phone,num:1000});
+                    this.request2(this.URLS,{phone:this.phone,num:this.num});    
+                    this.getMessage();
+                }
+            },"200")
            
         },
         mounted:function(){   
@@ -247,15 +251,23 @@
            
         }
         
-
     }
 </script>
 
 
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
-
+.indexBefore:before{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    
+}
 .index {
+
     .img_box{
         width: 7.5rem;
         height: 4rem;
@@ -433,7 +445,7 @@
         }
         .right {
                 position: absolute;
-                top: .5rem;
+                top: 0;
                 right: 0;
                 flex: 1;
                 width: 25%;
