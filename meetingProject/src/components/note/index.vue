@@ -6,7 +6,9 @@
             <textarea v-model="text"  class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="10">
                 <img src="photo.png" alt="">
             </textarea>
-            <div id="img_box"></div>
+            <div id="img_box">
+                <img  v-for="item in photoArr" :src="item" alt="" width="600" height="800"> 
+            </div>
         </div>
         <div class="menu">
             <ul>
@@ -14,7 +16,7 @@
                     <div @click="delatePhoto" class="delate"></div>
                 </li>
                 <li>
-                    <div class="qr-btn" node-type="qr-btn">
+                    <div class="qr-btn" node-type="qr-btn" id="qr-btn">
                         <input node-type="jsbridge" type="file" name="myPhoto" value="拍照" />
                     </div>
                 </li>
@@ -23,50 +25,28 @@
     </div>
 </template>
 <script>
-    (function($) {
-        var Qrcode = function(tempBtn) {
+        var photoArr = [];
+        var UpdatePhoto = function(tempBtn) {
             var _this_ = this;
-            var isWeiboWebView = /__weibo__/.test(navigator.userAgent);
-
-            if (isWeiboWebView) {
-                if (window.WeiboJSBridge) {
-                    _this_.bridgeReady(tempBtn);
-                } else {
-                    document.addEventListener('WeiboJSBridgeReady', function() {
-                        _this_.bridgeReady(tempBtn);
-                    });
-                }
-            } else {
-                _this_.nativeReady(tempBtn);
-            }
+            _this_.nativeReady(tempBtn);
+            
         };
-
-        Qrcode.prototype = {
+        UpdatePhoto.prototype = {
             nativeReady: function(tempBtn) {
                 $('[node-type=jsbridge]',tempBtn).on('click',function(e){
                     e.stopPropagation();
                 });
-
                 $(tempBtn).bind('click',function(e){
                     $(this).find('input[node-type=jsbridge]').trigger('click');
                 });
 
                 $(tempBtn).bind('change', this.getImgFile);
             },
-            bridgeReady: function(tempBtn) {
-                $(tempBtn).bind('click', this.weiBoBridge);
-            },
-            weiBoBridge: function() {
-                window.WeiboJSBridge.invoke('scanQRCode', null, function(params) {
-                    //得到扫码的结果
-                });
-            },
             getImgFile: function() {
-                var _this_ = this;
-                var inputDom = $(this).find('input[node-type=jsbridge]');
+                var inputDom = $("#qr-btn").find('input[node-type=jsbridge]');
                 var imgFile = inputDom[0].files;
                 var oFile = imgFile[0];
-                var oFReader = new FileReader();
+                var oFReader1 = new FileReader();
                 var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
 
                 if (imgFile.length === 0) {
@@ -77,41 +57,50 @@
                     alert("选择正确的图片格式!");
                     return;
                 }
-
-                oFReader.onload = function(oFREvent) {
-                    qrcode.decode(oFREvent.target.result);
-                    var img = new Image();
-                    img.width = 600;
-                    img.height = 800;
-                    img.onload=function(){
-                       
-                    };  
-                    img.src = oFREvent.target.result;
-                    $("#img_box").append(img);
-                    qrcode.callback = function(data) {
-                        //扫描毁掉函数
-                    };
+                oFReader1.onload = function(oFREvent) {
                     
-                    
+                var img = new Image();
+                img.width = 600;
+                img.height = 800;
+                img.onload=function(){
                 };
-
-                oFReader.readAsDataURL(oFile);
+                img.src = oFREvent.target.result;
+                $("#img_box").append(img);                 
+                };
+                oFReader1.readAsDataURL(oFile);
+                var file = $("#qr-btn").find('input[node-type=jsbridge]')[0]; //文件
+                var formData = new FormData(); //构造空对象，下面用append 方法赋值。
+                formData.append("file", file.files[0]);
+                formData.append("isImg", true);
+                $.ajax({
+                    type:"POST",
+                    url:'http://www.zaichongqing.com/jj_project/base/commonController/uploadFile',
+                    dataType: "JSON",
+                    data: formData,
+                    processData: false, // 必须false才会避开jQuery对 formdata 的默认处理, XMLHttpRequest会对 formdata 进行正确的处理
+                    contentType: false, // 必须false才会自动加上正确的Content-Type,
+                    success:function(data){                       
+                        if(data.data!='' && data.rtnCode == "0000"){
+                            photoArr.push(data.data.data);
+                            console.log(photoArr)
+                        }else{
+                            //alert("")
+                        }                      
+                    }
+                });
             },
             destory: function() {
                 $(tempBtn).off('click');
             }
         };
 
-        Qrcode.init = function(tempBtn) {
+        UpdatePhoto.init = function(tempBtn) {
             var _this_ = this;
-
             tempBtn.each(function() {
                 new _this_($(this));
             });
         };
-        window.Qrcode = Qrcode;
-    })(window.Zepto ? Zepto : jQuery);
-
+      
 
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote'; 
@@ -125,23 +114,20 @@
                 text:'',
                 title:'',
                 time:'',
-                nid:''
+                nid:'',
+                phone:'',
+                photoArr:''
             }
         },
         methods:{
             delatePhoto:function(){
-                // function test(){
-                //     alert(1)
-                // }
-                // var optionJson={
-				// 	title:"删除",//非必传,app判断空时默认为”提示”
-				// 	msg:"确认要删除最近的一张照片吗？",//必传
-				// 	callback:test()            //  顺序反了
-				// }
-                // window.AppJsObj.appConfirm(JSON.stringify(optionJson));
                 var $imgBox = $("#img_box");
-            
-
+                var childArr =  $imgBox.find("img");
+                var length =childArr.length;
+                if(length>=1){
+                    $(childArr[length-1]).remove();
+                    photoArr.pop();console.log(photoArr);
+                }
 
 
             },
@@ -154,9 +140,14 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                if(response.data.data.note!=''){
-                                    _this.text =  response.data.data.note.content;
-                                    _this.nid  = response.data.data.note.id;
+                                if(response.data.data.note!=null){
+                                    var thisData = response.data.data.note;
+                                    if(thisData.content){
+                                        _this.text = _this.getWord(thisData.content); 
+                                        _this.nid = thisData.id;
+                                        _this.photoArr = _this.getImgAdd(thisData.content);
+                                        photoArr = _this.getImgAdd(thisData.content);
+                                    }
                                 }else{
                                      _this.nid  =null;
                                 }
@@ -165,26 +156,54 @@
                         }
                     })
             },
-            request2:function(params){
+            request2:function(){
                 var _this = this;
-                var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                var mid = fn.QueryString('mid');      
               
-                _this.$http.post(urls, {
-                    phone:_this.phone,mid:mid,content:this.text
-                    })
-                    .then(function (response) {
-                        if(response.status == "200" && response.data.rtnCode == "0000"){
-                            if(response.data.data!='' && response.data.rtnCode == "0000"){
-                                    alert("您的笔记已保存");
-                            }
+                _this.$http({
+                    method:"POST",
+                    url:urls,
+                    data:{
+                        phone:_this.phone,
+                        mid:mid,
+                        content:_this.text+'thisIsACutByQf'+photoArr.join(';'),
+                        nid:_this.nid,
+                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    transformRequest: function (data) {
+                        return $.param(data);
+                    }
+
+                })
+                .then(function (response) {
+                    if(response.status == "200" && response.data.rtnCode == "0000"){
+                        if(response.data.data!='' && response.data.rtnCode == "0000"){
+                                alert("您的笔记已保存");
                         }
-                    })
+                    }
+                })
+            },
+            getWord:function(str){
+                if(str && str!=''){
+                    var arr = str.split('thisIsACutByQf');
+                    return arr[0]
+                }
+            },
+            getImgAdd:function(str){
+              
+            if(str && str!=''){
+                var arr = str.split('thisIsACutByQf');
+                return arr[1].split(';')
+            }
+                
+                
             },
             submit:function(){
                 if(this.text == ''){
                     alert("请您完成笔记再提交哦！")
                 }else{
                     this.request2();
+                    
                 }
             },
         },
@@ -195,10 +214,11 @@
             this.title = title;
             this.time = time;
             this.request1();
+            
            
         },
         mounted:function(){
-            Qrcode.init($('[node-type=qr-btn]'));  //待页面dom渲染完成再init
+            UpdatePhoto.init($('[node-type=qr-btn]'));  //待页面dom渲染完成再init
         }
 
     }

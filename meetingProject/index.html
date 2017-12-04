@@ -5,8 +5,6 @@
     <meta name=viewport content="width=device-width,initial-scale=0.5,maximum-scale=0.5,minimum-scale=0.5,user-scalable=0">
     <title>y</title>
     <link rel="stylesheet" href="./static/css/reset.css">
-    <script src="./static/js/qrcode.lib.min.js"></script>
-    <script src="https://cdn.bootcss.com/zepto/1.0rc1/zepto.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -28,9 +26,7 @@
       function getToken(params) { //获取token
             sessionStr = params;
             var sessionObj = eval("(" + sessionStr + ")");
-            alert(sessionObj.sessionId)
-            alert(sessionObj.token)
-            alert(sessionObj.phone)
+
             if(sessionObj.phone == undefined){  
                   $(".notUser").show();
                   alert("后台系统没有您的名单，请联系管理员添加！");
@@ -42,7 +38,7 @@
                 userInfor.phone = sessionObj.phone;
                 localStorage.setItem('userInfor',JSON.stringify(userInfor));
                 $(".notUser").hide();
-                alert( userInfor.phone)
+              
               }
       }
       // var timer = setInterval(function(){
