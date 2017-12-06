@@ -3,7 +3,7 @@
         <div class="top">
             <div class="message" v-show="meetingUser!=''">
                 <div class="nameDepart"><span >部门:</span><span style="margin-left:.5rem">{{meetingUser['dept']}}</span></div>
-                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem;color:#fff">{{meetingUser['phone']}}</span></div>
+                <div class="number"><span>电话号码:</span><span style="margin-left:.2rem;color:#fff!important">{{meetingUser['phone']}}</span></div>
                 <div class="name">{{meetingUser['name']}}</div>
             </div>
             <div class="newMessage oneRowHide" v-show="oneMessage!=''"> 
@@ -22,8 +22,8 @@
                         <div class="content">
                             <div class="left">
                                 <h1 class="title oneRowHide">{{item.title}}</h1>
-                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                                <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间 : </span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点 : </span>{{item.addr}}</p>
                             </div>
                         </div>
                      </router-link>
@@ -40,8 +40,8 @@
                         <div class="content">
                             <div class="left">
                                 <h1 class="title oneRowHide">{{item.title}}</h1>
-                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                                <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                                <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间  :</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                                <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点 : </span>{{item.addr}}</p>
                             </div>
                         </div>
                     </router-link>    
@@ -57,7 +57,7 @@
                             <mt-button  class="button2Reclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
                         </div>
                         <div class="joinStatus" v-show="item.qr_type !== 2" style="height:.8rem;"></div>
-                        <div class="endSign" v-show="item.status == 4"><img src="./icon_9.png" alt=""></div>
+                        <div class="endSign" v-show="item.status == 4"></div>
                     <router-link :to="{ path: 'meetingDetail', query: { mid:item.id,way:way }}" class="router_link">  
                     <div class="status2">
                         
@@ -65,9 +65,9 @@
                     </div>      
                     <div class="content">
                         <div class="left" style="padding-right:.5rem;;">
-                            <p class="from oneRowHide"><span class="icon_3">&#8195;</span><span>发起单位:</span>{{item.unit}}</p>
-                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                            <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点:</span>{{item.addr}}</p>
+                            <p class="from oneRowHide"><span class="icon_3">&#8195;</span><span>发起单位 : </span>{{item.unit}}</p>
+                            <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间 : </span>{{formatTime(item.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                            <p class="location over_text_2"><span class="icon_2">&#8195;</span><span>会议地点 : </span>{{item.addr}}</p>
                         </div>
                     </div>
                 </router-link>
@@ -281,8 +281,7 @@
         background-image: url("./bmg_1.png");
         background-position: center;
         background-repeat: no-repeat;
-        background-size:100%;
-        
+        background-size:7.5rem 1.5rem;
         .nameDepart {
             margin-bottom: .2rem;
             margin-top: .1rem;
@@ -345,10 +344,17 @@
             margin-bottom: .3rem;
             width: 7.5rem;
             position: relative;
-            .endSign{
+             .endSign{
+                width: 1.28rem;
+                height: .72rem;
                 position: absolute;
-                top: 0;
+                top: .2rem;
                 right: .25rem;
+                background-image: url("./icon_9.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size:1.28rem .72rem;
+
             }
             .status {
                 height: .5rem;

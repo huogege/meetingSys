@@ -4,13 +4,13 @@
          <p class="word">{{voteModel.title}}<span style="font-size:.26rem;margin-left:1rem;">单选</span></p>    
     </div>
     <div class="content">
-        <div class="list" v-for="item in voteOptionModels">
+        <div class="list" v-for="(item,index) in voteOptionModels">
             <span class="word oneRowHide">{{item.options}}</span>
             <span class="barContent">
-                  <span class="bar" :style="{width:item.percent*0.045+'rem',backgroundColor:'#'+('00000'+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6)}" ref="bar"></span>
+                  <span class="bar" :style="{width:item.percent*0.045+'rem',backgroundColor:colorArr[(Math.round(Math.random()*4+1))-1]}" ref="bar"></span>
             </span>
           
-            <span class="icon">{{item.nums}}</span>
+            <span class="icon" :class="index == 0 ? 'numOneIcon' : ''">{{item.nums}}</span>
         </div>
 
     </div>
@@ -35,7 +35,8 @@ export default {
         action:'',
         mid:'',
         voteWord:'已投票',
-        phone:''
+        phone:'',
+        colorArr:['#2b94fd','#6bcc70','#ee8483','#e47add','#8875df']
       };
     },
     methods:{
@@ -54,7 +55,11 @@ export default {
                             if(response.data.data!=''){
                                 var thisData = response.data.data;
                                 _this.voteModel = thisData.voteModel;
+                                    thisData.voteOptionModels.sort(function (a, b) {
+                                        return b['nums'] - a['nums'];
+                                    });
                                     _this.voteOptionModels = thisData.voteOptionModels;
+
                                     _this.voteModel = thisData.voteModel;
                                     _this.oid = thisData.voteOptionModels[0].id;
                                     if(thisData.isVote){
@@ -82,7 +87,6 @@ export default {
             .word{
                 line-height: 1.5rem;
                 font-size: .34rem;
-                padding-left: .1rem;
                 
             }
         }
@@ -101,11 +105,11 @@ export default {
                     text-align: justify;
                 }
                 .barContent{
-                         position: relative;
+                        position: relative;
                         display: inline-block;
                         height: .2rem;
                         width: 4.5rem;
-                        border: 1px solid  #575757;
+                        border: 1px solid  #57575730;
                          border-radius: .2rem;
                      .bar{
                          position: absolute;
@@ -114,21 +118,26 @@ export default {
                         display: inline-block;
                         height: .2rem;
                         width: 0rem;
-                        background-color: #ee472c;
                         border-radius: .2rem;
                     }
                 }
                 .icon{
-                   display: inline-block;
+                   display: block;
                    height: .5rem;
                    padding: 0 .1rem;
                    line-height: .5rem;
                    border-radius: .2rem;
-                   margin-left: .5rem;
+                   float:right;
+                   margin-top: .25rem;
+                   margin-right: .5rem;
                    background-color: #e4ebee;
                    text-align: center;
                    
                 } 
+                .numOneIcon{
+                    background-color: #2e94ff;
+                    color: #fff;
+                }
             }
             
             

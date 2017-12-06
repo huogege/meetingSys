@@ -7,7 +7,7 @@
                 <img src="photo.png" alt="">
             </textarea>
             <div id="img_box">
-                <img  v-for="item in photoArr" :src="item" alt="" width="600" height="800"> 
+                <img  v-show="photoArr.length>0" v-for="item in photoArr" :src="item" alt=""> 
             </div>
         </div>
         <div class="menu">
@@ -57,15 +57,17 @@
                     alert("选择正确的图片格式!");
                     return;
                 }
-                oFReader1.onload = function(oFREvent) {
-                    
-                var img = new Image();
-                img.width = 600;
-                img.height = 800;
-                img.onload=function(){
-                };
-                img.src = oFREvent.target.result;
-                $("#img_box").append(img);                 
+                oFReader1.onload = function(oFREvent) {             
+                    var img = new Image();
+                    img.onload=function(){
+                    };
+                    img.src = oFREvent.target.result;
+                    $("#img_box").append(img); 
+                    $("#img_box").find('img').css({
+                        width:6.7+"rem",
+                        hieght:6.7*4/3+"rem"
+                    });
+
                 };
                 oFReader1.readAsDataURL(oFile);
                 var file = $("#qr-btn").find('input[node-type=jsbridge]')[0]; //文件
@@ -193,7 +195,11 @@
               
             if(str && str!=''){
                 var arr = str.split('thisIsACutByQf');
-                return arr[1].split(';')
+                if(arr[1]!=''){
+                       return arr[1].split(';')
+                }else{
+                    return []
+                }    
             }
                 
                 
@@ -227,6 +233,7 @@
 @import "../../common/css/common.less";
     .note{
         position: relative;
+        width: 6.7rem;
         padding: .4rem .36rem;
         .title{
             font-size: .36rem;
@@ -262,9 +269,8 @@
                     height: 5rem;
                     text-align: center;
                     img{
-                        width: 6rem;
-                        height: 9rem;
-                        margin: 0 auto;
+                        width:6.7rem;
+                        height: 8.93rem;
                     }
                 }
         }

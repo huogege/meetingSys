@@ -7,10 +7,10 @@
                 <div class="content">
                     <div class="left">
                         <h1 class="title oneRowHide">{{meeting.title}}</h1>
-                        <p class="from"><span class="icon_3">&#8195;</span><span>发起单位:</span><span>{{meeting.unit}}</span></p>
-                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间:</span>{{format(meeting.stime,'yyyy-MM-dd  hh:mm')}}</p>
-                        <p class="location "><span class="icon_2">&#8195;</span><span>会议地点:</span>{{meeting.addr}}</p>
-                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长:</span>{{meeting.estime}}</p>
+                        <p class="from"><span class="icon_3">&#8195;</span><span>发起单位 : </span><span>{{meeting.unit}}</span></p>
+                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>开始时间 : </span>{{format(meeting.stime,'yyyy-MM-dd  hh:mm')}}</p>
+                        <p class="location "><span class="icon_2">&#8195;</span><span>会议地点 : </span>{{meeting.addr}}</p>
+                        <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长 : </span>{{meeting.estime}}</p>
                     </div>
                     <div class="right" @click="handleClick()">
                         <span class="icon"></span>
@@ -269,7 +269,7 @@
             .total{
                 font-size: .24rem;
                 color: #575757;
-                margin-left: 50%;
+                float: right;
             }
         }
         .content{

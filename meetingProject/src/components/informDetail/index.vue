@@ -1,9 +1,9 @@
 <template>
   <div class="informDetail">
-     <div class="message">
+     <p class="message">
          <span class="from">发件人:{{from}}</span>
          <span class="time">{{format( time,'yyyy-MM-dd  hh:mm')}}</span>
-     </div>
+     </p>
      <div class="content">
        <p v-for="item in splitWords(content)">{{item}}</p>
      </div>
@@ -42,25 +42,28 @@
     padding-left: .4rem;
     border-top: 1px solid #666;
     .message{
-      height:160px;
+      height:1.6rem;
+      line-height: 1.6rem;
       border-bottom:1px solid #666;
       .from{
-        margin-right: 150px;
-        font-size: 32px;
+        font-size: .32rem;
+        float: left;
       }
       .time{
-        font-size: 24px;
+        font-size: .24rem;
         color:#9e9e9e;
+        float: right;
+        margin-right: .4rem;
       }
     }
     .content{
-      padding: 30px 40px 30px 0;
+      padding: .3rem .4rem .3rem 0;
       p{
-        font-size: 28px;
+        font-size: .28rem;
         color: #575757;
-        line-height: 40px;
+        line-height: .4rem;
         text-align: justify;
-        margin-top: 20px;
+        margin-top: .2rem;
       }
     }
   }

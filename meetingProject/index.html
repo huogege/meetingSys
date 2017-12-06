@@ -26,7 +26,6 @@
       function getToken(params) { //获取token
             sessionStr = params;
             var sessionObj = eval("(" + sessionStr + ")");
-
             if(sessionObj.phone == undefined){  
                   $(".notUser").show();
                   alert("后台系统没有您的名单，请联系管理员添加！");
@@ -42,10 +41,10 @@
               }
       }
       // var timer = setInterval(function(){
+      //   localStorage.removeItem('userInfor');
       //   try { //判断是否在APP打开
       //       if(window.AppJsObj){
       //         clearInterval(timer);
-      //         localStorage.removeItem('userInfor');
       //         window.AppJsObj.appSessionToken("getToken", 2);
       //         IsAPP = true;
       //         getToken()
@@ -62,7 +61,8 @@
         var sessionObj = {
           sessionId:'sessionId_123',
           token:'token_123',
-          phone:'15826177123'
+          //phone:'15826177123',
+          phone:'18996394903',
         }
         if(localStorage.userInfor){
               localStorage.removeItem("userInfor")
@@ -78,7 +78,7 @@
             } 
       }
       //testLocalstorage()
-     setTimeout(function(){testLocalstorage()}) 
+      setTimeout(function(){testLocalstorage()}) 
       
     </script> 
   </body>

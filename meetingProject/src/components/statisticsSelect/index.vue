@@ -117,14 +117,14 @@
                 font-size: .3rem;
                 line-height: 1rem;
                 .icon{
-                    display: inline-block;
+                    display: block;
                     height: .4rem;;
                     width: .4rem;
                     border: 2px solid #3879d9;
                     float: right;
-                    vertical-align: middle;
                     border-radius: 50%;
                     margin: .28rem 1rem 0 0 ;
+                    transition: all .2s ease;
                 } 
                 .choose{
                     background-image: url("./icon_1.png");

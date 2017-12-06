@@ -16,8 +16,8 @@
                         <router-link v-for="item in list" :to="{ path: 'informDetail', query: { content: item.content,from:item.senduser,time:item.sendtime}}" class="router_link">
                             <div class="list">
                                 <span class="status">{{item.title}}</span>
-                                <div class="content"><p class="word" v-for="item in splitWords(item.content)">{{item}}</p></div>  
-                                <span class="time">{{item.sendTime}}</span>
+                                <div class="content"><p class="word oneRowHide"  v-for="item in splitWords(item.content)">{{item}}</p></div>  
+                                <span class="time">{{format( item.sendtime,'yyyy-MM-dd  hh:mm')}}</span>
                             </div>
                         </router-link>
                     </ul>
@@ -63,7 +63,8 @@
                         }
                     })
             },
-            splitWords:fn.splitWords
+            splitWords:fn.splitWords,
+            format:fn.format,
         },
         created:function(){
             this.$nextTick(function(){
@@ -89,6 +90,7 @@
         background-image: url("./bmg_1.png");
         background-position: center;
         background-repeat: no-repeat;
+         background-size:7.5rem 1.5rem;
         .nameDepart {
             margin-bottom: .2rem;
             margin-top: .1rem;
