@@ -25,6 +25,7 @@
     </div>
 </template>
 <script>
+
         var photoArr = [];
         var UpdatePhoto = function(tempBtn) {
             var _this_ = this;
@@ -47,6 +48,7 @@
                 var imgFile = inputDom[0].files;
                 var oFile = imgFile[0];
                 var oFReader1 = new FileReader();
+                var fileName = oFile.name;
                 var rFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
 
                 if (imgFile.length === 0) {
@@ -57,39 +59,64 @@
                     alert("选择正确的图片格式!");
                     return;
                 }
+                
                 oFReader1.onload = function(oFREvent) {             
                     var img = new Image();
                     img.onload=function(){
+                         var that = this;
+                        // 默认按比例压缩
+                        var w = 600*1.5,
+                        h = 800*1.5,
+                        scale = w / h;
+                        w = w;
+                        h = w / scale;
+                        var quality = 0.5;  // 默认图片质量为0.7
+                        //生成canvas
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        // 创建属性节点
+                        var anw = document.createAttribute("width");
+                        anw.nodeValue = w;
+                        var anh = document.createAttribute("height");
+                        anh.nodeValue = h;
+                        canvas.setAttributeNode(anw);
+                        canvas.setAttributeNode(anh); 
+                        ctx.drawImage(that, 0, 0, w, h);
+                        
+                        // quality值越小，所绘制出的图像越模糊
+                        var base64 = canvas.toDataURL('image/jpeg', 0.5);
+                        // 回调函数返回base64的值
+                        var photo = new Image();
+                        photo.src = base64;
+                        $("#img_box").append(photo); 
+                       
+                      
+                        var formData = new FormData(); //构造空对象，下面用append 方法赋值。
+                        formData.append("base64",fn.cutBase64(base64));
+                        formData.append("fileName", fileName);
+                         $.ajax({
+                            type:"POST",
+                            url:'http://www.zaichongqing.com/jj_project/base/commonController/uploadFileBase64',
+                            dataType: "JSON",
+                            data:formData,
+                            processData: false, // 必须false才会避开jQuery对 formdata 的默认处理, XMLHttpRequest会对 formdata 进行正确的处理
+                            contentType: false, // 必须false才会自动加上正确的Content-Type,
+                            success:function(data){                       
+                                if(data.data!='' && data.rtnCode == "0000"){
+                                    photoArr.push(data.data.data);
+                                    console.log(photoArr)
+                                }else{
+                                    //alert("")
+                                }                      
+                            }
+                        });
+
                     };
                     img.src = oFREvent.target.result;
-                    $("#img_box").append(img); 
-                    $("#img_box").find('img').css({
-                        width:6.7+"rem",
-                        hieght:6.7*4/3+"rem"
-                    });
-
+                   
+                   
                 };
                 oFReader1.readAsDataURL(oFile);
-                var file = $("#qr-btn").find('input[node-type=jsbridge]')[0]; //文件
-                var formData = new FormData(); //构造空对象，下面用append 方法赋值。
-                formData.append("file", file.files[0]);
-                formData.append("isImg", true);
-                $.ajax({
-                    type:"POST",
-                    url:'http://www.zaichongqing.com/jj_project/base/commonController/uploadFile',
-                    dataType: "JSON",
-                    data: formData,
-                    processData: false, // 必须false才会避开jQuery对 formdata 的默认处理, XMLHttpRequest会对 formdata 进行正确的处理
-                    contentType: false, // 必须false才会自动加上正确的Content-Type,
-                    success:function(data){                       
-                        if(data.data!='' && data.rtnCode == "0000"){
-                            photoArr.push(data.data.data);
-                            console.log(photoArr)
-                        }else{
-                            //alert("")
-                        }                      
-                    }
-                });
             },
             destory: function() {
                 $(tempBtn).off('click');
@@ -270,7 +297,7 @@
                     text-align: center;
                     img{
                         width:6.7rem;
-                        height: 8.93rem;
+                        height: 5.03rem;
                     }
                 }
         }

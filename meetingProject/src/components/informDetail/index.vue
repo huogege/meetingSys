@@ -41,6 +41,7 @@
   .informDetail{
     padding-left: .4rem;
     border-top: 1px solid #666;
+    width: 7.1rem;
     .message{
       height:1.6rem;
       line-height: 1.6rem;

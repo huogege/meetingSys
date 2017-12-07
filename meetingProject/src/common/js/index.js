@@ -133,6 +133,12 @@ var unitFun = {
     }else{
       return false
     }
+  },
+  //截取base64码
+  cutBase64:function(str){
+    if(str){
+      return str.substring(23);
+    }
   }
 }
 export default unitFun;
