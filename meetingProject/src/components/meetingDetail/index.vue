@@ -91,7 +91,7 @@
             formatMsgTime:fn.formatMsgTime,
             request:function(params){
                  var _this = this;
-                 var mid = fn.QueryString('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+                 var mid = localStorage.getItem('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
                  _this.mid = mid;
                 _this.$http.get(url, {
                     params:{phone:_this.phone,mid:mid}
@@ -112,7 +112,7 @@
             handleClick:function(){
                 alert("还在开发中！")
             },
-             backCkick:function(){
+           /* backCkick:function(){
                 var _this= this;
                 console.log(fn)
                 var path = decodeURIComponent(fn.QueryString('way'));
@@ -124,17 +124,12 @@
                              
                     });
                 }
-            },
+            },*/
         }, 
         created:function(){
-            this.phone =  JSON.parse(localStorage.getItem('userInfor')).phone;
-            this.request();
-            // this.backCkick();
-          
+            this.request();   
         },
-        mounted:function(){
-           
-        },
+    
 
     }
 </script>

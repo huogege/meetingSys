@@ -6,9 +6,12 @@
             <textarea v-model="text"  class="textarea" placeholder="亲，点击文字开始记录您的会议笔记" name="会议内容" id="note" cols="30" rows="10">
                 <img src="photo.png" alt="">
             </textarea>
-            <div id="img_box">
-                <img  v-show="photoArr.length>0" v-for="item in photoArr" :src="item" alt=""> 
+            <div id="image_content">
+                 <div class="img_box" v-show="photoArr.length>0" v-for="item in photoArr">
+                    <img   :src="item" alt=""> 
+                </div>
             </div>
+           
         </div>
         <div class="menu">
             <ul>
@@ -65,8 +68,8 @@
                     img.onload=function(){
                          var that = this;
                         // 默认按比例压缩
-                        var w = 600*1.5,
-                        h = 800*1.5,
+                        var w = 800*1.5,
+                        h = 600*1.5,
                         scale = w / h;
                         w = w;
                         h = w / scale;
@@ -88,9 +91,6 @@
                         // 回调函数返回base64的值
                         var photo = new Image();
                         photo.src = base64;
-                        $("#img_box").append(photo); 
-                       
-                      
                         var formData = new FormData(); //构造空对象，下面用append 方法赋值。
                         formData.append("base64",fn.cutBase64(base64));
                         formData.append("fileName", fileName);
@@ -113,6 +113,14 @@
 
                     };
                     img.src = oFREvent.target.result;
+                    var img_box = $('<div class="img_box"></div>');
+                    img_box.append(img)
+                    $("#image_content").append(img_box); 
+                    $("#image_content").find('.img_box').css({
+                         width:6.7+'rem',
+                         height:5.0 +'rem',                     
+                         overflow: 'scroll',
+                    })
                    
                    
                 };
@@ -150,8 +158,8 @@
         },
         methods:{
             delatePhoto:function(){
-                var $imgBox = $("#img_box");
-                var childArr =  $imgBox.find("img");
+                var $imgBox = $(".img_box");
+                var childArr = $imgBox;
                 var length =childArr.length;
                 if(length>=1){
                     $(childArr[length-1]).remove();
@@ -291,13 +299,14 @@
                 font-size: .3rem;
                 line-height: .4rem;
             }
-              #img_box{
+              .img_box{
                     width: 100%;
-                    height: 5rem;
-                    text-align: center;
+                    height: 5.03rem;
+                   overflow: scroll;
+                   -webkit-overflow-scrolling: touch;
                     img{
-                        width:6.7rem;
-                        height: 5.03rem;
+                       // width:6.7rem;
+                        //height: 5.03rem;
                     }
                 }
         }

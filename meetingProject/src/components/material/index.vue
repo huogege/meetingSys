@@ -13,23 +13,24 @@
                     空空如也~~<br>当前没有会议资料
                 </h1>
             </div>
+           
         </div>
         <div class="mengceng" v-show="mengcengShow">
             <div class="bgColor"></div>
             <ul class="menu">
                 <!-- <li class="subMenu">预览</li>
                 <li class="subMenu">发送</li> -->
-                <!-- <li class="subMenu"><a :href="downloadUrl" :download="downloadName">查看/下载</a></li> -->
-                <li class="subMenu"><a>查看/下载</a></li>
+                <li class="subMenu"><a :href="downloadUrl" >查看/下载</a></li>
+                <!-- <li class="subMenu"><a>查看/下载</a></li> -->
                 <li class="subMenu" @click="hideMengceng">取消</li>
             </ul>
         </div>
+
     </div>
 </template>
-<script>
+<script>  
     import fn from "../../common/js/index.js";    
     var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingData';
-    var mid = fn.QueryString('mid');
     export default{
         components:{
             
@@ -67,7 +68,8 @@
             },
             cutPostfix:fn.cutPostfix,
         },
-        mounted:function(){
+        created:function(){
+            var mid = localStorage.getItem('mid');
            this.request({mid:mid})
         },
 

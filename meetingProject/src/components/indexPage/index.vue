@@ -13,8 +13,8 @@
             </div>
 
          <div class="meetingStatus">
-                <div class="list" v-for="item in inList">
-                    <router-link  :to="{ path: 'meetingDetail', query: { mid : item.id,way:way }}" class="router_link">
+                <div class="list" v-for="item in inList" @click = "setLocalStorage(item.id)">
+                    <router-link  :to="{ path: 'meetingDetail', query: { mid : item.id,way:way }}" class="router_link" >
                         <div class="status">
                             <span class="word">会议进行中</span>
                             <span class="time">已进行:{{formatMsgTime(item.stime,nowTime)}}</span>
@@ -32,7 +32,7 @@
                         <span class="word">扫码签到</span>
                     </div>
             </div>
-                <div class="list" v-for="item in soonList">
+                <div class="list" v-for="item in soonList" @click = "setLocalStorage(item.id)">
                     <router-link   :to="{ path: 'meetingDetail', query: {mid:item.id,way:way}}" class="router_link">
                         <div class="status">
                             <span class="word" style="background-color:#f1a54d">会议即将进行</span>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
            
-             <div class="list" v-for="(item,index) in changeList" :class="index == changeList.length-1? 'marginNone':''">
+             <div @click = "setLocalStorage(item.id)" class="list" v-for="(item,index) in changeList" :class="index == changeList.length-1? 'marginNone':''">
                          <div class="joinStatus" v-show="item.qr_type == 2&&item.status !==4">
                             <mt-button class="button2Reclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
                             <mt-button  class="button2Reclass" :class="item.cj_status == 2?'refuse':item.cj_status == 3?'join': item.cj_status == 4? 'refuse':''" @click="changeWord2Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord2 = '不参会':item.cj_status == 3?changeWord2 = '参会': item.cj_status == 4?changeWord2 = '不参会':''}}</mt-button>
@@ -233,6 +233,14 @@
                 break;
               }
             },
+            setLocalStorage:function(id){
+                console.log(id);
+                console.log(localStorage.getItem("mid"))
+                if(localStorage.getItem("mid")){
+                       localStorage.removeItem("mid");  
+                }
+                localStorage.setItem("mid", id);
+            }
            
         }, 
         created:function(){
