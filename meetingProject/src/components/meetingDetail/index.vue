@@ -1,9 +1,8 @@
 <template>
-  <div class="meetingDetail">
+  <div class="meetingDetail" v-show="meetingDetailShow">
         <div class="blackBar"></div>
        <div class="meetingStatus">
-            <div class="list">
-                 
+            <div class="list">              
                 <div class="content">
                     <div class="left">
                         <h1 class="title oneRowHide">{{meeting.title}}</h1>
@@ -13,11 +12,25 @@
                         <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长 : </span>{{meeting.estime}}</p>
                     </div>
                     <div class="right" @click="handleClick()">
-                        <span class="icon"></span>
-                        <span class="word">扫码签到</span>
+                        <mt-button class="word">点击签到</mt-button>
                     </div>
                 </div>
             </div>         
+        </div>
+        <div class="joinPerson">
+            <p class="title">
+                <span class="icon_8">&#8195;</span>
+                <span class="word">当前人员</span>
+                <mt-button class="editUser" type="primary" @click="editUser">修改</mt-button>       
+            </p>
+            <div class="content">
+                <div class="list">
+                    <span class="cell">覃峰</span>
+                    <span class="cell">网络部</span>
+                    <span class="cell">前端</span>
+                    <span class="cell" style="width:50%">18996394903</span>
+                </div>
+            </div>
         </div>
         <div class="joinPerson">
             <p class="title">
@@ -67,14 +80,22 @@
   </div>
 </template>
 <script>
+    const appID = "wxaf572eadec6a72a5";
+    const appsecret = "af0abd5977fa86a92614fe3a3bec1f6c";
+    import { MessageBox } from 'mint-ui';
     import fn from "../../common/js/index.js";
-    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingInfo'
+    import url from "../../common/js/url.js";
+    const jjURL = url.jjURL;
+    console.log(jjURL)
+   
+    //var url = 'http://http://sz.cqjjnet.com/jj_project/wapMeeting/manager/meetingInfo'
     export default{
         components:{
          
         },
         data:function(){
             return{
+                meetingDetailShow:false,
                  meeting:{
                      type:Object
                  },
@@ -89,29 +110,40 @@
         methods:{
             format:fn.format,
             formatMsgTime:fn.formatMsgTime,
-            request:function(params){
-                 var _this = this;
-                 var mid = localStorage.getItem('mid');      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
-                 _this.mid = mid;
-                _this.$http.get(url, {
-                    params:{phone:_this.phone,mid:mid}
+            request:function(mid,phone){
+        
+                var _this = this;
+                _this.$http.get(jjURL+'meetingInfo', {
+                    params:{phone:phone,mid:mid}
                     })
                     .then(function (response) {
-                        if(response.status == "200" && response.data.rtnCode == "0000"){
-                            if(response.data.data!=''){
-                                 _this.meeting = response.data.data.meeting;
-                                 _this.userList = response.data.data.meeting.userlist;
-                                 _this.title = response.data.data.meeting.title;
+                       if(response.status == "200" && response.data.rtnCode == "0000"){
+                           if(response.data.data!=''){
+                                _this.meeting = response.data.data.meeting;
+                                _this.userList = response.data.data.meeting.userlist;
+                                _this.title = response.data.data.meeting.title;
                                 _this.time = fn.format(response.data.data.meeting.stime,'yyyy-MM-dd  hh:mm');
-                                 
-                          
-                            }
-                        }
+                           }  
+                        }         
                     })
             },
             handleClick:function(){
-                alert("还在开发中！")
+                // //调用原生二维码扫描
+                // window.AppJsObj.appAlert("gg");
+                // window.AppJsObj.getTwoDimensionalCode("getTwoDimensionalCodeCallBack");              
+                // //原生二维码扫描结果回调函数
+                // function getTwoDimensionalCodeCallBack(params){
+                //     window.AppJsObj.appAlert(JSON.stringify(params));
+                // }
+
+
+
+
+
             },
+            editUser:function(){
+
+            }
            /* backCkick:function(){
                 var _this= this;
                 console.log(fn)
@@ -127,7 +159,25 @@
             },*/
         }, 
         created:function(){
-            this.request();   
+            
+            var mid = "";      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+            var phone = "";
+            console.log(window.location.href);
+            console.log(fn.QueryString("sign_source"))
+            console.log(fn.QueryString("phone"))
+            debugger
+            mid = fn.QueryString("mid");
+            if(fn.QueryString("sign_source") !=null){
+                phone = fn.QueryString("phone");
+            }else{
+                phone = localStorage.getItem('userInfor').phone;
+            }
+            this.mid = mid;
+            this.phone = phone;
+            console.log(mid);
+            console.log(phone);
+            this.meetingDetailShow = true;
+            this.request(mid,phone); 
         },
     
 
@@ -190,7 +240,6 @@
                     width: 5.3rem;
                     font-weight: 700;
                     margin-bottom: .4rem;
-
                 }
                 .icon_2 {
                     background-image: url("./icon_2.png");
@@ -240,9 +289,11 @@
                     background-size:.85rem .72rem;
                 }
                 .word {
+                    height: .5rem;
                     font-size: .24rem;
                     margin-top: .2rem;
                     color: #178aff;
+                    border-radius: .2rem
                 }
             }
         }
@@ -254,6 +305,11 @@
         .title{
             font-size: .3rem;
             padding: .35rem;
+            .editUser{
+                    float: right;
+                    font-size: .24rem;
+                    border-radius: .1rem
+                    }
             .icon_8{
                 background-image: url("./icon_8.png");
                 background-repeat: no-repeat;
@@ -275,9 +331,11 @@
                 overflow: hidden;
             }
             .cell{
-                display: inline-block;
+                display: block;
                 width: 33.3%;
                 float: left;
+                text-align: left;
+                text-indent: .35rem;
                 margin-bottom: .2rem;
                 &:last-child{
                     margin: 0;
@@ -351,6 +409,7 @@
             }
         }
     }
+   
 }
 
 </style>

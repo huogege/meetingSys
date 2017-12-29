@@ -74,7 +74,7 @@
           
             </div>  
              
-            <router-link v-show="changeList.length>0||inList.length>0||soonList.length>0"  :to="{ path: 'meetingList'}"class="router_link" style="display:grid">
+            <router-link v-show="changeList.length>0||inList.length>0||soonList.length>0"  :to="{ path: 'meetingList'}" class="router_link" style="display:grid">
                 <mt-button  class="buttonReclass moreMeeting">更多会议</mt-button>     
             </router-link>   
         </div>
@@ -83,19 +83,21 @@
 </template>
 <script>
     import fn from "../../common/js/index.js";
+    import url from "../../common/js/url.js";
+    const jjURL = url.jjURL;
     export default{
         components:{
          
         },
         data:function(){
             return{     
-                URL1:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/doMeeting' ,  //进行会议或即将进行会议
-                URLS:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingAll',
-                URL2:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingAll',//全部会议
-                URL3:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/notStartMeeting',// 未开始会议
-                URL4:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/endMeeting',     //已结束会议   
-                URL5: 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList'  ,     //消息 
-                URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',    //参会确认
+                URL1:jjURL+'doMeeting' ,  //进行会议或即将进行会议
+                URLS:jjURL+'meetingAll',
+                URL2:jjURL+'meetingAll',//全部会议
+                URL3:jjURL+'notStartMeeting',// 未开始会议
+                URL4:jjURL+'endMeeting',     //已结束会议   
+                URL5:jjURL+'msgList'  ,     //消息 
+                URL6:jjURL+'meetingCj',    //参会确认
                meetingUser:'' ,
                currentItem:0,
                pullup:true,

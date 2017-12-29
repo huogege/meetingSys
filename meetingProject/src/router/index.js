@@ -18,6 +18,7 @@ import note from '@/components/note/index'
 import daihuiren from '@/components/daihuiren/index'  
 import blackPage from '@/components/blackPage/index'
 
+import userRegist from '@/components/userRegist/index' 
 
 import setWechatTitle from '../common/js/setWechatTitle'   //标题文件
 
@@ -94,6 +95,11 @@ var router =  new Router({
       path: '/blackPage',
       name: '',
       component: blackPage
+    },
+    {
+      path: '/userRegist',
+      name: '注册',
+      component: userRegist
     },
   ]
 });

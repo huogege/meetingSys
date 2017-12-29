@@ -2,9 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name=viewport content="width=device-width,initial-scale=0.5,maximum-scale=0.5,minimum-scale=0.5,user-scalable=0">
+    <meta name=viewport content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=0">
     <title>首页</title>
     <link rel="stylesheet" href="./static/css/reset.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -20,40 +21,44 @@
     <!-- <script type="text/javascript" src="config/config.js"></script> -->
     <script type="text/javascript" src="js/jbase64.js"></script>
     <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script>
     <script type="text/javascript">
-      var IsAPP =  false;
+        var IsAPP =  false;
 
-      function getToken(params) { //获取token
-            sessionStr = params;
-            var sessionObj = eval("(" + sessionStr + ")");
-            if(sessionObj.phone == undefined){  
-                  $(".notUser").show();
-                  alert("后台系统没有您的名单，请联系管理员添加！");
-                  return false;
-            }else{
-                var userInfor = {};
-                userInfor.sessionId = sessionObj.sessionId;
-                userInfor.token = sessionObj.token;
-                userInfor.phone = sessionObj.phone;
-                localStorage.setItem('userInfor',JSON.stringify(userInfor));
-                $(".notUser").hide();
-              
-              }
-      }
-      // var timer = setInterval(function(){
-      //   localStorage.removeItem('userInfor');
-      //   try { //判断是否在APP打开
-      //       if(window.AppJsObj){
-      //         clearInterval(timer);
-      //         window.AppJsObj.appSessionToken("getToken", 2);
-      //         IsAPP = true;
-      //         getToken()
-      //       }	          
-      //     } catch(e) {
-      //       IsAPP = false;
-      //      // alert("请在app中打开网页！")
-      //     }	
-      // },"200");
+        function getToken(params) { //获取token
+              sessionStr = params;
+              var sessionObj = eval("(" + sessionStr + ")");
+              console.log(sessionObj)
+              if(sessionObj.phone == null){  
+                    $(".notUser").show();
+                    alert("后台系统没有您的名单，请联系管理员添加！");
+                    return false;
+              }else{
+                  var userInfor = {};
+                  userInfor.sessionId = sessionObj.sessionId;
+                  userInfor.token = sessionObj.token;
+                  userInfor.phone = sessionObj.phone;
+                  localStorage.setItem('userInfor',JSON.stringify(userInfor));
+                  $(".notUser").hide();
+                
+                }
+        }
+        // var timer = setInterval(function(){
+        //   localStorage.removeItem('userInfor');
+        //   try { //判断是否在APP打开
+        //       if(window.AppJsObj){
+        //         clearInterval(timer);
+        //         window.AppJsObj.appSessionToken("getToken", 2);
+        //         IsAPP = true;
+        //         getToken()
+        //       }	          
+        //     } catch(e) {
+        //       IsAPP = false;
+        //     // alert("请在app中打开网页！")
+        //     }	
+        // },"200");
+      
+     
 
       
     
@@ -78,8 +83,7 @@
             } 
       }
       //testLocalstorage()
-      setTimeout(function(){testLocalstorage()}) 
-      
+      setTimeout(function(){testLocalstorage()})
     </script> 
   </body>
 </html>

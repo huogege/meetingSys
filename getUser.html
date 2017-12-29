@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+</head>
+<body>
+	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/config/config.js"></script>
+	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/jbase64.js"></script>
+	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/common.js"></script>
+	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script>
+    <script>
+	function QueryString (val) {
+		var url = window.location.href;
+		var re = new RegExp("" + val + "\=([^\&\?]*)", "ig");
+		return ((url.match(re)) ? (url.match(re)[0].substr(val.length + 1)) : null);
+	};
+	function isWeiXin(){
+		var ua = window.navigator.userAgent.toLowerCase();
+		if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	var mid = QueryString('mid');
+	var sign_source = QueryString('sign_source');
+	function byWeixin(){
+		// if(sign_source != 3 || 1){
+		// 	alert("该二维码仅支持微信端扫码，请使用微信客户端扫码");
+		// }
+		if(isWeiXin()){	
+			var dqwz = window.location.href;
+			if(dqwz.indexOf("openid") > 0 ) { 	//微信返回回来信息处理				
+				var url = window.location.search; 
+				var yhxx = url.substring(url.lastIndexOf('openid'), url.length);
+				var qurl = window.location.href;	
+				var burl = qurl.substring(qurl.indexOf("h") - 1,qurl.indexOf("&openid"));
+				var openid = yhxx.substring(yhxx.indexOf("openid=") +7,yhxx.indexOf("&k="));
+				var key = yhxx.substring(yhxx.lastIndexOf('&k=')+3, yhxx.length);
+				alert("实际网站："+burl+"当前网址："+dqwz+"用户信息："+yhxx+"用户openid:"+openid+"密匙："+key);	
+				window.location.href= 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/meetingDetail.html?mid='+mid+'';
+			}else{
+				var tzwx = "http://api.cqjjnet.com/getWeixinOpenid.php?reurl=http://sz.cqjjnet.com/jj_project/pages/h5/getUser.html";
+				window.location.href= tzwx;
+			}
+		
+		}	
+	}
+	function getToken(params) { //获取token
+		sessionStr = params;
+		var sessionObj = eval("(" + sessionStr + ")");
+		var phone = sessionObj.phone;
+		console.log(sessionObj);
+		if(phone !== null){
+			window.location.href= 'http://192.168.191.1:7777/#/meetingDetail?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'';	
+		}
+	}	
+
+	switch(sign_source){
+		case '1': //app+微信
+			byWeixin();
+			
+			break;
+		case '2': //app0
+		console.log('sign_source='+ sign_source)
+			var timer = setInterval(function(){
+				try { //判断是否在APP打开
+					if(window.AppJsObj){
+						console.log("app")
+						clearInterval(timer);
+						window.AppJsObj.appSessionToken("getToken", 2);
+						getToken();
+					}	          
+				} catch(e) {
+				// alert("请在app中打开网页！")
+				}	
+			},"200")
+			break;
+		case '3': //微信
+
+			byWeixin();
+			break;
+	}
+	</script>
+	<h1>getUSER</h1>
+</body>
+</html>
