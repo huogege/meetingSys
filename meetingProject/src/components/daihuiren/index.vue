@@ -87,7 +87,7 @@ export default {
     @import "../../common/css/common.less";
     .daihuiren{
         font-size: .32rem;
-        padding: .2rem;
+
         background-color: #fff;
         .top{
             height: 5rem;

@@ -2,82 +2,109 @@
   <div class="daihuiren">
         <ul class="top">
             <li>
-                <span>待会人姓名:</span>
-                <input type="text" v-model="cjname" @change="checkName(cjname)">
+                <span>姓名:</span>
+                <input type="text" v-model="name" @change="checkName(name)">
             </li>
-             <li>
-                <span>待会人电话:</span>
-                <input type="text" v-model="cjphone" @change="checkPhone(cjphone)">
+            <li>
+                <span>电话:</span>
+                <input type="text" v-model="phone" @change="checkPhone(phone)">
+            </li>
+            <li>
+                <span>部门:</span>
+                <input type="text" v-model="dept" @change="checkDept(dept)">
+            </li>
+            <li>
+                <span>职务:</span>
+                <input type="text" v-model="post" @change="checkPost(post)">
             </li>
         </ul>
         <ul class="bottom">
-            <li><mt-button @click="meetingInsue(cjname,cjphone)" class="buttonReclass" type="primary">确定</mt-button></li>
-            <router-link :to="{ path: path, query: {}}" class="router_link">
-                <li><mt-button class="buttonReclass" type="default">取消</mt-button></li>
-            </router-link>
+            <li><mt-button @click="meetingInsue(phone,name,dept,post)" class="buttonReclass" type="primary">确定</mt-button></li>
+            
+            <li><mt-button class="buttonReclass" type="default">取消</mt-button></li>
+         
         </ul>
 
     </div>
 </template>
 <script>
-import fn from "../../common/js/index.js";   
+import fn from "../../common/js/index.js";
+import url from "../../common/js/url.js";
+var jjURL = url.jjURL;
+var flag = fn.QueryString('flag'); 
+
+console.log(flag)
 export default {
   data:function(){
       return{
-          cjname:'',
-          cjphone:'',
+          name:'覃峰',
+          phone:'18996394905',
+          dept:'网络',
+          post:'前端',
           mid :'',
-          URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',
+          URL:flag == 'app' ? jjURL + 'meetingInfoCode' : jjURL+ 'wxUserMeeting',
           path:'',
-          phone:''
 
       }
   },
   methods:{
-     checkPhone: function (value){ 
-        if(!(/^1[34578]\d{9}$/.test(value))){ 
-            alert("您的手机号码输入有误，请重填"); 
-            this.cjphone = '';
-            return false; 
-        } 
-    },
-    checkName:function(value){
-         if(!(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(value))){ 
+        checkPhone: function (value){ 
+            if(!(/^1[34578]\d{9}$/.test(value))){ 
+                alert("您的手机号码输入有误，请重填"); 
+                this.phone = '';
+                return false; 
+            } 
+        },
+        checkName:function(value){
+            if(!(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(value))){ 
+                alert("您的输入有误，请重填"); 
+                this.name = '';
+                return false; 
+            }
+        },
+        checkPost:function(value){
+            if(!(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(value))){ 
+                alert("您的输入有误，请重填"); 
+                this.post = '';
+                return false; 
+            }
+        },
+        checkDept:function(value){
+            if(!(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(value))){ 
             alert("您的输入有误，请重填"); 
-            this.cjphone = '';
+            this.dept = '';
             return false; 
         }
     },
-     meetingInsue:function (cjphone,cjname){
+     meetingInsue:function (phone,name,dept,post){
                 var _this = this;
                 var mid = fn.QueryString("mid");
-                if(_this.cjname != '' && _this.cjphone!=''){
-                     _this.$http.get(this.URL6, {
-                    params: {
-                        cj_status:4,
-                        mid:5,
-                        phone:_this.phone,
-                        cjphone:cjphone || null,
-                        cjname:cjname || null
-                    }
-                    })
+                var sign_source = fn.QueryString("sign_source");
+                var openid = fn.QueryString("openid");
+                if(_this.phone != '' && _this.name!='' && _this.dept!=''&&  _this.post!=''){
+                   this.$http.post(_this.URL, _this.$qs.stringify({ 
+                        openid:openid,
+                        mid:mid || null,     //需使用qs库格式化数据才能正确使用post
+                        phone:phone || null,
+                        name:name || null,
+                        dept:dept || null,
+                        post:post || null}))
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
-                            alert("您的代会人信息已保存！")   
-                            _this.$router.push({path: '/', query: {}});  
+                            alert("注册成功！");
+                            openid !=null ? _this.$router.push({path: '/meetingDetail', query: {mid:mid,openid:openid,sign_source:sign_source}}) : _this.$router.push({path: '/meetingDetail', query: {mid:mid,phone:_this.phone,sign_source:sign_source}});  
                         }else{
                             alert("网络连接错误")
                         }
                     })
                 }else{
-                    alert("请您完善姓名和电话号码")
+                    alert("请您完善信息")
                 }
                
             },
   },
   created:function(){
-      this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
-       this.path = decodeURIComponent(fn.QueryString('way'));
+   
 
   }
 }
@@ -87,7 +114,6 @@ export default {
     @import "../../common/css/common.less";
     .daihuiren{
         font-size: .32rem;
-        padding: .2rem;
         background-color: #fff;
         .top{
             height: 5rem;
@@ -112,6 +138,7 @@ export default {
                     float: left;
                     line-height: 1rem;
                     text-indent: .2rem;
+                    color: #656b79;
                 }
             }
         }

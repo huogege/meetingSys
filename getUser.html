@@ -4,7 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1</title>
+	<title>1</title>
+	<style>
+		h1{
+			font-size: 24px;
+		}
+		.icon_box{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			margin: auto;
+			width: 32px;
+			height: 32px;
+			background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAE+ElEQVR4Xu2bjbENSxDH+0aACBABIkAEiAARIAJEgAgQASJABIgAGZCB+p3aPuaMnp3unr27p9w7Va/uq3dmp7v//T3T70TO+Do54/LL1gBcEZH7IvJLRN5Of1fVyZYAXBeRjyJycZL4q4jcXhuELQF4M2m/1PhDEeG/r7a2BOCTiNysJH0uIs9Wk15k0xjwXwCA/16bNPY5qLklAFD6v0WEGBJeIy4A8S8iQiRnIdC9QBAbBYAg+q6gT+wghoTWCAAvReRRRe2ViDx2cjACAOCTQQChXCjgvZP+btsIAJYAnOllYgQAC3xoPxERfnOvEQAeiMhrgxJFzQ0R+dHhIgvA3cn0reOvOugefDcCAAdhbncMThCOomZuZQAg3hB3tHgqzw9rf9QF+B5GiL6XDUl7OT0DAH5/y6D1QUSwjPAatQAIwhCMWQsrQFBrRQGgQHpqHEQKxDJwvfBaAgCItpgjDhAPLOYiAGRB7gKyFAAQamUF4gSZoV7WfsuP63qjPKfnZqsCgBkSDy4YVC3BrCxiRXGKHcu/vxl1QFfgesOSFsDZrRSFC1wyuMN1AILf+fe6iKHQIerXC7/nt16q7QKyNAAQbBUpGVotQL3F1iYA4LP4tzZJMJE1V9zqeyUFN0dYzSKrpRWirqYczJI8GzE3QKA54RzAwLxT3drkVlrewou311CAcBWu3dRlCJx7WSwAWikHARAqCsYimgoewkUL7sM/2q3qEQhPsN0tC4BWTi954BC0gTlmNRuUqbudklyFtkrl8oB9gWYBgIm96JL7u2FLMCJClyJRnO0UZwFgBTEvHqlLCe/hxb7WfYDnqIMgOpeaiLSYlNXtzRHao+vhJrknaqXUDbgsCjroTTy5GbTVtzxgzDVASXn/+axVa5QbVWgEb94SeQAoD1UwyBSAUpe9Q51ZAJ1Wpvo5CYvArS70gEwUgJpHtQz+jub7gPy7rbgoroBS1LzDGWkUgCjTR7f/HICjU8nKDJ1bwAKA02SQHqkIKTLWWgQ/mhxWuj/JWoCWoKSjstkgClMInfayrsehrZ2rOxtEAPDW3WsUQr2Gzd2f9ADwCl1q/BgAKPmZBaMFAJchWmREzJmbH9widUcfINS6K+wdARi8IO+rxMiFyNzhWndjmpGbox7Dc78DNEry9CflOSiHC5GdkrIXInyrdTdohp6kR6Q2vo02axwxeyHSevUthaatdEfahQXuHVf2J9YbBd/v3x9aMaCc4FJNR4XGRLmbG60PNN/zlzoj4mIWGAeTaHNZQPN7hKBqp+7XI5MjtYZ5GNFJEPwWATIuh0Kw2oMA3UuDPXOzfm89ZmRoWWd5BzBcvGeYmjt4boDBotUblW1dfHgGMDYBoDXAYL3meEdl0bgVzIZfhltp0IWcsSk6wOAdlT212YAlAcgwGRmQyAxguBS5RAzIDjBEAEAYInj54KoCtgYwVgMgO8AQBSA6gLEKAK0HCs8AQxQABJobwKC8DVenIy4wl/I8AwwZAADBCp7qIuHLmBEAWox4BxiyAMy9XYb/h4sRAKwp0ch9QBYAtN26DwhPi44AUPsjfq/1ticAjQDA+XXXmnqWGwFAgxKBkIaJBigShEYBUPo6L5QawxkFwKPp1p4lABihv/v2HIBhCPMHeEdl8xQcX25pAd5RWYcY+S1bAgDXvVHZvGTOL7cGwMnm6W078wD8AXg8O1DRI1anAAAAAElFTkSuQmCC");
+			background-size: 100%;
+			animation: spin 2s infinite ease;
+		}
+		@keyframes spin {
+			0%   { transform: rotate(360deg); }
+			100% { transform: rotate(0deg); }
+		}
+	</style>
 </head>
 <body>
 	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/jquery-1.9.1.min.js"></script>
@@ -26,12 +48,12 @@
 			return false;
 		}
 	}
+	var jjURL = "http://sz.cqjjnet.com/jj_project/wapMeeting/manager/";
 	var mid = QueryString('mid');
 	var sign_source = QueryString('sign_source');
+	var meetingDetailUrl = 'http://192.168.191.1:7777/#/meetingDetail';
+	var userRegistUrl = 'http://192.168.191.1:7777/#/userRegist';
 	function byWeixin(){
-		// if(sign_source != 3 || 1){
-		// 	alert("该二维码仅支持微信端扫码，请使用微信客户端扫码");
-		// }
 		if(isWeiXin()){	
 			var dqwz = window.location.href;
 			if(dqwz.indexOf("openid") > 0 ) { 	//微信返回回来信息处理				
@@ -42,31 +64,66 @@
 				var openid = yhxx.substring(yhxx.indexOf("openid=") +7,yhxx.indexOf("&k="));
 				var key = yhxx.substring(yhxx.lastIndexOf('&k=')+3, yhxx.length);
 				alert("实际网站："+burl+"当前网址："+dqwz+"用户信息："+yhxx+"用户openid:"+openid+"密匙："+key);	
-				window.location.href= 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/meetingDetail.html?mid='+mid+'';
+				checkOpenId(openid);
 			}else{
 				var tzwx = "http://api.cqjjnet.com/getWeixinOpenid.php?reurl=http://sz.cqjjnet.com/jj_project/pages/h5/getUser.html";
 				window.location.href= tzwx;
 			}
 		
 		}	
-	}
+	};
 	function getToken(params) { //获取token
 		sessionStr = params;
 		var sessionObj = eval("(" + sessionStr + ")");
 		var phone = sessionObj.phone;
 		console.log(sessionObj);
 		if(phone !== null){
-			window.location.href= 'http://192.168.191.1:7777/#/meetingDetail?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'';	
+			checkPhone(phone);	
 		}
 	}	
+	function checkPhone(phone){
+		$.ajax({
+				url:jjURL+'getMeetingUser',
+				data:{phone:phone},
+				dataType: "json",
+				type:'get',
+				success:function(data){
+					console.log(data)
+					if(data.data.meetingUser!=null){
+						window.location.href= meetingDetailUrl + '?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'';
+					}else{
+						alert('系统后台未找到您，点击前往注册！')
+						window.location.href= userRegistUrl + '?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'flag=app';
+					}
+				}
+			})
+	}
+	function checkOpenId(openid){
+		$.ajax({
+				url:jjURL+'getUserByOpenId',
+				data:{openid:openid},
+				dataType: "json",
+				type:'get',
 
+				success:function(data){
+					console.log(data)
+					if(data.data.isHave){
+						var phone = data.data.meetingUser.checkPhone;
+						window.location.href= meetingDetailUrl + '?mid='+mid+'&openid='+openid+'&sign_source='+sign_source+'';
+					}else{
+						alert('系统后台未找到您，点击前往注册')
+						window.location.href= userRegistUrl + '?mid='+mid+'&sign_source='+sign_source+'&flag=weixin' + '&openid=' + openid;
+					}
+				}
+			})
+	}
+	//?mid=8&phone=undefined&sign_source=3
 	switch(sign_source){
 		case '1': //app+微信
 			byWeixin();
-			
 			break;
 		case '2': //app0
-		console.log('sign_source='+ sign_source)
+			console.log('sign_source='+ sign_source)
 			var timer = setInterval(function(){
 				try { //判断是否在APP打开
 					if(window.AppJsObj){
@@ -81,11 +138,13 @@
 			},"200")
 			break;
 		case '3': //微信
-
+			var openid = 'oENsDj9-PIQDFpiB3ZPZpHbYqFs8';
+			checkOpenId(openid);
 			byWeixin();
 			break;
 	}
 	</script>
-	<h1>getUSER</h1>
+	<h1>登陆中...</h1>
+	<div class="icon_box"></div>
 </body>
 </html>

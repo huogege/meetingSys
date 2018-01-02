@@ -25,10 +25,10 @@
             </p>
             <div class="content">
                 <div class="list">
-                    <span class="cell">覃峰</span>
-                    <span class="cell">网络部</span>
-                    <span class="cell">前端</span>
-                    <span class="cell" style="width:50%">18996394903</span>
+                    <span class="cell">{{meetingUser.name}}</span>
+                    <span class="cell">{{meetingUser.dept}}</span>
+                    <span class="cell">{{meetingUser.post}}</span>
+                    <span class="cell" style="width:50%">{{meetingUser.phone}}</span>
                 </div>
             </div>
         </div>
@@ -80,14 +80,14 @@
   </div>
 </template>
 <script>
-    const appID = "wxaf572eadec6a72a5";
-    const appsecret = "af0abd5977fa86a92614fe3a3bec1f6c";
-    import { MessageBox } from 'mint-ui';
+  
+    var userRegistUrl = 'http://192.168.191.1:7777/#/userRegist'
+    import { Toast  } from 'mint-ui';
     import fn from "../../common/js/index.js";
     import url from "../../common/js/url.js";
-    const jjURL = url.jjURL;
+    var jjURL = url.jjURL;
     console.log(jjURL)
-   
+    var sign_source = fn.QueryString("sign_source");
     //var url = 'http://http://sz.cqjjnet.com/jj_project/wapMeeting/manager/meetingInfo'
     export default{
         components:{
@@ -103,15 +103,15 @@
                  mid:'',
                  title:'',
                  time:'',
-                 phone:''
+                 phone:'',
+                 meetingUser:''
               
             }
         },
         methods:{
             format:fn.format,
             formatMsgTime:fn.formatMsgTime,
-            request:function(mid,phone){
-        
+            request:function(mid,phone,openid){
                 var _this = this;
                 _this.$http.get(jjURL+'meetingInfo', {
                     params:{phone:phone,mid:mid}
@@ -123,23 +123,64 @@
                                 _this.userList = response.data.data.meeting.userlist;
                                 _this.title = response.data.data.meeting.title;
                                 _this.time = fn.format(response.data.data.meeting.stime,'yyyy-MM-dd  hh:mm');
-                           }  
+                                console.log(response)
+                           }
                         }         
+                    });
+                if(sign_source == '2'){
+                    _this.getMeetingUser(phone);
+                }else if(sign_source == '3'){
+                    _this.getUserByOpenId(openid);
+                }else if(sign_source == '1'){
+                     _this.getMeetingUser(phone);
+                     _this.getUserByOpenId(openid);
+                }
+                
+                
+            },
+            getMeetingUser:function(phone){
+                var _this = this;
+                _this.$http.get(jjURL+'getMeetingUser ', {
+                    params:{phone:phone}
                     })
+                    .then(function (response) {
+                       if(response.status == "200" && response.data.rtnCode == "0000"){
+                           if(response.data.data!=''){
+                                _this.meetingUser = response.data.data.meetingUser;
+                                
+                           }
+                        }         
+                    });
+            },
+            getUserByOpenId:function(openid){
+                var _this = this;
+                _this.$http.get(jjURL+'getUserByOpenId ', {
+                    params:{openid:openid}
+                    })
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            if(response.data.data!=''){
+                                _this.meetingUser = response.data.data.meetingUser;  
+                                _this.phone = response.data.data.meetingUser.phone; 
+                            }
+                        }         
+                    });
             },
             handleClick:function(){
-                // //调用原生二维码扫描
-                // window.AppJsObj.appAlert("gg");
-                // window.AppJsObj.getTwoDimensionalCode("getTwoDimensionalCodeCallBack");              
-                // //原生二维码扫描结果回调函数
-                // function getTwoDimensionalCodeCallBack(params){
-                //     window.AppJsObj.appAlert(JSON.stringify(params));
-                // }
-
-
-
-
-
+                this.$http.post(jjURL+ 'meetingQd', this.$qs.stringify({ 
+                        mid:this.mid,    
+                        phone:this.phone || null
+                        }))
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            Toast({
+                                message: '签到成功！',
+                                iconClass: 'icon icon-success'
+                            });
+                        }else{
+                            alert("网络连接错误")
+                        }
+                    })
             },
             editUser:function(){
 
@@ -160,13 +201,10 @@
         }, 
         created:function(){
             
-            var mid = "";      //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+           //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
             var phone = "";
-            console.log(window.location.href);
-            console.log(fn.QueryString("sign_source"))
-            console.log(fn.QueryString("phone"))
-            debugger
-            mid = fn.QueryString("mid");
+            var openid = fn.QueryString("openid");
+            var mid = fn.QueryString("mid");
             if(fn.QueryString("sign_source") !=null){
                 phone = fn.QueryString("phone");
             }else{
@@ -177,7 +215,7 @@
             console.log(mid);
             console.log(phone);
             this.meetingDetailShow = true;
-            this.request(mid,phone); 
+            this.request(mid,phone,openid); 
         },
     
 
@@ -299,6 +337,7 @@
         }
     }
     .joinPerson{
+        position: relative;
         padding-bottom: .3rem;
         margin-bottom: .3rem;
         background-color: #fff;
@@ -306,9 +345,12 @@
             font-size: .3rem;
             padding: .35rem;
             .editUser{
-                    float: right;
+                   position: absolute;
+                    top: .16rem;
+                    right: .1rem;
                     font-size: .24rem;
-                    border-radius: .1rem
+                    border-radius: .1rem;
+                    height: .4rem;
                     }
             .icon_8{
                 background-image: url("./icon_8.png");
