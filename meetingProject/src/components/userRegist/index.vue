@@ -32,8 +32,6 @@ import fn from "../../common/js/index.js";
 import url from "../../common/js/url.js";
 var jjURL = url.jjURL;
 var flag = fn.QueryString('flag'); 
-
-console.log(flag)
 export default {
   data:function(){
       return{
@@ -92,7 +90,7 @@ export default {
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             alert("注册成功！");
-                            openid !=null ? _this.$router.push({path: '/meetingDetail', query: {mid:mid,openid:openid,sign_source:sign_source}}) : _this.$router.push({path: '/meetingDetail', query: {mid:mid,phone:_this.phone,sign_source:sign_source}});  
+                            openid !=null ? _this.$router.push({path: '/meetingDetail', query: {mid:mid,openid:openid,sign_source:sign_source,phone:phone}}) : _this.$router.push({path: '/meetingDetail', query: {mid:mid,phone:_this.phone,sign_source:sign_source}});  
                         }else{
                             alert("网络连接错误")
                         }

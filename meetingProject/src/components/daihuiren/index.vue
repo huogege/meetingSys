@@ -21,13 +21,15 @@
 </template>
 <script>
 import fn from "../../common/js/index.js";   
+import url from "../../common/js/url.js";
+var jjURL = url.jjURL;
 export default {
   data:function(){
       return{
           cjname:'',
           cjphone:'',
           mid :'',
-          URL6:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingCj',
+          URL6:jjURL+'meetingCj',
           path:'',
           phone:''
 
@@ -50,17 +52,14 @@ export default {
     },
      meetingInsue:function (cjphone,cjname){
                 var _this = this;
-                var mid = fn.QueryString("mid");
                 if(_this.cjname != '' && _this.cjphone!=''){
-                     _this.$http.get(this.URL6, {
-                    params: {
+                     _this.$http.post(_this.URL6,  _this.$qs.stringify({
                         cj_status:4,
-                        mid:5,
+                        mid:_this.mid,
                         phone:_this.phone,
                         cjphone:cjphone || null,
                         cjname:cjname || null
-                    }
-                    })
+                    }))
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             alert("您的代会人信息已保存！")   
@@ -76,8 +75,9 @@ export default {
             },
   },
   created:function(){
-      this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
-       this.path = decodeURIComponent(fn.QueryString('way'));
+      this.phone = localStorage.getItem('phone');
+      this.mid = localStorage.getItem('mid');
+      this.path = decodeURIComponent(fn.QueryString('way'));
 
   }
 }

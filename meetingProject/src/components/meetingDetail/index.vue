@@ -11,7 +11,7 @@
                         <p class="location "><span class="icon_2">&#8195;</span><span>会议地点 : </span>{{meeting.addr}}</p>
                         <p class="time oneRowHide"><span class="icon_4">&#8195;</span><span>预计时长 : </span>{{meeting.estime}}</p>
                     </div>
-                    <div class="right" @click="handleClick()">
+                    <div class="right" @click="attend()">
                         <mt-button class="word">点击签到</mt-button>
                     </div>
                 </div>
@@ -25,10 +25,10 @@
             </p>
             <div class="content">
                 <div class="list">
-                    <span class="cell">{{meetingUser.name}}</span>
-                    <span class="cell">{{meetingUser.dept}}</span>
-                    <span class="cell">{{meetingUser.post}}</span>
-                    <span class="cell" style="width:50%">{{meetingUser.phone}}</span>
+                    <span class="cell">{{inputName}}</span>
+                    <span class="cell">{{inputDept}}</span>
+                    <span class="cell">{{inputPost}}</span>
+                    <span class="cell" style="width:50%">{{inputPhone}}</span>
                 </div>
             </div>
         </div>
@@ -77,17 +77,43 @@
                 </div>
             </router-link>
         </div>
+        <mt-popup
+            v-model="popupVisible"
+            style="width:75%;">
+            <mt-field label="姓名" placeholder="请输入当前人员名字" type="username" v-model="inputName"></mt-field>
+            <mt-field label="部门" placeholder="请输入部门" type="username" v-model="inputDept"></mt-field>
+            <mt-field label="职位" placeholder="请输入职位" type="username" v-model="inputPost"></mt-field>
+            <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="inputPhone"></mt-field>
+            <mt-button style="margin-left: 37%;width: 26%;" type="primary"  @click.native="updateUserInfo">完成</mt-button>
+        </mt-popup>
   </div>
 </template>
 <script>
   
     var userRegistUrl = 'http://192.168.191.1:7777/#/userRegist'
-    import { Toast  } from 'mint-ui';
+    import {Toast,Popup} from 'mint-ui';
     import fn from "../../common/js/index.js";
     import url from "../../common/js/url.js";
     var jjURL = url.jjURL;
-    console.log(jjURL)
     var sign_source = fn.QueryString("sign_source");
+    if(sign_source){
+          localStorage.setItem("sign_source", sign_source);
+    }
+
+
+    var mid = fn.QueryString("mid");
+    if(mid){
+        localStorage.setItem('mid',mid);
+    }
+    
+     var openid = fn.QueryString("openid");
+     if(openid){
+          localStorage.setItem('openid',openid);
+     }
+    var phone = fn.QueryString("phone");
+    if(phone){
+        localStorage.setItem('phone',phone);
+    }
     //var url = 'http://http://sz.cqjjnet.com/jj_project/wapMeeting/manager/meetingInfo'
     export default{
         components:{
@@ -96,16 +122,22 @@
         data:function(){
             return{
                 meetingDetailShow:false,
-                 meeting:{
+                meeting:{
                      type:Object
-                 },
-                 userList:[],
-                 mid:'',
-                 title:'',
-                 time:'',
-                 phone:'',
-                 meetingUser:''
+                },
+                userList:[],
+                mid:'',
+                title:'',
+                time:'',
+                phone:'',
               
+
+                popupVisible:false,
+                inputName:'',
+                inputDept:'',
+                inputPost:'',
+                inputPhone:'',
+                sign_source:''
             }
         },
         methods:{
@@ -123,15 +155,14 @@
                                 _this.userList = response.data.data.meeting.userlist;
                                 _this.title = response.data.data.meeting.title;
                                 _this.time = fn.format(response.data.data.meeting.stime,'yyyy-MM-dd  hh:mm');
-                                console.log(response)
                            }
                         }         
                     });
-                if(sign_source == '2'){
+                if(_this.sign_source == '2'){
                     _this.getMeetingUser(phone);
-                }else if(sign_source == '3'){
+                }else if(_this.sign_source == '3'){
                     _this.getUserByOpenId(openid);
-                }else if(sign_source == '1'){
+                }else if(_this.sign_source == '1'){
                      _this.getMeetingUser(phone);
                      _this.getUserByOpenId(openid);
                 }
@@ -146,7 +177,11 @@
                     .then(function (response) {
                        if(response.status == "200" && response.data.rtnCode == "0000"){
                            if(response.data.data!=''){
-                                _this.meetingUser = response.data.data.meetingUser;
+                                _this.inputName = response.data.data.meetingUser.name;
+                                 _this.inputDept = response.data.data.meetingUser.dept;
+                                  _this.inputPost = response.data.data.meetingUser.post;
+                                   _this.inputPhone = response.data.data.meetingUser.phone;
+                                   
                                 
                            }
                         }         
@@ -160,13 +195,42 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                _this.meetingUser = response.data.data.meetingUser;  
+                                _this.inputName = response.data.data.meetingUser.name;
+                                 _this.inputDept = response.data.data.meetingUser.dept;
+                                  _this.inputPost = response.data.data.meetingUser.post;
+                                   _this.inputPhone = response.data.data.meetingUser.phone;
                                 _this.phone = response.data.data.meetingUser.phone; 
                             }
                         }         
                     });
             },
-            handleClick:function(){
+            updateUserInfo:function(){
+                var _this = this;
+                if(_this.phone == _this.inputPhone){
+                   alert("电话号码不能与原号码相同");
+                   return false;
+                }else{
+                    _this.$http.post(jjURL+ 'updateUserInfo', _this.$qs.stringify({ 
+                        name:_this.inputName, 
+                        phone:_this.inputPhone, 
+                        oldphone:_this.phone,
+                        dept:_this.inputDept,
+                        post: _this.inputPost
+                        }))
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            _this.popupVisible = false;
+                            Toast({
+                                message: '修改成功！',
+                                iconClass: 'icon icon-success'
+                            });
+                        }else{
+                            alert("网络连接错误")
+                        }
+                    })
+                }
+            },
+            attend:function(){
                 this.$http.post(jjURL+ 'meetingQd', this.$qs.stringify({ 
                         mid:this.mid,    
                         phone:this.phone || null
@@ -183,7 +247,7 @@
                     })
             },
             editUser:function(){
-
+                this.popupVisible = true;
             }
            /* backCkick:function(){
                 var _this= this;
@@ -202,20 +266,13 @@
         created:function(){
             
            //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
-            var phone = "";
-            var openid = fn.QueryString("openid");
-            var mid = fn.QueryString("mid");
-            if(fn.QueryString("sign_source") !=null){
-                phone = fn.QueryString("phone");
-            }else{
-                phone = localStorage.getItem('userInfor').phone;
-            }
-            this.mid = mid;
-            this.phone = phone;
-            console.log(mid);
-            console.log(phone);
+   
+            this.sign_source = localStorage.getItem('sign_source');
+            this.mid = localStorage.getItem('mid');
+            this.openid = localStorage.getItem('openid');
+            this.phone = localStorage.getItem('phone');
             this.meetingDetailShow = true;
-            this.request(mid,phone,openid); 
+            this.request(this.mid,this.phone,this.openid); 
         },
     
 
@@ -350,7 +407,7 @@
                     right: .1rem;
                     font-size: .24rem;
                     border-radius: .1rem;
-                    height: .4rem;
+                    height: .6rem;
                     }
             .icon_8{
                 background-image: url("./icon_8.png");
@@ -378,7 +435,7 @@
                 float: left;
                 text-align: left;
                 text-indent: .35rem;
-                margin-bottom: .2rem;
+                margin-bottom: .4rem;
                 &:last-child{
                     margin: 0;
                 }

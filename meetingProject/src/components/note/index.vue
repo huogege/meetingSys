@@ -96,7 +96,7 @@
                         formData.append("fileName", fileName);
                          $.ajax({
                             type:"POST",
-                            url:'http://www.zaichongqing.com/jj_project/base/commonController/uploadFileBase64',
+                            url:'http://sz.cqjjnet.com/jj_project/base/commonController/uploadFileBase64',
                             dataType: "JSON",
                             data:formData,
                             processData: false, // 必须false才会避开jQuery对 formdata 的默认处理, XMLHttpRequest会对 formdata 进行正确的处理
@@ -140,8 +140,10 @@
       
 
     import fn from "../../common/js/index.js";    
-    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNote'; 
-    var urls = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingNoteUpdate';
+      import urls from "../../common/js/url.js";
+    var jjURL = urls.jjURL;
+    var url = jjURL+'meetingNote'; 
+    var url2 = jjURL+'meetingNoteUpdate';
     export default{
         components:{
          
@@ -199,7 +201,7 @@
               
                 _this.$http({
                     method:"POST",
-                    url:urls,
+                    url:url2,
                     data:{
                         phone:_this.phone,
                         mid:mid,
@@ -249,7 +251,7 @@
             },
         },
         created:function(){
-            this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
+            this.phone =localStorage.getItem('phone');
             var title = decodeURIComponent(fn.QueryString('title'));
             var time = decodeURIComponent(fn.QueryString('time'));
             this.title = title;

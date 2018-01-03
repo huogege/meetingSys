@@ -26,7 +26,9 @@
 
 <script>
 import fn from "../../common/js/index.js";
-var url = "http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingVoteInfo"
+import urls from "../../common/js/url.js";
+var jjURL = urls.jjURL;
+var url = jjURL+"meetingVoteInfo"
 export default {
     data () {
       return {
@@ -74,7 +76,7 @@ export default {
         },
     },
     created:function(){
-        this.phone = JSON.parse(localStorage.getItem('userInfor')).phone;
+        this.phone = localStorage.getItem('phone');
         this.request();
     }
 }

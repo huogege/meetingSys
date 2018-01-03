@@ -30,7 +30,9 @@
 </template>
 <script>  
     import fn from "../../common/js/index.js";    
-    var url = 'http://www.zaichongqing.com/jj_project/wapMeeting/manager/meetingData';
+     import urls from "../../common/js/url.js";
+    var jjURL = urls.jjURL;
+    var url = jjURL+'meetingData';
     export default{
         components:{
             
@@ -69,7 +71,8 @@
             cutPostfix:fn.cutPostfix,
         },
         created:function(){
-            var mid = localStorage.getItem('mid');
+           var mid = localStorage.getItem('mid');
+           alert(mid)
            this.request({mid:mid})
         },
 

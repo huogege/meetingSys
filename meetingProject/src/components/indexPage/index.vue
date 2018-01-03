@@ -45,9 +45,8 @@
                             </div>
                         </div>
                     </router-link>    
-                    <div class="right">
-                        <span class="icon"></span>
-                        <span class="word">扫码签到</span>
+                    <div class="right" @click="attend()">
+                        <mt-button class="word">点击签到</mt-button>
                     </div>
                 </div>
            
@@ -242,12 +241,28 @@
                        localStorage.removeItem("mid");  
                 }
                 localStorage.setItem("mid", id);
-            }
+            },
+               attend:function(){
+                this.$http.post(jjURL+ 'meetingQd', this.$qs.stringify({ 
+                        mid:this.mid,    
+                        phone:this.phone || null
+                        }))
+                    .then(function (response) {
+                        if(response.status == "200" && response.data.rtnCode == "0000"){
+                            Toast({
+                                message: '签到成功！',
+                                iconClass: 'icon icon-success'
+                            });
+                        }else{
+                            alert("网络连接错误")
+                        }
+                    })
+            },
            
         }, 
         created:function(){
             var timer = setInterval(()=>{
-                this. phone = JSON.parse(localStorage.getItem('userInfor')).phone;
+                this. phone = localStorage.getItem('phone');
                 if(this.phone !=''){
                     clearInterval(timer);
                     this.request1(this.URL1,{phone:this.phone,num:1000});

@@ -30,13 +30,15 @@
 <script>
     import fn from "../../common/js/index.js"; 
     import myScroll from '../../components/scroll/index.vue'
+    import url from "../../common/js/url.js";
+    var jjURL = url.jjURL;
     export default{
         components:{
              'myScroll':myScroll,
         },
         data:function(){
             return{
-                URL:'http://www.zaichongqing.com/jj_project/wapMeeting/manager/msgList',
+                URL:jjURL+'msgList',
                 list:[],
                 dept:'',            //部门
                 name:'',            //用户姓名
