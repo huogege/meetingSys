@@ -35,10 +35,10 @@ var flag = fn.QueryString('flag');
 export default {
   data:function(){
       return{
-          name:'覃峰',
-          phone:'18996394905',
-          dept:'网络',
-          post:'前端',
+          name:'',
+          phone:'',
+          dept:'',
+          post:'',
           mid :'',
           URL:flag == 'app' ? jjURL + 'meetingInfoCode' : jjURL+ 'wxUserMeeting',
           path:'',

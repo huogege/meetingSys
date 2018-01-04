@@ -1,6 +1,5 @@
 <template>
   <div class="meetingDetail" v-show="meetingDetailShow">
-        <div class="blackBar"></div>
        <div class="meetingStatus">
             <div class="list">              
                 <div class="content">
@@ -40,7 +39,7 @@
             </p>
             <div class="content">
                 <div class="list" >
-                    <span class="cell" style="width:100%">{{seatName}}</span>
+                    <span v-for="item in seatName" :key="item.id" class="cell" style="width:100%">{{item.seatname + item.seatnum + '（' + item.name + '）'}}</span>
                 </div>
             </div>
         </div>
@@ -204,10 +203,13 @@
                     .then(function (response) {
                        if(response.status == "200" && response.data.rtnCode == "0000"){
                            if(response.data.data.meetingUser!=null){
-                                _this.inputName = response.data.data.meetingUser.name;
-                                 _this.inputDept = response.data.data.meetingUser.dept;
-                                  _this.inputPost = response.data.data.meetingUser.post;
-                                   _this.inputPhone = response.data.data.meetingUser.phone;          
+                               var thisData = response.data.data.meetingUser;
+                               localStorage.setItem('userName',thisData.name);
+                                _this.inputName = thisData.name;
+                                 _this.inputDept = thisData.dept;
+                                  _this.inputPost = thisData.post;
+                                   _this.inputPhone = thisData.phone;  
+                                    _this.getUserSeat(_this.mid, thisData.name);
                            }
                         }         
                     });
@@ -220,11 +222,15 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data.meetingUser!=null){
-                                _this.inputName = response.data.data.meetingUser.name;
-                                _this.inputDept = response.data.data.meetingUser.dept;
-                                _this.inputPost = response.data.data.meetingUser.post;
-                                _this.inputPhone = response.data.data.meetingUser.phone;
+                               var thisData = response.data.data.meetingUser;
+                               localStorage.setItem('userName',thisData.name);
+                                localStorage.setItem('phone',thisData.phone);
+                                _this.inputName = thisData.name;
+                                 _this.inputDept = thisData.dept;
+                                  _this.inputPost = thisData.post;
+                                   _this.inputPhone = thisData.phone;  
                                 _this.phone = response.data.data.meetingUser.phone; 
+                                _this.getUserSeat(_this.mid, thisData.name);
                             }
                         }         
                     });
@@ -288,10 +294,10 @@
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                            
                             if(response.data.data.isHave){
-                                var thisData = response.data.data.meetingSeat;
-                                _this.seatName = thisData.seatname + thisData.seatnum + '（' + thisData.name + '）';
+                                _this.seatName = response.data.data.meetingSeat;
+                            
                             }else{
-                                _this.seatName = '无数据';
+                                _this.seatName = null;
                             }
                         }else{
                             //alert("网络连接错误")
@@ -329,7 +335,7 @@
             this.userName = localStorage.getItem('userName');
             this.meetingDetailShow = true;
             this.request(this.mid,this.phone,this.openid); 
-            this.getUserSeat(this.mid,this.userName);
+            
         },
         computed:{
             searchResult (){
@@ -445,8 +451,8 @@
                     background-size:.85rem .72rem;
                 }
                 .word {
-                    height: .5rem;
-                    font-size: .24rem;
+                    height: .8rem;
+                    font-size: .3rem;
                     margin-top: .2rem;
                     color: #178aff;
                     border-radius: .2rem
@@ -466,9 +472,9 @@
                    position: absolute;
                     top: .16rem;
                     right: .1rem;
-                    font-size: .24rem;
+                    font-size: .3rem;
                     border-radius: .1rem;
-                    height: .6rem;
+                    height: .8rem;
                     }
             .icon_8{
                 background-image: url("./icon_8.png");
