@@ -72,7 +72,6 @@
         },
         created:function(){
            var mid = localStorage.getItem('mid');
-           alert(mid)
            this.request({mid:mid})
         },
 

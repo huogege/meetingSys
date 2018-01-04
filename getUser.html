@@ -36,8 +36,8 @@
 	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script>
     <script>
 		var jjURL = "http://sz.cqjjnet.com/jj_project/wapMeeting/manager/";
-		var meetingDetailUrl = 'http://192.168.191.1:7777/#/meetingDetail';
-		var userRegistUrl = 'http://192.168.191.1:7777/#/userRegist';
+		var meetingDetailUrl = 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/meetingDetail';
+		var userRegistUrl = 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/userRegist';
 		var mid = QueryString('mid');
 		var sign_source = QueryString('sign_source');
 		// localStorage.removeItem('meetingInfo');
@@ -114,9 +114,11 @@
 
 					success:function(data){
 						console.log(data)
-						if(data.data.isHave){
-							var phone = data.data.meetingUser.checkPhone;
+						if(data.data.meetingUser!=null){
+							var phone = data.data.meetingUser.phone;
+							
 							window.location.href= meetingDetailUrl + '?mid='+mid+'&openid='+openid+'&sign_source='+sign_source+'phone='+phone+'';
+							
 						}else{
 							alert('系统后台未找到您，点击前往注册')
 							window.location.href= userRegistUrl + '?mid='+mid+'&sign_source='+sign_source+'&flag=weixin' + '&openid=' + openid;
@@ -124,7 +126,7 @@
 					}
 				})
 		}
-		//?mid=8&phone=undefined&sign_source=3
+		//?mid=8&sign_source=3&flag=app
 		switch(sign_source){
 			case '1': //app+微信
 				byWeixin();

@@ -18,9 +18,10 @@
         
     </script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="config/config.js"></script> -->
-    <!-- <script type="text/javascript" src="js/jbase64.js"></script>
-    <script type="text/javascript" src="js/common.js"></script> -->
+     <script type="text/javascript" src="config/config.js"></script>
+   <script type="text/javascript" src="js/jbase64.js"></script>
+    <script type="text/javascript" src="js/common.js"></script> 
+    <script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script>
   
     <script type="text/javascript">
         var IsAPP =  false;
@@ -28,32 +29,27 @@
         function getToken(params) { //获取token
               sessionStr = params;
               var sessionObj = eval("(" + sessionStr + ")");
-              console.log(sessionObj)
-              if(sessionObj.phone == null){  
-                    $(".notUser").show();
-                    alert("后台系统没有您的名单，请联系管理员添加！");
-                    return false;
-              }else{
-                  var phone = sessionObj.phone;
-                  localStorage.setItem('phone',phone);
-                  $(".notUser").hide();
+              var phone = sessionObj.phone;
+              localStorage.setItem('phone',phone);
+              $(".notUser").hide();
                 
-                }
+                
         }
-        // var timer = setInterval(function(){
-        //   localStorage.removeItem('userInfor');
-        //   try { //判断是否在APP打开
-        //       if(window.AppJsObj){
-        //         clearInterval(timer);
-        //         window.AppJsObj.appSessionToken("getToken", 2);
-        //         IsAPP = true;
-        //         getToken()
-        //       }	          
-        //     } catch(e) {
-        //       IsAPP = false;
-        //     // alert("请在app中打开网页！")
-        //     }	
-        // },"200");
+        var timer = setInterval(function(){
+          localStorage.removeItem('userInfor');
+          try { //判断是否在APP打开
+              if(window.AppJsObj){
+                clearInterval(timer);
+                window.AppJsObj.appSessionToken("getToken", 2);
+                IsAPP = true;
+                getToken()
+              }	          
+            } catch(e) {
+              IsAPP = false;
+              $(".notUser").show();
+            // alert("请在app中打开网页！")
+            }	
+        },"200");
       
      
 
@@ -64,7 +60,7 @@
         localStorage.setItem('phone',phone);
       }
       //testLocalstorage()
-      setTimeout(function(){testLocalstorage()})
+      //setTimeout(function(){testLocalstorage()})
     </script> 
   </body>
 </html>

@@ -79,7 +79,7 @@ export default {
                 var mid = fn.QueryString("mid");
                 var sign_source = fn.QueryString("sign_source");
                 var openid = fn.QueryString("openid");
-                if(_this.phone != '' && _this.name!='' && _this.dept!=''&&  _this.post!=''){
+                if(phone != '' && name!='' && dept!=''&&  post!=''){
                    this.$http.post(_this.URL, _this.$qs.stringify({ 
                         openid:openid,
                         mid:mid || null,     //需使用qs库格式化数据才能正确使用post
@@ -89,8 +89,15 @@ export default {
                         post:post || null}))
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
-                            alert("注册成功！");
-                            openid !=null ? _this.$router.push({path: '/meetingDetail', query: {mid:mid,openid:openid,sign_source:sign_source,phone:phone}}) : _this.$router.push({path: '/meetingDetail', query: {mid:mid,phone:_this.phone,sign_source:sign_source}});  
+                            if(openid){
+                                localStorage.setItem('openid',openid)
+                            }
+                            localStorage.setItem('sign_source',sign_source);
+                            localStorage.setItem('mid',mid);                   
+                            localStorage.setItem('userName',name);                                                         
+                            localStorage.setItem('phone',phone);   
+                            alert("注册成功！");                        
+                            _this.$router.push({path: '/meetingDetail', query: {}});
                         }else{
                             alert("网络连接错误")
                         }

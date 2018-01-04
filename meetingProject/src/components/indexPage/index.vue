@@ -242,7 +242,7 @@
                 }
                 localStorage.setItem("mid", id);
             },
-               attend:function(){
+            attend:function(){
                 this.$http.post(jjURL+ 'meetingQd', this.$qs.stringify({ 
                         mid:this.mid,    
                         phone:this.phone || null
@@ -258,16 +258,32 @@
                         }
                     })
             },
+            getMeetingUser:function(phone){
+                var _this = this;
+                _this.$http.get(jjURL+'getMeetingUser ', {
+                    params:{phone:phone}
+                    })
+                    .then(function (response) {
+                       if(response.status == "200" && response.data.rtnCode == "0000"){
+                           if(response.data.data.meetingUser == null){
+                              alert("检测到后台没有您的名单，点击确定转到注册页");
+                               _this.$router.push({path: '/userRegist', query: {flag:'app'}});
+                           }
+                        }         
+                    });
+            },
            
         }, 
         created:function(){
             var timer = setInterval(()=>{
                 this. phone = localStorage.getItem('phone');
-                if(this.phone !=''){
+                
+                if(this.phone !=null){
                     clearInterval(timer);
                     this.request1(this.URL1,{phone:this.phone,num:1000});
                     this.request2(this.URLS,{phone:this.phone,num:this.num});    
                     this.getMessage();
+
                 }
             },"200")
            
