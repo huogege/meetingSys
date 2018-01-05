@@ -287,10 +287,10 @@
                 color: #fff;
                 border-radius: .2rem;
                 background-color: #2d95ff;
-                font-size: .28rem;
+                font-size: .26rem;
                 width: 1rem;
-                height: .5rem;
-                line-height: .5rem;
+                height: .6rem;
+                line-height: .6rem;
                         }
         }
         .content{

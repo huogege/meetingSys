@@ -20,6 +20,8 @@ import blackPage from '@/components/blackPage/index'
 
 import userRegist from '@/components/userRegist/index' 
 
+import searchSeat from '@/components/searchSeat/index' 
+
 import setWechatTitle from '../common/js/setWechatTitle'   //标题文件
 
 Vue.use(Router)
@@ -100,6 +102,11 @@ var router =  new Router({
       path: '/userRegist',
       name: '注册',
       component: userRegist
+    },
+    {
+      path: '/searchSeat',
+      name: '搜索座位号',
+      component: searchSeat
     },
   ]
 });
