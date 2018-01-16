@@ -2,7 +2,7 @@
   <div class="index">
         <div class="top" ref="top">
             <div class="menu">
-                <div class="submenu" v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
+                <div class="submenu" :key="item.id"    v-for="(item,index) in submenuArr" :class="index == currentItem ? 'active' : ''" @click="selectItem(index,item.name)">{{item.name}}</div>
             </div>
         </div>
    
@@ -15,7 +15,7 @@
                     @scrollToEnd="request2(URLS,{phone:phone,num:num,page:page})"
                    >
                     <ul class="wrapper-content"  >
-                        <div class="list" v-for="item in changeList">
+                        <div class="list" v-for="item in changeList" :key="item.id">
                                  
                          <div class="joinStatus" v-show="item.qr_type == 2&&item.status !==4">
                             <mt-button class="button2Reclass" :class="item.cj_status == 2?'findOthers':item.cj_status == 3?'grid': item.cj_status == 4? 'grid':''" @click="changeWord1Fun(item.cj_status,item.id)">{{item.cj_status == 2?changeWord1 = '找人代会':item.cj_status == 3?changeWord1 = '暂不参会': item.cj_status == 4?changeWord1 = '已找人代会':''}}</mt-button>
@@ -145,7 +145,6 @@
                                      var thisData = response.data.data.list.list;
                                     _this.changeList = thisData.concat(_this.changeList);
                                     _this.page++;
-                                    console.log(_this.changeList)
                         
                                 }else if(params.page > pageAll){
                                     return false
@@ -185,7 +184,6 @@
                     })
             },
             changeWord1Fun:function(status,id,name){
-              console.log(status);
               switch (status){
                 case 2:   //找人代会
                      this.$router.push({path: 'daihuiren', query: {mid: id,way:'meetingList'}});  
@@ -484,6 +482,7 @@
                 bottom: 0rem;
                 left: 0;
                 overflow: hidden;
+                -webkit-overflow-scrolling: touch;
                 background-color: #f1f1f1;
             }
         }

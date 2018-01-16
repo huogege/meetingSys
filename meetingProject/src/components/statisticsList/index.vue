@@ -6,7 +6,7 @@
                 空空如也~~<br>当前没有会议统计
             </h1>
         </div>
-      <div class="eat" v-for="item in list">
+      <div class="eat" v-for="item in list" :key="item.id">
           <p class="word">{{item.title}}</p>
             <router-link :to="{ path:'statisticsSelect', query: { mid: mid,vid:item.id,action:action}}" class="router_link">
                 <span class="click">投票</span>

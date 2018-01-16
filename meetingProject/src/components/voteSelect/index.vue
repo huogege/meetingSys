@@ -72,7 +72,7 @@
                     })
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
-                            console.log("success")
+    
                            _this.$router.push({path: 'voteResult', query: {mid: mid,vid:vid,action:_this.action}});
                         }
                     })

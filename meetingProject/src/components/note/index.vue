@@ -7,8 +7,8 @@
                 <img src="photo.png" alt="">
             </textarea>
             <div id="image_content">
-                 <div class="img_box" v-show="photoArr.length>0" v-for="item in photoArr">
-                    <img   :src="item" alt=""> 
+                 <div class="img_box" >
+                    <img v-show="photoArr.length>0" v-for="item in photoArr" :key="item.id" :src="item" alt="" @click="magnifyPicture"> 
                 </div>
             </div>
            
@@ -113,13 +113,17 @@
 
                     };
                     img.src = oFREvent.target.result;
-                    var img_box = $('<div class="img_box"></div>');
-                    img_box.append(img)
-                    $("#image_content").append(img_box); 
-                    $("#image_content").find('.img_box').css({
-                         width:6.7+'rem',
-                         height:5.0 +'rem',                     
-                         overflow: 'scroll',
+                    if(!$(".img_box")){
+                        var img_box = $('<div class="img_box"></div>');
+                        img_box.append(img)
+                        $("#image_content").append(img_box); 
+                    }else{
+                        $(".img_box").append(img);
+                    }
+                    $("#image_content").find('img').css({
+                         width:3.35+'rem',
+                         height:2.5+'rem',  
+                         float:'left'                   
                     })
                    
                    
@@ -140,7 +144,7 @@
       
 
     import fn from "../../common/js/index.js";    
-      import urls from "../../common/js/url.js";
+    import urls from "../../common/js/url.js";
     var jjURL = urls.jjURL;
     var url = jjURL+'meetingNote'; 
     var url2 = jjURL+'meetingNoteUpdate';
@@ -155,17 +159,19 @@
                 time:'',
                 nid:'',
                 phone:'',
-                photoArr:''
+                photoArr:[
+                  
+                ]
             }
         },
         methods:{
             delatePhoto:function(){
                 var $imgBox = $(".img_box");
-                var childArr = $imgBox;
+                var childArr = $imgBox.find('img');
                 var length =childArr.length;
                 if(length>=1){
                     $(childArr[length-1]).remove();
-                    photoArr.pop();console.log(photoArr);
+                    photoArr.pop();
                 }
 
 
@@ -184,8 +190,11 @@
                                     if(thisData.content){
                                         _this.text = _this.getWord(thisData.content); 
                                         _this.nid = thisData.id;
-                                        _this.photoArr = _this.getImgAdd(thisData.content);
-                                        photoArr = _this.getImgAdd(thisData.content);
+                                        if(_this.getImgAdd(thisData.content)!=''){
+                                             _this.photoArr = _this.getImgAdd(thisData.content);
+                                             photoArr = _this.getImgAdd(thisData.content);   
+                                        }
+                                       
                                     }
                                 }else{
                                      _this.nid  =null;
@@ -243,12 +252,26 @@
             },
             submit:function(){
                 if(this.text == ''){
-                    alert("请您完成笔记再提交哦！")
+                    alert("请您完成笔记再提交哦!")
                 }else{
                     this.request2();
-                    
                 }
             },
+            magnifyPicture:function(item,index){
+                var imgArr = [];
+                var length = this.photoArr.length;
+                if(length>0){
+                    for(var i=0;i<length;i++){
+                        var obj = {
+                            imgUrl:this.photoArr[i],
+                            desc:i+1
+                        }
+                        imgArr.push(obj)
+                    }
+                    window.AppJsObj.viewImageContent(JSON.stringify(imgArr),1);  
+                }
+              
+            }
         },
         created:function(){
             this.phone =localStorage.getItem('phone');
@@ -304,11 +327,10 @@
               .img_box{
                     width: 100%;
                     height: 5.03rem;
-                   overflow: scroll;
-                   -webkit-overflow-scrolling: touch;
                     img{
-                       // width:6.7rem;
-                        //height: 5.03rem;
+                        width:3.35rem;
+                        height: 2.5rem;
+                        float: left;
                     }
                 }
         }
@@ -325,10 +347,12 @@
                      float: left;
                     
                     .delate{
-                        height: 1.2rem;
+                        width: .9rem;
+                        height: .9rem;
+                        margin: 0 auto;
                         background-image: url("./delate.png");
                         background-size: .9rem;
-                        border-right: 1px solid #9e9e9e;
+                     
                         background-repeat: no-repeat;
                         background-position: center;
                     }
@@ -353,9 +377,12 @@
                     }
 
                     .qr-btn{
+                        width: 1rem;
+                        height: 1rem;
+                        margin: 0 auto;
                         z-index: 10;
                         background-image: url("./photo.png");
-                        background-size: 1.14rem ;
+                        background-size: 1rem ;
                         background-position: center;
                         background-repeat: no-repeat;
                     }

@@ -15,6 +15,7 @@ var unitFun = {
 * 默认显示年月日
 */
   format: function (date, format) {
+    console.log(date)
     var date = parseInt(date);
     var format = format || 'yyyy-MM-dd', date = new Date(date);
     var o = {

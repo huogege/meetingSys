@@ -2,6 +2,7 @@
   <div class="meetingDetail" v-show="meetingDetailShow">
       <div class="top">
            <div class="meetingStatus">
+          
             <div class="list">              
                 <div class="content">
                     <div class="left">
@@ -109,11 +110,8 @@
   
     import fn from "../../common/js/index.js";
     import url from "../../common/js/url.js";
+    import { Toast } from 'mint-ui';
     var jjURL = url.jjURL;
-    if(fn.QueryString('sign_source')){
-        var sign_source = fn.QueryString('sign_source');
-        localStorage.setItem('sign_source',sign_source)
-    }
     if(fn.QueryString('mid')){
         var mid = fn.QueryString('mid');
         localStorage.setItem('mid',mid)
@@ -252,19 +250,46 @@
             },
             attend:function(){
                 var _this = this;
-                if(_this.signWord == '点击签到'){
-                     _this.$http.post(jjURL+ 'meetingQd', _this.$qs.stringify({ 
+                var url = '';
+                var data = '';
+                if(_this.sign_source != null){
+                    url = 'meetingInfoCode';
+                    data =   {
+                        name:_this.inputName, 
+                        mid:_this.mid,  
+                        phone:_this.phone,
+                        dept:_this.inputDept,
+                        post: _this.inputPost
+                    }
+                }else{
+                    url = 'meetingQd';
+                    data = { 
                         mid:_this.mid,    
-                        phone:_this.phone || null
-                        }))
+                        phone:_this.phone
+                        }
+                }
+                if(_this.signWord == '点击签到'){
+                     _this.$http.post(jjURL+ url, _this.$qs.stringify(data))
                     .then(function (response) {
-                        console.log(response)
+
                         if(response.status == "200" && response.data.rtnCode == "0000"){
-                            _this.signWord = '已签到'
+                            _this.signWord = '已签到';
                             Toast({
                                 message: '签到成功！',
                                 iconClass: 'icon icon-success'
                             });
+                             _this.$http.get(jjURL+'meetingCountList', {
+                                params:{phone:_this.phone,mid:_this.mid}
+                                })
+                                .then(function (response) {
+                                    if(response.status == "200" && response.data.rtnCode == "0000"){
+                                        if(response.data.data!=''){
+                                            if(response.data.data.list.length>0){
+                                                _this.$router.push({path: '/statisticsList', query: {mid: _this.mid,action:'meetingCountList'}});  
+                                            }                                                    
+                                        }
+                                    }
+                    })
                         }else{
                             alert("网络连接错误")
                         }
@@ -290,7 +315,6 @@
                                 _this.seatName = null;
                             }
                         }else{
-                            //alert("网络连接错误")
                         }
                     })
             },
@@ -316,9 +340,11 @@
             },*/
         }, 
         created:function(){
-            
-           //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
-            this.sign_source = localStorage.getItem('sign_source');
+            //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
+             if(fn.QueryString('sign_source')){
+                var sign_source = fn.QueryString('sign_source');
+            }
+            this.sign_source = sign_source;
             this.mid = localStorage.getItem('mid');
             this.openid = localStorage.getItem('openid');
             this.phone = localStorage.getItem('phone');
@@ -333,14 +359,7 @@
 <style lang="less" rel="stylesheet/less" scoped>
 @import "../../common/css/common.less";
 .meetingDetail {
-    .top{
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 1rem;
-        width: 100%;
-        overflow: scroll;
-        -webkit-overflow-scrolling: touch;
+    .top{   
         background: #f1f1f1;
     }
     .blackBar{

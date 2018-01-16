@@ -1,9 +1,12 @@
-.mint-searchbar{
+ .searchSeat .mint-searchbar{
     font-size: .3rem;
 }
-.mint-cell-wrapper{
+.searchSeat .mint-cell-wrapper{
     font-size: .24rem!important;
 }
-.mint-search-list{
+.searchSeat .mint-search-list{
     padding-top: 1.04rem;
+}
+.searchSeat .mint-search{
+    height: auto;
 }

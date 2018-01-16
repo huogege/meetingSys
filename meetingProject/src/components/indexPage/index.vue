@@ -189,7 +189,6 @@
                     })
             },
             changeWord1Fun:function(status,id,name){
-              console.log(status);
               switch (status){
                 case 2:   //找人代会
                     this.$router.push({path: 'daihuiren', query: {mid: id,way:'/'}});  
@@ -235,8 +234,6 @@
               }
             },
             setLocalStorage:function(id){
-                console.log(id);
-                console.log(localStorage.getItem("mid"))
                 if(localStorage.getItem("mid")){
                        localStorage.removeItem("mid");  
                 }
@@ -267,7 +264,7 @@
                        if(response.status == "200" && response.data.rtnCode == "0000"){
                            if(response.data.data.meetingUser == null){
                               alert("检测到后台没有您的名单，点击确定转到注册页");
-                               _this.$router.push({path: '/userRegist', query: {flag:'app'}});
+                               _this.$router.push({path: '/userRegist', query: {}});
                            }
                         }         
                     });

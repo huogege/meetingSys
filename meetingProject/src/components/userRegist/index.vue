@@ -31,7 +31,6 @@
 import fn from "../../common/js/index.js";
 import url from "../../common/js/url.js";
 var jjURL = url.jjURL;
-var flag = fn.QueryString('flag'); 
 export default {
   data:function(){
       return{
@@ -40,7 +39,6 @@ export default {
           dept:'',
           post:'',
           mid :'',
-          URL:flag == 'app' ? jjURL + 'meetingInfoCode' : jjURL+ 'wxUserMeeting',
           path:'',
 
       }
@@ -80,7 +78,7 @@ export default {
                 var sign_source = fn.QueryString("sign_source");
                 var openid = fn.QueryString("openid");
                 if(phone != '' && name!='' && dept!=''&&  post!=''){
-                   this.$http.post(_this.URL, _this.$qs.stringify({ 
+                   this.$http.post(jjURL+'wxUserMeeting', _this.$qs.stringify({ 
                         openid:openid,
                         mid:mid || null,     //需使用qs库格式化数据才能正确使用post
                         phone:phone || null,
@@ -92,12 +90,12 @@ export default {
                             if(openid){
                                 localStorage.setItem('openid',openid)
                             }
-                            localStorage.setItem('sign_source',sign_source);
+    
                             localStorage.setItem('mid',mid);                   
                             localStorage.setItem('userName',name);                                                         
                             localStorage.setItem('phone',phone);   
                             alert("注册成功！");                        
-                            _this.$router.push({path: '/meetingDetail', query: {}});
+                            _this.$router.push({path: '/meetingDetail', query: {sign_source:sign_source}});
                         }else{
                             alert("网络连接错误")
                         }
@@ -122,11 +120,8 @@ export default {
         background-color: #fff;
         .top{
             height: 5rem;
-            position: absolute;
-            top: 2rem;
-            left: 0;
-            right: 0;
-            margin: auto;
+            margin: 0 auto;
+            margin-top: 2rem;
             padding: .5rem;
             li{
                 border: 1px solid #2d95ff;
@@ -148,11 +143,8 @@ export default {
             }
         }
         .bottom{
-            position: absolute;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
-            margin: auto;
+    
+            margin: 0 auto;
             padding: .5rem;
              li{
                 width: 50%;

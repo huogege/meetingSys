@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="searchSeat">
     <mt-search class="mt_search"
         v-model="value"
         cancel-text="取消"

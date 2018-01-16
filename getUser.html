@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>登陆中...</title>
+	<title>登陆</title>
 	<style>
 		h1{
 			font-size: 24px;
@@ -29,24 +29,24 @@
 	</style>
 </head>
 <body>
-	<h1 class="loading">登陆中...</h1>
+	<h1 class="loading"></h1>
 	<div class="icon_box"></div>
-	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/jquery-1.9.1.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.min.js"></script>  
 	<!-- <script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/config/config.js"></script>
 	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/jbase64.js"></script>
 	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/common.js"></script> -->
-	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script>
+	<!-- <script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script> -->
     <script>
 		var jjURL = "http://sz.cqjjnet.com/jj_project/wapMeeting/manager/";
 		var meetingDetailUrl = 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/meetingDetail';
 		var userRegistUrl = 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/userRegist';
 
-		// var meetingDetailUrl = 'http://192.168.2.100:7777/#/meetingDetail';
-		// var userRegistUrl = 'http://192.168.2.100:7777/#/userRegist';
+		//  meetingDetailUrl = 'http://192.168.2.100:7777/#/meetingDetail';
+		// userRegistUrl = 'http://192.168.2.100:7777/#/userRegist';
 
-		// var meetingDetailUrl = 'http://192.168.191.1:7777/#/meetingDetail';
-		// var userRegistUrl = 'http://192.168.191.1:7777/#/userRegist';
+		// meetingDetailUrl = 'http://192.168.191.1:7777/#/meetingDetail';
+		// userRegistUrl = 'http://192.168.191.1:7777/#/userRegist';
 
 
 		var mid = QueryString('mid');
@@ -78,7 +78,7 @@
 
 					checkOpenId(openid);
 				}else{
-					var tzwx = "http://api.cqjjnet.com/getWeixinOpenid.php?reurl=http://sz.cqjjnet.com/jj_project/pages/h5/getUser.html?mid="+mid+"&sign_source="+sign_source+"&flag=weixin";
+					var tzwx = "http://api.cqjjnet.com/getWeixinOpenid.php?reurl=http://sz.cqjjnet.com/jj_project/pages/h5/getUser.html?mid="+mid+"&sign_source="+sign_source+"";
 					window.location.href= tzwx;
 				}
 			
@@ -91,44 +91,29 @@
 			var sessionObj = eval("(" + sessionStr + ")");
 			var phone = sessionObj.phone;
 			var token = sessionObj.token;
-			androidGetPhone(token)
-			// if(typeof(phone) == 'string'){
-			// 	checkPhone(phone);	
-			// }else if(phone == undefined){
-			// 	androidGetPhone(token)
-			// }
+			if(typeof(phone) == 'string'){
+				checkPhone(phone);	
+			}else if(phone == undefined){
+				androidGetPhone(token)
+			}
 		};
 		function androidGetPhone(token){
-			var time = Date.parse(new Date()); 
-			var url = 'https://api.cqliving.com/getui.html';
-			var appKey = 'jiangjin';
-			var appSecret = 'hSlc7gPYr9yQcQfcRMuBI55OaX9Zyq';
-			var token = token;
-			var hashSign = md5(time + appKey + appSecret + token);
+			var url = 'http://sz.cqjjnet.com/jj_project/wapMeeting/manager/getUserByToken';
 			$.ajax({
-					url:'https://api.cqliving.com/getui.html',
-					data:{
-						// appKey:appKey,
-						// appSecret:appSecret,
-						// time:'20180105171732',
-						// token:token,
-						// hashSign:hashSign
-
-						appKey:'jiangjin',
-						appSecret:appSecret,
-						time:'20180105171732',
-						token:'3d497d241b854df69a90cf98f63ca0f7',
-						hashSign:'718a649c71fa2cea472578682e11280e',
-						headers : {'Access-Control-Allow-Origin':'*'},
-
-					},
+					url:url,
+					data:{token:token},
 					dataType: "json",
-					type:'post',
-					
+					type:'POST',
 					success:function(data){
-						console.log(data);
-			
-					}
+						if(data.rtnCode = '0000'){
+				
+							var data = JSON.parse(data.data.data);
+							checkPhone(data.data.telephone);
+						}
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+                     
+                    },
 				})
 
 		};
@@ -142,8 +127,8 @@
 						if(data.data.meetingUser!=null){
 							window.location.href= meetingDetailUrl + '?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'';
 						}else{
-							alert('系统后台未找到您，点击前往注册！')
-							window.location.href= userRegistUrl + '?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'flag=app';
+							alert('系统后台未找到您，点击前往注册！');
+							window.location.href= userRegistUrl + '?mid='+mid+'&phone='+phone+'&sign_source='+sign_source+'';
 						}
 					}
 				})
@@ -182,15 +167,13 @@
 					}	
 				},"700")
 		}           
-		//?mid=8&sign_source=3&flag=app
-		androidGetPhone()
+		//?mid=8&sign_source=2&flag=app
 		switch(sign_source){
 			case '1': //app+微信
 				byApp()
 				byWeixin();
 				break;
 			case '2': //app0
-			
 				byApp(function(){
 					$(".loading").text('请使用江津app打开！');
 					$(".icon_box").hide();

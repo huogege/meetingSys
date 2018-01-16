@@ -13,10 +13,10 @@
                     @scrollToEnd="getMessage(num,page)"
                    >
                     <ul class="wrapper-content"  >
-                        <router-link v-for="item in list" :to="{ path: 'informDetail', query: { content: item.content,from:item.senduser,time:item.sendtime}}" class="router_link">
+                        <router-link :key="item.id" v-for="item in list" :to="{ path: 'informDetail', query: { content: item.content,from:item.senduser,time:item.sendtime}}" class="router_link">
                             <div class="list">
                                 <span class="status">{{item.title}}</span>
-                                <div class="content"><p class="word oneRowHide"  v-for="item in splitWords(item.content)">{{item}}</p></div>  
+                                <div class="content"><p class="word oneRowHide"  :key="item.id" v-for="item in splitWords(item.content)">{{item}}</p></div>  
                                 <span class="time">{{format( item.sendtime,'yyyy-MM-dd  hh:mm')}}</span>
                             </div>
                         </router-link>
@@ -121,16 +121,17 @@
             position: absolute;
             width: 100%;
             top: 1.5rem;
-            bottom: 0;
-            left: 0;
-            overflow: hidden;
-             background-color: #f1f1f1;
+            bottom: .2rem;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            background-color: #f1f1f1;
             .router_link{
                 .list{
                     padding: 0 .3rem .2rem .3rem;
                     background-color: #fff;
-                    margin-top: .3rem;
+                    margin-top: .2rem;
                     overflow: hidden;
+                  
                     .status{
                         position: absolute;
                         padding: .1rem .3rem;
