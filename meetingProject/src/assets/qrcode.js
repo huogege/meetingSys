@@ -22,12 +22,12 @@
             nativeReady: function(tempBtn) {
                 $('[node-type=jsbridge]',tempBtn).on('click',function(e){
                     e.stopPropagation();
-                    alert(1)
+                  
                 });
 
                 $(tempBtn).bind('click',function(e){
                     $(this).find('input[node-type=jsbridge]').trigger('click');
-                    alert(2)
+                 
                 });
 
                 $(tempBtn).bind('change', this.getImgFile);

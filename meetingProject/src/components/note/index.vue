@@ -252,12 +252,16 @@
             },
             submit:function(){
                 if(this.text == ''){
-                    alert("请您完成笔记再提交哦!")
+                    alert("请您完成笔记再提交哦！")
                 }else{
                     this.request2();
+                    
                 }
             },
             magnifyPicture:function(item,index){
+        
+
+
                 var imgArr = [];
                 var length = this.photoArr.length;
                 if(length>0){

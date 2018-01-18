@@ -13,53 +13,60 @@
 
     <!-- built files will be auto injected -->
     <script type=text/javascript>var deviceWidth = document.documentElement.clientWidth;document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';</script>
-    <script>
-        
-    </script>
-
-     <script type="text/javascript" src="config/config.js"></script>
-   <script type="text/javascript" src="js/jbase64.js"></script>
-    <script type="text/javascript" src="js/common.js"></script> 
     <!-- <script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script> -->
   
     <script type="text/javascript">
-        var IsAPP =  false;
 
-        function getToken(params) { //获取token
-              sessionStr = params;
-              var sessionObj = eval("(" + sessionStr + ")");
-              var phone = sessionObj.phone;
-              localStorage.setItem('phone',phone);
-              $(".notUser").hide();
+       function getToken(params) { //获取token
+         sessionStr = params;
+         var sessionObj = eval("(" + sessionStr + ")");
+         var phone = sessionObj.phone;
+         var token = sessionObj.token;
+         if(typeof(phone) == 'string'){
+          localStorage.setItem('phone',phone)	
+         }else if(phone == undefined){
+           androidGetPhone(token)
+         }
+       };
+       function androidGetPhone(token){
+         var url = 'http://sz.cqjjnet.com/jj_project/wapMeeting/manager/getUserByToken';
+         $.ajax({
+             url:url,
+             data:{token:token},
+             dataType: "json",
+             type:'POST',
+             success:function(data){
+               if(data.rtnCode = '0000'){
+           
+                 var data = JSON.parse(data.data.data);
+                 localStorage.setItem('phone',data.data.telephone)
+                 
+               }
+             },
+             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        
+                       },
+           })
+   
+       };
+       function byApp(callback){
+         setTimeout(function(){
+             try { //判断是否在APP打开
+               if(window.AppJsObj){					
+                 window.AppJsObj.appSessionToken("getToken", 2);
+                 getToken();
+               }else{
                 
-                
-        }
-        var timer = setInterval(function(){
-          localStorage.removeItem('userInfor');
-          try { //判断是否在APP打开
-              if(window.AppJsObj){
-                clearInterval(timer);
-                window.AppJsObj.appSessionToken("getToken", 2);
-                IsAPP = true;
-                getToken()
-              }	          
-            } catch(e) {
-              IsAPP = false;
-              $(".notUser").show();
-            // alert("请在app中打开网页！")
-            }	
-        },"200");
-      
-     
-
-      
-    
-      function testLocalstorage(){
-        var phone = '18996394903'
-        localStorage.setItem('phone',phone);
-      }
-      //testLocalstorage()
-      //setTimeout(function(){testLocalstorage()})
+               }          
+             } catch(e) {
+             }	
+           },"700")
+       }  
+       localStorage.removeItem('phone');
+       localStorage.removeItem('mid');
+       localStorage.removeItem('sign_source');
+       localStorage.removeItem('userName');     
+       byApp()
     </script> 
   </body>
 </html>
