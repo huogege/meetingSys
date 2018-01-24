@@ -58,12 +58,13 @@
                 </div>
             </div>
         </div>
+        
         <div class="meetingContent">
             <p class="title">
                 <span class="icon_9">&#8195;</span>
                 <span class="word">会议纪要</span>
             </p>
-            <p class="content">{{meeting.memo}}</p>
+            <p class="content">{{meeting.memo}} </p>
         </div>
 
         <mt-popup
@@ -327,9 +328,7 @@
             }
            /* backCkick:function(){
                 var _this= this;
-                console.log(fn)
                 var path = decodeURIComponent(fn.QueryString('way'));
-                console.log(fn.QueryString('way'))
                 if (window.history && window.history.pushState) {
                     $(window).bind('popstate', function () {
                             $(window).unbind('popstate');   
@@ -361,6 +360,9 @@
 .meetingDetail {
     .top{   
         background: #f1f1f1;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: .88rem;
     }
     .blackBar{
         height: .3rem;

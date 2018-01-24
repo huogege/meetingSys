@@ -16,9 +16,7 @@
     </div>
      <div class="insureStatus">
          <mt-button type="default" class="insure" style="background-color:#ccc" >{{voteWord}}</mt-button>
-            <router-link :to="{ path: 'voteList', query: { mid: mid,action:action}}" class="router_link">
-               <mt-button type="default" class="insure">回到列表</mt-button>
-            </router-link>
+        
         </div>
 </div>
  
@@ -96,7 +94,7 @@ export default {
              margin-left: .5rem;
             min-height: 7rem;
             .list{
-                border-top: 1px solid #666;
+               
                 font-size: .3rem;
                 line-height: 1rem;
                 border-bottom: 1px solid #ccc;

@@ -35,7 +35,6 @@ export default {
   },
   methods:{
       request:function(){
-          console.log(1);
            var _this = this;
             _this.$http.post(jjURL+ 'getUserSeat', _this.$qs.stringify({ 
                     mid:12,    

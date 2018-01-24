@@ -86,7 +86,7 @@
 			}
 		};
 		function getToken(params) { //获取token
-			sessionStr = params;
+			var sessionStr = params;
 			var sessionObj = eval("(" + sessionStr + ")");
 			var phone = sessionObj.phone;
 			var token = sessionObj.token;

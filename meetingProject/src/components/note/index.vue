@@ -104,7 +104,6 @@
                             success:function(data){                       
                                 if(data.data!='' && data.rtnCode == "0000"){
                                     photoArr.push(data.data.data);
-                                    console.log(photoArr)
                                 }else{
                                     //alert("")
                                 }                      
@@ -297,7 +296,7 @@
 @import "../../common/css/common.less";
     .note{
         position: relative;
-        width: 6.7rem;
+        width: 6.7rem!important;
         padding: .4rem .36rem;
         .title{
             font-size: .36rem;
@@ -305,20 +304,23 @@
             font-weight: 700;
         }
         .time{
+            width: 80%;
             font-size: .24rem;
             color: #9e9e9e;
             line-height: .6rem;
             border-bottom: 1px solid #9e9e9e;
             .submit{
-                float: right;
+                position: absolute;
+                top: 1.2rem;
+                right: .2rem;
                 color: #fff;
                 border-radius: .2rem;
                 background-color: #2d95ff;
                 font-size: .26rem;
-                width: 1rem;
-                height: .6rem;
-                line-height: .6rem;
-                        }
+                width: 1.2rem;
+                height: .7rem;
+                line-height: .7rem;
+            }
         }
         .content{
             .textarea{

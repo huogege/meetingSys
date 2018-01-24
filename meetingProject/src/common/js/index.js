@@ -1,6 +1,6 @@
 var unitFun = {
 
-  phone:'15826177123',
+  phone: '15826177123',
   QueryString: function (val) {
     var uri = window.location.href;
     var re = new RegExp("" + val + "\=([^\&\?]*)", "ig");
@@ -15,7 +15,6 @@ var unitFun = {
 * 默认显示年月日
 */
   format: function (date, format) {
-    console.log(date)
     var date = parseInt(date);
     var format = format || 'yyyy-MM-dd', date = new Date(date);
     var o = {
@@ -77,68 +76,90 @@ var unitFun = {
     var suffix = str.substring(index1 + 1, index2);//后缀名
     return suffix
   },
-  	//图片上传
-  fileChange:function (){
+  //图片上传
+  fileChange: function () {
     imgChange(0);
     debugger
-		function imgChange(index){
-			var Cnv = document.getElementById('myCanvas');
-            var Cntx = Cnv.getContext('2d');//获取2d编辑容器
-            var imgss =   new Image();
-			var agoimg=document.getElementById("ago");
-			
-			var imgFile = new FileReader();  
-			imgFile.readAsDataURL(img.files[index]);  
-			imgFile.onload = function (e) {
-				url = e.target.result;
-				imgss.src = url;
-				agoimg.src=url;
-				agoimg.onload = function () {
-					//等比缩放
-					var m = imgss.width / imgss.height;
-					 Cnv.height =1000;//该值影响缩放后图片的大小
-					 Cnv.width= 1000*m ;
-					//img放入画布中
-					//设置起始坐标，结束坐标
-					Cntx.drawImage(agoimg, 0, 0,1000*m,1000);
-					
-					var imgData = Cnv.toDataURL("image/png");
+    function imgChange(index) {
+      var Cnv = document.getElementById('myCanvas');
+      var Cntx = Cnv.getContext('2d');//获取2d编辑容器
+      var imgss = new Image();
+      var agoimg = document.getElementById("ago");
 
-					// 去除多余，写入页面
-					$(".pic").append("<li><img src=" + imgData + " /><a class='close'></a></li>");
-					$(".pic li").height($(".pic li").width());
-					$(".close").click(function(){
-						$(this).parent().remove();
-						$("#fileBtn").val("");
-					})
-					if($(".pic li").length > 9){
-						$(".addBtn").hide();
-						window.AppJsObj.appAlert("最多只能选择5张图片！");
-						return;
-					}
-					
-					agoimg.src="";
-					Cntx.clearRect(0, 0,1000*m,1000);
-					j = index+1;
-					imgChange(j);
-				}
-			}
-		}
+      var imgFile = new FileReader();
+      imgFile.readAsDataURL(img.files[index]);
+      imgFile.onload = function (e) {
+        url = e.target.result;
+        imgss.src = url;
+        agoimg.src = url;
+        agoimg.onload = function () {
+          //等比缩放
+          var m = imgss.width / imgss.height;
+          Cnv.height = 1000;//该值影响缩放后图片的大小
+          Cnv.width = 1000 * m;
+          //img放入画布中
+          //设置起始坐标，结束坐标
+          Cntx.drawImage(agoimg, 0, 0, 1000 * m, 1000);
+
+          var imgData = Cnv.toDataURL("image/png");
+
+          // 去除多余，写入页面
+          $(".pic").append("<li><img src=" + imgData + " /><a class='close'></a></li>");
+          $(".pic li").height($(".pic li").width());
+          $(".close").click(function () {
+            $(this).parent().remove();
+            $("#fileBtn").val("");
+          })
+          if ($(".pic li").length > 9) {
+            $(".addBtn").hide();
+            window.AppJsObj.appAlert("最多只能选择5张图片！");
+            return;
+          }
+
+          agoimg.src = "";
+          Cntx.clearRect(0, 0, 1000 * m, 1000);
+          j = index + 1;
+          imgChange(j);
+        }
+      }
+    }
   },
   //按照分号换行
-  splitWords:function(str){
-    if(str){
+  splitWords: function (str) {
+    if (str) {
       var strs = str.split("；");
       return strs;
-      
-    }else{
+
+    } else {
       return false
     }
   },
   //截取base64码
-  cutBase64:function(str){
-    if(str){
+  cutBase64: function (str) {
+    if (str) {
       return str.substring(23);
+    }
+  },
+  /**
+ * [isMobile 判断平台]
+ * @param test: 0:iPhone    1:Android
+ */
+  ismobile: function (test) {
+    var u = navigator.userAgent, app = navigator.appVersion;
+    if (/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
+      if (window.location.href.indexOf("?mobile") < 0) {
+        try {
+          if (/iPhone|mac|iPod|iPad/i.test(navigator.userAgent)) {
+            return '0';
+          } else {
+            return '1';
+          }
+        } catch (e) { }
+      }
+    } else if (u.indexOf('iPad') > -1) {
+      return '0';
+    } else {
+      return '1';
     }
   }
 }
