@@ -29,7 +29,7 @@
          }
        };
        function androidGetPhone(token){
-         var url = 'http://sz.cqjjnet.com/jj_project/wapMeeting/manager/getUserByToken';
+         var url = 'http://sz.cqjjnet.com:12080/jj_project/wapMeeting/manager/getUserByToken';
          $.ajax({
              url:url,
              data:{token:token},
@@ -67,7 +67,7 @@
        localStorage.removeItem('sign_source');
        localStorage.removeItem('userName');     
        byApp();
-      // localStorage.setItem('phone','18996394903')
+       //localStorage.setItem('phone','18996394903')
     </script> 
   </body>
 </html>

@@ -37,15 +37,15 @@
 	<script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/common.js"></script> -->
 	<!-- <script type="text/javascript" src="http://zwyst.cqliving.com/test/common/jsApi_test/js/vconsole.min.js"></script> -->
     <script>
-		var jjURL = "http://sz.cqjjnet.com/jj_project/wapMeeting/manager/";
-		var meetingDetailUrl = 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/meetingDetail';
-		var userRegistUrl = 'http://sz.cqjjnet.com/jj_project/pages/h5/index.html#/userRegist';
+		var jjURL = "http://sz.cqjjnet.com:12080/jj_project/wapMeeting/manager/";
+		//var meetingDetailUrl = 'http://sz.cqjjnet.com:12080/jj_project/pages/h5/index.html#/meetingDetail';
+		//var userRegistUrl = 'http://sz.cqjjnet.com:12080/jj_project/pages/h5/index.html#/userRegist';
 
 		//  meetingDetailUrl = 'http://192.168.2.100:7777/#/meetingDetail';
 		// userRegistUrl = 'http://192.168.2.100:7777/#/userRegist';
 
-		// meetingDetailUrl = 'http://192.168.191.1:7777/#/meetingDetail';
-		// userRegistUrl = 'http://192.168.191.1:7777/#/userRegist';
+		meetingDetailUrl = 'http://192.168.191.1:7777/#/meetingDetail';
+		userRegistUrl = 'http://192.168.191.1:7777/#/userRegist';
 
 
 		var mid = QueryString('mid');
@@ -77,7 +77,7 @@
 
 					checkOpenId(openid);
 				}else{
-					var tzwx = "http://api.cqjjnet.com/getWeixinOpenid.php?reurl=http://sz.cqjjnet.com/jj_project/pages/h5/getUser.html?mid="+mid+"&sign_source="+sign_source+"";
+					var tzwx = "http://api.cqjjnet.com/getWeixinOpenid.php?reurl=http://sz.cqjjnet.com:12080/jj_project/pages/h5/getUser.html?mid="+mid+"&sign_source="+sign_source+"";
 					window.location.href= tzwx;
 				}
 			
@@ -97,7 +97,7 @@
 			}
 		};
 		function androidGetPhone(token){
-			var url = 'http://sz.cqjjnet.com/jj_project/wapMeeting/manager/getUserByToken';
+			var url = 'http://sz.cqjjnet.com:12080/jj_project/wapMeeting/manager/getUserByToken';
 			$.ajax({
 					url:url,
 					data:{token:token},

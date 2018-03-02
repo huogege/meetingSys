@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="joinPerson">
+        <div class="joinPerson" v-show="is_show == '2'">
             <p class="title">
                 <span class="icon_8">&#8195;</span>
                 <span class="word">参与人员</span>
@@ -145,7 +145,6 @@
                 time:'',
                 phone:'',
               
-
                 popup1Visible:false,
                 popup2Visible:false,
                 inputName:'',
@@ -156,7 +155,8 @@
                 seatName:'',
 
                 signWord:'点击签到',
-                signWordShow:true
+                signWordShow:true,
+                is_show:''    //参会人员显示
             }
         },
         methods:{
@@ -172,6 +172,7 @@
                            if(response.data.data!=''){
                                var thisData = response.data.data.meeting;
                                 _this.meeting = thisData;
+                                _this.is_show = thisData.is_show;
                                 _this.userList = thisData.userlist;
                                 _this.title = thisData.title;
                                 _this.time = fn.format(thisData.stime,'yyyy-MM-dd  hh:mm');

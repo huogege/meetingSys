@@ -96,7 +96,7 @@
                         formData.append("fileName", fileName);
                          $.ajax({
                             type:"POST",
-                            url:'http://sz.cqjjnet.com/jj_project/base/commonController/uploadFileBase64',
+                            url:'http://sz.cqjjnet.com:12080/jj_project/base/commonController/uploadFileBase64',
                             dataType: "JSON",
                             data:formData,
                             processData: false, // 必须false才会避开jQuery对 formdata 的默认处理, XMLHttpRequest会对 formdata 进行正确的处理
