@@ -155,7 +155,7 @@
                 seatName:'',
 
                 signWord:'点击签到',
-                signWordShow:true,
+                signWordShow:false,
                 is_show:''    //参会人员显示
             }
         },
@@ -341,8 +341,9 @@
         }, 
         created:function(){
             //数据处理都必须在export defalut 里面，不然可能导致渲染的时候拿不到数据
-             if(fn.QueryString('sign_source')){
+            if(fn.QueryString('sign_source')){
                 var sign_source = fn.QueryString('sign_source');
+                this.signWordShow = true;
             }
             this.sign_source = sign_source;
             this.mid = localStorage.getItem('mid');

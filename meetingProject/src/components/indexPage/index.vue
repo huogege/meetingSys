@@ -45,9 +45,9 @@
                             </div>
                         </div>
                     </router-link>    
-                    <div class="right" @click="attend()">
+                    <!-- <div class="right" @click="attend()">
                         <mt-button class="word">点击签到</mt-button>
-                    </div>
+                    </div> -->
                 </div>
            
              <div @click = "setLocalStorage(item.id)" :key="item.id" class="list" v-for="(item,index) in changeList" :class="index == changeList.length-1? 'marginNone':''">
@@ -239,22 +239,22 @@
                 }
                 localStorage.setItem("mid", id);
             },
-            attend:function(){
-                this.$http.post(jjURL+ 'meetingQd', this.$qs.stringify({ 
-                        mid:this.mid,    
-                        phone:this.phone || null
-                        }))
-                    .then(function (response) {
-                        if(response.status == "200" && response.data.rtnCode == "0000"){
-                            Toast({
-                                message: '签到成功！',
-                                iconClass: 'icon icon-success'
-                            });
-                        }else{
-                            alert("网络连接错误")
-                        }
-                    })
-            },
+            // attend:function(){
+            //     this.$http.post(jjURL+ 'meetingQd', this.$qs.stringify({ 
+            //             mid:this.mid,    
+            //             phone:this.phone || null
+            //             }))
+            //         .then(function (response) {
+            //             if(response.status == "200" && response.data.rtnCode == "0000"){
+            //                 Toast({
+            //                     message: '签到成功！',
+            //                     iconClass: 'icon icon-success'
+            //                 });
+            //             }else{
+            //                 alert("网络连接错误")
+            //             }
+            //         })
+            // },
             getMeetingUser:function(phone){
                 var _this = this;
                 _this.$http.get(jjURL+'getMeetingUser ', {
