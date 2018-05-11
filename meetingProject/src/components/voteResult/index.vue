@@ -34,7 +34,7 @@ export default {
         voteModel:[],
         action:'',
         mid:'',
-        voteWord:'已投票',
+        voteWord:'已调查',
         phone:'',
         colorArr:['#2b94fd','#6bcc70','#ee8483','#e47add','#8875df']
       };
@@ -63,9 +63,9 @@ export default {
                                     _this.voteModel = thisData.voteModel;
                                     _this.oid = thisData.voteOptionModels[0].id;
                                     if(thisData.isVote){
-                                        _this.voteWord = '已投票'
+                                        _this.voteWord = '已调查'
                                     }else{
-                                         _this.voteWord = '投票结束'
+                                         _this.voteWord = '调查结束'
                                     }
                                     
                             }

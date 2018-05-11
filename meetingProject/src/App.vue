@@ -6,9 +6,10 @@
         <mt-button icon="back" @click="back">返回</mt-button>
       </router-link>
     </mt-header>
-     <transition :name="transitionName" >  
+    <transition :name="transitionName" >  
       <router-view class="child-view" :class="headerShow == true ? 'topClass' : ''"></router-view>  
     </transition>  
+
   </div>
 </template>
 
@@ -57,7 +58,7 @@ export default {
 <style lang="less" scoped>
 #app {
   .header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;

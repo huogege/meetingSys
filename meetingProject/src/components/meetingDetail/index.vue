@@ -94,7 +94,7 @@
              <router-link :to="{ path: 'voteList', query: { mid: mid,action:'meetingVoteList'}}"  class="router_link">
                 <div class="submenu">
                     <span class="icon icon13">&#8195;</span>
-                    <span class="word">投票</span>
+                    <span class="word">调查</span>
                 </div>
               </router-link>
             <router-link :to="{ path: 'statisticsList', query: { mid: mid,action:'meetingCountList'}}"  class="router_link">
@@ -156,7 +156,10 @@
 
                 signWord:'点击签到',
                 signWordShow:false,
-                is_show:''    //参会人员显示
+                is_show:'',    //参会人员显示
+
+                sign_stime:'',
+                sign_etime:''
             }
         },
         methods:{
@@ -176,9 +179,13 @@
                                 _this.userList = thisData.userlist;
                                 _this.title = thisData.title;
                                 _this.time = fn.format(thisData.stime,'yyyy-MM-dd  hh:mm');
-                                if(response.data.data.meetingUser.qdStatus == '2'){
-                                    _this.signWord = '已签到';
+                                if(response.data.data.meetingUser!=null){
+                                    if(response.data.data.meetingUser.qdStatus == "2"){
+                                        _this.signWord = '已签到';
+                                    }
                                 }
+                                _this.sign_stime = thisData.sign_stime;
+                                _this.sign_etime = thisData.sign_etime;
                            }
                         }         
                     });
@@ -270,10 +277,24 @@
                         phone:_this.phone
                         }
                 }
+                //获取当前时间戳和sign_stime sign_etime比较
+                var timeFlag = false;
+                var timestamp = Date.parse(new Date());
+                if(timestamp > _this.sign_stime && timestamp < _this.sign_etime){
+                    timeFlag = true;
+                }
                 if(_this.signWord == '点击签到'){
+                    debugger
+                    if(timestamp < _this.sign_stime){
+                        alert("签到时间还未到，请您稍等");
+                        return false;
+                    }
+                    if(timestamp > _this.sign_etime){
+                        alert("签到时间已过！");
+                        return false;
+                    }
                      _this.$http.post(jjURL+ url, _this.$qs.stringify(data))
                     .then(function (response) {
-
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             _this.signWord = '已签到';
                             Toast({
@@ -291,7 +312,7 @@
                                             }                                                    
                                         }
                                     }
-                    })
+                             })
                         }else{
                             alert("网络连接错误")
                         }
@@ -521,8 +542,9 @@
                 float: left;
                 text-align: left;
                 text-indent: .35rem;
-                margin-bottom: .4rem;
-                font-size:.24rem;
+                margin-bottom: .3rem;
+                font-size: .24rem;
+                margin-top: .2rem;
                 &:last-child{
                     margin: 0;
                 }

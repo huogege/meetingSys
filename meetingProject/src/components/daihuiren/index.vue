@@ -11,7 +11,7 @@
             </li>
         </ul>
         <ul class="bottom">
-            <li><mt-button @click="meetingInsue(cjname,cjphone)" class="buttonReclass" type="primary">确定</mt-button></li>
+            <li><mt-button @click="meetingInsue(cjphone,cjname)" class="buttonReclass" type="primary">确定</mt-button></li>
             <router-link :to="{ path: path, query: {}}" class="router_link">
                 <li><mt-button class="buttonReclass" type="default">取消</mt-button></li>
             </router-link>
@@ -46,7 +46,7 @@ export default {
     checkName:function(value){
          if(!(/^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/.test(value))){ 
             alert("您的输入有误，请重填"); 
-            this.cjphone = '';
+            this.cjname = '';
             return false; 
         }
     },

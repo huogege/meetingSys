@@ -9,9 +9,9 @@ import informDetail from '@/components/informDetail/index'
 import meetingDetail from '@/components/meetingDetail/index'
 import statisticsList from '@/components/statisticsList/index'  //会议统计列表
 import statisticsSelect from '@/components/statisticsSelect/index'   //统计选择
-import voteList from '@/components/voteList/index'  //投票列表
-import voteSelect from '@/components/voteSelect/index'  //投票选择
-import voteResult from '@/components/voteResult/index'  //投票结果
+import voteList from '@/components/voteList/index'  //调查列表
+import voteSelect from '@/components/voteSelect/index'  //调查选择
+import voteResult from '@/components/voteResult/index'  //调查结果
 import material from '@/components/material/index'
 import note from '@/components/note/index'
 
@@ -80,17 +80,17 @@ var router =  new Router({
     },
     {
       path: '/voteList',
-      name: '投票列表',
+      name: '调查列表',
       component: voteList
     },
     {
       path: '/voteSelect',
-      name: '投票选择',
+      name: '调查选择',
       component: voteSelect
     },
     {
       path: '/voteResult',
-      name: '投票结果',
+      name: '调查结果',
       component: voteResult
     },
     {

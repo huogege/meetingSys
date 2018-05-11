@@ -101,7 +101,6 @@
                currentItem:0,
                pullup:true,
                listenScroll:true,  
-               meetingUser:'' ,
                inList:[],
                soonList:[], 
                changeList:[],
@@ -129,7 +128,7 @@
                     .then(function (response) {
                         if(response.status == "200" && response.data.rtnCode == "0000"){
                             if(response.data.data!=''){
-                                if(response.data.data.meetingUser!=''){
+                                if(response.data.data.meetingUser){
                                      _this.meetingUser = response.data.data.meetingUser;
                                 }
                                 if(response.data.data.list>0){ _this.inList =  response.data.data.list;}
@@ -271,7 +270,7 @@
             },
            
         }, 
-        created:function(){
+        created (){
             var timer = setInterval(()=>{
                 this. phone = localStorage.getItem('phone');
                 
@@ -280,13 +279,8 @@
                     this.request1(this.URL1,{phone:this.phone,num:1000});
                     this.request2(this.URLS,{phone:this.phone,num:this.num});    
                     this.getMessage();
-
                 }
             },"200")
-           
-        },
-        mounted:function(){   
-         
            
         }
         

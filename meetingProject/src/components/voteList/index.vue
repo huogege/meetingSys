@@ -3,12 +3,12 @@
        <div class="noMaterial" v-show="list.length == 0">
             <img class="img" src="./icon1.png" alt="">
             <h1 class="words">
-                空空如也~~<br>当前没有会议投票
+                空空如也~~<br>当前没有会议调查
             </h1>
         </div>
       <div class="eat" v-for="item in list">
           <p class="word">{{item.title}}</p>
-         <span class="click" @click="handleClick(item.id,item.status)">投票</span>
+         <span class="click" @click="handleClick(item.id,item.status)">调查</span>
       </div>
   </div>
 </template>
@@ -67,7 +67,7 @@
             handleClick:function(vid,status){
                 switch(status){
                     case 1:
-                        alert("该投票还未开始，宁可以查看其它投票");
+                        alert("该调查还未开始，宁可以查看其它调查");
                     break;
                     case 2:
                         this.$router.push({path: 'voteSelect', query: { mid: this.mid,vid:vid,action:this.action}});  
@@ -98,7 +98,6 @@
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
     .meetingStatistics{
-        padding-top: .2rem;
         .noMaterial{
             position: absolute;
             top: 0;

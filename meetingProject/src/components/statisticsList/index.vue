@@ -9,7 +9,7 @@
       <div class="eat" v-for="item in list" :key="item.id">
           <p class="word">{{item.title}}</p>
             <router-link :to="{ path:'statisticsSelect', query: { mid: mid,vid:item.id,action:action}}" class="router_link">
-                <span class="click">投票</span>
+                <span class="click">调查</span>
             </router-link>
       </div>
   </div>
@@ -71,7 +71,7 @@
 </script>
 <style lang="less" rel="stylesheet/less" scoped>
     .meetingStatistics{
-        padding-top: .2rem;
+      
           .noMaterial{
             position: absolute;
             top: 0;

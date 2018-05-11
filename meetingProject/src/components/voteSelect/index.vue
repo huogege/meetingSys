@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="insureStatus">
-            <mt-button type="default" class="insure" @click="vote">确认投票</mt-button>
+            <mt-button type="default" class="insure" @click="vote">确认调查</mt-button>
     </div>
 </div>
  
